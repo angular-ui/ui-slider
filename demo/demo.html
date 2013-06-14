@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="sliderDemoApp" id="top">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>AngularUI - Slider demo</title>
+	<link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" media="all" type="text/css" rel="stylesheet">
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+	<script type="text/javascript" src="../src/slider.js"></script>
+	<style>
+		body {
+			padding: 2em;
+		}
+		#sliderExample {
+			width: 500px;
+			padding: 2em;
+			background-color: #f5f5f5;
+			border: 1px solid #f0f0f0;
+			margin: 2em;
+		}
+	</style>
+</head>
+<body>
+	<h1>AngularUI Slider demo</h1>
+
+	<div id="sliderExample" >
+		<strong>Step slider</strong>
+		<div ui-slider min="0" max="50" ng-model="sliderExample1"></div>
+		<input type="text" ng-model="sliderExample1" />
+	</div>
+	
+	<div id="sliderExample" >
+		<strong>Slider - step value 5</strong>
+		<div ui-slider min="0" max="20" step="5" ng-model="sliderExample2"></div>
+		<input type="text" ng-model="sliderExample2" />
+	</div>
+
+	<div id="sliderExample" >
+		<strong>Slider - start value 14</strong>
+		<div ui-slider min="0" max="20" init-value="14" ng-model="sliderExample3"></div>
+		<input type="text" ng-model="sliderExample3" />
+	</div>
+
+	<div id="sliderExample" >
+		<strong>Dual sliders - start value 10</strong>
+		<div ui-slider min="0" max="20" init-value="14" ng-model="sliderExample4"></div>
+		<div ui-slider min="0" max="20" init-value="14" ng-model="sliderExample4"></div>
+		<input type="text" ng-model="sliderExample4" />
+	</div>
+
+	<div id="sliderExample" >
+		<strong>Slider - default min and max</strong>
+		<div ui-slider init-value="50" ng-model="sliderExample5"></div>
+		<input type="text" ng-model="sliderExample5" />
+	</div>
+
+	<div id="sliderExample" >
+		<strong>Slider - range max (instead of min)</strong>
+		<div ui-slider range="max" init-value="50" ng-model="sliderExample6"></div>
+		<input type="text" ng-model="sliderExample6" />
+	</div>
+		
+	<script>
+		angular.module('sliderDemoApp', ['ui.slider']);
+	</script>
+</body>
+</html>
