@@ -1,9 +1,6 @@
 /*
  jQuery UI Slider plugin wrapper
-
- @param [ui-slider] {object} Options to pass to $.fn.sortable() merged onto ui.config
 */
-      	  
 angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider', ['uiSliderConfig', function(uiSliderConfig) {
 	uiSliderConfig = uiSliderConfig || {};
         return {
