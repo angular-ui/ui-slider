@@ -17,10 +17,12 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                 var properties = ['min', 'max', 'step'];
                 $.each(properties, function(i, property){
                     // support {{}} and watch for updates
-                    $attrs.$observe(property, function(newVal){
-                        init();
-                        elm.slider('option', property, parseInt(newVal));
-                    });
+                    if ($attrs[property]) {
+                        $attrs.$observe(property, function(newVal){
+                            init();
+                            elm.slider('option', property, parseInt(newVal));
+                        });
+                    }
                 });
                 $attrs.$observe('disabled', function(newVal){
                     init();
