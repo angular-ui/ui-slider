@@ -31,38 +31,49 @@
 	<div id="sliderExample" >
 		<strong>Step slider</strong>
 		<div ui-slider min="0" max="50" ng-model="sliderExample1"></div>
-		<input type="text" ng-model="sliderExample1" />
+		<input type="number" ng-model="sliderExample1" />
 	</div>
 	
-	<div id="sliderExample" >
+	<div id="sliderExample" ng-init="sliderExample2=0;min=0;max=20;step=5;">
 		<strong>Slider - step value 5</strong>
-		<div ui-slider min="0" max="20" step="5" ng-model="sliderExample2"></div>
-		<input type="text" ng-model="sliderExample2" />
+		<div ui-slider min="{{min}}" max="{{max}}" step="{{step}}" ng-disabled="disabled" ng-model="sliderExample2"></div>
+		<input type="number" ng-model="sliderExample2" /><br>
+		Min: <input type="number" ng-model="min" />
+		Max: <input type="number" ng-model="max" />
+		Step: <input type="number" ng-model="step" />
+		<label>Disabled: <input type="checkbox" ng-model="disabled" /></label>
 	</div>
 
-	<div id="sliderExample" >
+	<div id="sliderExample" ng-init="sliderExample3=14">
 		<strong>Slider - start value 14</strong>
-		<div ui-slider min="0" max="20" init-value="14" ng-model="sliderExample3"></div>
-		<input type="text" ng-model="sliderExample3" />
+		<div ui-slider min="0" max="20" ng-model="sliderExample3"></div>
+		<input type="number" ng-model="sliderExample3" />
 	</div>
 
-	<div id="sliderExample" >
+	<div id="sliderExample" ng-init="sliderExample4=10">
 		<strong>Dual sliders - start value 10</strong>
-		<div ui-slider min="0" max="20" init-value="14" ng-model="sliderExample4"></div>
-		<div ui-slider min="0" max="20" init-value="14" ng-model="sliderExample4"></div>
-		<input type="text" ng-model="sliderExample4" />
+		<div ui-slider min="0" max="20" ng-model="sliderExample4"></div>
+		<div ui-slider min="0" max="20" ng-model="sliderExample4"></div>
+		<input type="number" ng-model="sliderExample4" />
 	</div>
 
 	<div id="sliderExample" >
-		<strong>Slider - default min and max</strong>
-		<div ui-slider init-value="50" ng-model="sliderExample5"></div>
-		<input type="text" ng-model="sliderExample5" />
+		<strong>Slider - default min and max (must set an int value first)</strong>
+		<div ui-slider ng-model="sliderExample5"></div>
+		<input type="number" ng-model="sliderExample5" />
 	</div>
 
-	<div id="sliderExample" >
-		<strong>Slider - range max (instead of min)</strong>
-		<div ui-slider range="max" init-value="50" ng-model="sliderExample6"></div>
-		<input type="text" ng-model="sliderExample6" />
+	<div id="sliderExample" ng-init="sliderExample6=[10,20]">
+		<strong>Slider - range true</strong>
+		<div ui-slider="{range:true}" ng-model="sliderExample6"></div>
+		<input type="number" ng-model="sliderExample6[0]" />
+		<input type="number" ng-model="sliderExample6[1]" />
+		<pre>{{sliderExample6}}</pre>
+	</div>
+	<div id="sliderExample" ng-init="sliderExample7=50">
+		<strong>Slider - range max</strong>
+		<div ui-slider="{range:'max'}" ng-model="sliderExample7"></div>
+		<pre>{{sliderExample7}}</pre>
 	</div>
 		
 	<script>
