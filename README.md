@@ -10,5 +10,5 @@ Due to popular demand. This is WIP so expect breaking changes!
 
 ## Usage
 
-Check the demo for an example how it works. More instructions will follow...
+Check the [demo](http://angular-ui.github.io/ui-slider/demo/demo.html) for an example on how it works.
 
