@@ -8,7 +8,12 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
             compile: function (tElm, tAttrs) {
                 return function ($scope, elm, $attrs, ngModel) {
                     var options = angular.extend($scope.$eval($attrs.uiSlider) || {}, uiSliderConfig);
-
+                    // Object holding range values
+                    var prevRangeValues = {
+                        min: null,
+                        max: null
+                    };
+                    
                     var init = function() {
                         elm.slider(options);
                         init = angular.noop;
@@ -49,14 +54,43 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                     ngModel.$render = function(){
                         init();
                         var method = options.range === true ? 'values' : 'value';
-                        if (!ngModel.$viewValue)
+                        
+                        if (!ngModel.$viewValue) 
                             ngModel.$viewValue = 0;
+                        
+                        // Do some sanity check of range values
+                        if (options.range === true) {
+                            
+                            // Check outer bounds for min and max values
+                            if (angular.isDefined(options.min) && options.min > ngModel.$viewValue[0]) {
+                                ngModel.$viewValue[0] = options.min;
+                            }
+                            if (angular.isDefined(options.max) && options.max < ngModel.$viewValue[1]) {
+                                ngModel.$viewValue[1] = options.max;
+                            }
+                            
+                            // Check min and max range values
+                            if (ngModel.$viewValue[0] >= ngModel.$viewValue[1]) {
+                                // Min value should be less to equal to max value
+                                if (prevRangeValues.min >= ngModel.$viewValue[1]) 
+                                    ngModel.$viewValue[0] = prevRangeValues.min;
+                                // Max value should be less to equal to min value                                
+                                if (prevRangeValues.max <= ngModel.$viewValue[0]) 
+                                    ngModel.$viewValue[1] = prevRangeValues.max;                                
+                            }
+                            
+                            // Store values for later user
+                            prevRangeValues.min = ngModel.$viewValue[0]; 
+                            prevRangeValues.max = ngModel.$viewValue[1];
+
+                        }                        
                         elm.slider(method, ngModel.$viewValue);
                     };
                     
-                    $scope.$watch($attrs.ngModel, function(){
-                        if (options.range === true)
+                    $scope.$watch($attrs.ngModel, function(){                        
+                        if (options.range === true) {
                             ngModel.$render();
+                        }
                     }, true);
 
                     function destroy(){
