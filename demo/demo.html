@@ -20,6 +20,10 @@
 		.sliderExample > div {
 			margin: 1em 0;
 		}
+		.vertical-container {
+			width: 15%;
+			display: inline-block;
+		}
 	</style>
 </head>
 <body ng-controller="sliderDemoCtrl">
@@ -32,11 +36,29 @@
 	</div>
 	
 	<div class="sliderExample">
-		<strong>Slider - step value 5</strong>
-		<div ui-slider min="0" max="20" step="5" ng-model="demoVals.sliderExample2"></div>
-		<input type="text" ng-model="demoVals.sliderExample2" />
+		<div>
+			<strong>Slider - vertical, step value 5</strong>
+		</div>
+		<div class="vertical-container">
+			<div ui-slider="{orientation: 'vertical', range: 'min'}"  min="0" max="25" step="5" ng-model="demoVals.sliderExample2"></div>
+		</div>
+		<div class="vertical-container">
+			<div ui-slider="{orientation: 'vertical', range: 'max'}"  min="0" max="25" step="5" ng-model="demoVals.sliderExample2"></div>
+		</div>
+		<div class="vertical-container">
+			<div ui-slider="{orientation: 'vertical', range: 'min'}"  min="0" max="25" step="5" ng-model="demoVals.sliderExample2"></div>
+		</div>
+		<div class="vertical-container">
+			<div ui-slider="{orientation: 'vertical', range: 'max'}"  min="0" max="25" step="5" ng-model="demoVals.sliderExample2"></div>
+		</div>
+		<div class="vertical-container">
+			<div ui-slider="{orientation: 'vertical', range: 'min'}"  min="0" max="25" step="5" ng-model="demoVals.sliderExample2"></div>
+		</div>
+		<div>
+			<input type="text" ng-model="demoVals.sliderExample2" />
+		</div>
 	</div>
-
+	
 	<div class="sliderExample">
 		<strong>Slider - start value 14</strong>
 		<div ui-slider min="0" max="20" ng-model="demoVals.sliderExample3"></div>
