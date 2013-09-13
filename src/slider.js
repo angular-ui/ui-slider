@@ -7,6 +7,11 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
             require: 'ngModel',
             compile: function (tElm, tAttrs) {
                 return function ($scope, elm, $attrs, ngModel) {
+                    
+                    function parseNumber(n, decimals) {
+                        return (decimals) ? parseFloat(n) : parseInt(n);
+                    };
+                    
                     var options = angular.extend($scope.$eval($attrs.uiSlider) || {}, uiSliderConfig);
                     // Object holding range values
                     var prevRangeValues = {
@@ -15,18 +20,26 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                     };
                     
                     var init = function() {
+	                    // When ngModel is assigned an array of values then range is expected to be true.
+	                    // Warn user and change range to true else an error occurs when trying to drag handle
+ 		                if (angular.isArray(ngModel.$viewValue) && options.range !== true) {
+		                	console.warn('Change your range option of ui-slider. When assigning ngModel an array of values then the range option should be set to true.');
+							options.range = true;
+		                }
                         elm.slider(options);
                         init = angular.noop;
                     };
 
                     // convenience properties
                     var properties = ['min', 'max', 'step'];
+                    // Find out if decimals are to be used for slider
+                    var useDecimals = (!angular.isUndefined($attrs.useDecimals)) ? true : false;
                     $.each(properties, function(i, property){
                         // support {{}} and watch for updates
                         $attrs.$observe(property, function(newVal){
                             if (!!newVal) {
                                 init();
-                                elm.slider('option', property, parseInt(newVal));
+                                elm.slider('option', property, parseNumber(newVal, useDecimals));
                             }
                         });
                     });
