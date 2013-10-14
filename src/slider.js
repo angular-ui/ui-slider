@@ -6,13 +6,13 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
         return {
             require: 'ngModel',
             compile: function (tElm, tAttrs) {
-                return function ($scope, elm, $attrs, ngModel) {
+                return function (scope, elm, attrs, ngModel) {
                     
                     function parseNumber(n, decimals) {
                         return (decimals) ? parseFloat(n) : parseInt(n);
                     };
                     
-                    var options = angular.extend($scope.$eval($attrs.uiSlider) || {}, uiSliderConfig);
+                    var options = angular.extend(scope.$eval(attrs.uiSlider) || {}, uiSliderConfig);
                     // Object holding range values
                     var prevRangeValues = {
                         min: null,
@@ -33,23 +33,23 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                     // convenience properties
                     var properties = ['min', 'max', 'step'];
                     // Find out if decimals are to be used for slider
-                    var useDecimals = (!angular.isUndefined($attrs.useDecimals)) ? true : false;
+                    var useDecimals = (!angular.isUndefined(attrs.useDecimals)) ? true : false;
                     $.each(properties, function(i, property){
                         // support {{}} and watch for updates
-                        $attrs.$observe(property, function(newVal){
+                        attrs.$observe(property, function(newVal){
                             if (!!newVal) {
                                 init();
                                 elm.slider('option', property, parseNumber(newVal, useDecimals));
                             }
                         });
                     });
-                    $attrs.$observe('disabled', function(newVal){
+                    attrs.$observe('disabled', function(newVal){
                         init();
                         elm.slider('option', 'disabled', !!newVal);
                     });
 
                     // Watch ui-slider (byVal) for changes and update
-                    $scope.$watch($attrs.uiSlider, function(newVal){
+                    scope.$watch(attrs.uiSlider, function(newVal){
                         init();
                         elm.slider('option', newVal);
                     }, true);
@@ -60,7 +60,7 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                     // Update model value from slider
                     elm.bind('slide', function(event, ui){
                         ngModel.$setViewValue(ui.values || ui.value);
-                        $scope.$apply();
+                        scope.$apply();
                     });
                     
                     // Update slider from model value
@@ -100,7 +100,7 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                         elm.slider(method, ngModel.$viewValue);
                     };
                     
-                    $scope.$watch($attrs.ngModel, function(){                        
+                    scope.$watch(attrs.ngModel, function(){                        
                         if (options.range === true) {
                             ngModel.$render();
                         }
