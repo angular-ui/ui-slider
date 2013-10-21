@@ -24,6 +24,17 @@
 			width: 15%;
 			display: inline-block;
 		}
+		#swatch {
+			width: 100px;
+			height: 100px;
+			border: 1px solid black;
+		}
+		#red .ui-slider-range { background: #ef2929; }
+		#red .ui-slider-handle { border-color: #ef2929; }
+		#green .ui-slider-range { background: #8ae234; }
+		#green .ui-slider-handle { border-color: #8ae234; }
+		#blue .ui-slider-range { background: #729fcf; }
+		#blue .ui-slider-handle { border-color: #729fcf; }
 	</style>
 </head>
 <body ng-controller="sliderDemoCtrl">
@@ -112,6 +123,18 @@
 		<div ui-slider min="-1.00" max="1.00" step="0.01" use-decimals ng-model="demoVals.sliderExample10"></div>
 		<input type="text" ng-model="demoVals.sliderExample10" />
 	</div>
+
+	<div class="sliderExample">
+		<strong>Simple <a href="http://jqueryui.com/slider/#colorpicker">Colorpicker</a></strong>
+		<div id="red" ui-slider="colorpicker.options" ng-model="colorpicker.red"></div>
+		Red: <input ng-model="colorpicker.red">
+		<div id="green" ui-slider="colorpicker.options" ng-model="colorpicker.green"></div>
+		Green: <input ng-model="colorpicker.green">
+		<div id="blue" ui-slider="colorpicker.options" ng-model="colorpicker.blue"></div>
+		Blue: <input ng-model="colorpicker.blue">
+		<div id="swatch"></div>
+	</div>
+
 	
 	<script type="text/javascript" src="bower_components/jquery/jquery.min.js"></script>
   	<script type="text/javascript" src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
@@ -119,16 +142,52 @@
 	<script type="text/javascript" src="src/slider.js"></script>	
 	<script>
 		var app = angular.module('sliderDemoApp', ['ui.slider']);
-		app.controller('sliderDemoCtrl', function($scope) {
-		    $scope.demoVals = {
-		        sliderExample3:     14,
-		        sliderExample4:     14,
-		        sliderExample5:     50,
-		        sliderExample8:     0.34,
-		        sliderExample9:     [-0.52, 0.54],
-		        sliderExample10:     -0.37
-		    };		
+		app.factory('colorpicker', function () {
+			function hexFromRGB(r, g, b) {
+				var hex = [r.toString(16), g.toString(16), b.toString(16)];
+				angular.forEach(hex, function(value, key) {
+					if (value.length === 1) hex[key] = "0" + value;
+				});
+				return hex.join('').toUpperCase();
+			}
+			return {
+				refreshSwatch: function (r, g, b) {
+					var color = '#' + hexFromRGB(r, g, b);
+					angular.element('#swatch').css('background-color', color);
+				}
+			};
 		});
-	</script>	
+		app.controller('sliderDemoCtrl', function($scope, colorpicker) {
+			function refreshSwatch (ev, ui) {
+				var red = $scope.colorpicker.red,
+					green = $scope.colorpicker.green,
+					blue = $scope.colorpicker.blue;
+				colorpicker.refreshSwatch(red, green, blue);
+			}
+
+			$scope.demoVals = {
+				sliderExample3:     14,
+				sliderExample4:     14,
+				sliderExample5:     50,
+				sliderExample8:     0.34,
+				sliderExample9:     [-0.52, 0.54],
+				sliderExample10:     -0.37
+			};
+
+			$scope.colorpicker = {
+				red: 255,
+				green: 140,
+				blue: 60,
+				options: {
+					orientation: 'horizontal',
+					min: 0,
+					max: 255,
+					range: 'min',
+					change: refreshSwatch,
+					slide: refreshSwatch
+				}
+			};
+		});
+	</script>
 </body>
 </html>
