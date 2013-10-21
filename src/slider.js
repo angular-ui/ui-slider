@@ -5,7 +5,7 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
 	uiSliderConfig = uiSliderConfig || {};
         return {
             require: 'ngModel',
-            compile: function (tElm, tAttrs) {
+            compile: function () {
                 return function (scope, elm, attrs, ngModel) {
                     
                     function parseNumber(n, decimals) {
@@ -34,7 +34,7 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                     var properties = ['min', 'max', 'step'];
                     // Find out if decimals are to be used for slider
                     var useDecimals = (!angular.isUndefined(attrs.useDecimals)) ? true : false;
-                    $.each(properties, function(i, property){
+                    angular.forEach(properties, function(property, i){
                         // support {{}} and watch for updates
                         attrs.$observe(property, function(newVal){
                             if (!!newVal) {
