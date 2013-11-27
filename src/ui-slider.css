@@ -1,0 +1,21 @@
+.ui-slider-container {
+  -webkit-user-modify: read-only;
+  height: 21px;
+}
+
+.ui-slider-runnable-track {
+  -webkit-user-modify: read-only;
+  position: relative;
+  display: block;
+  background: #ddd;
+  height: 5px;
+  top: 8px;
+}
+
+.ui-slider-slider-thumb {
+  -webkit-appearance: sliderthumb-horizontal;
+  position: relative;
+  cursor: pointer;
+  top: -8px;
+  margin-left: -5px;
+}
