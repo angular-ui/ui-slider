@@ -54,19 +54,19 @@ describe('uiLayout', function () {
       }
     });
 
-    it('should have a "stretch" class', function () {
+    it('should have a children with a "ui-slider-container" class', function () {
       appendTemplate('<div ui-slider></div>');
-      expect(element).children().eq(0).toHaveClass('ui-slider-cntainer');
+      expect(element.children().eq(0)).toHaveClass('ui-slider-container');
     });
 
     it('should work as an element', function () {
       appendTemplate('<ui-slider></ui-slider>');
-      expect(element).children().eq(0).toHaveClass('ui-slider-container');
+      expect(element.children().eq(0)).toHaveClass('ui-slider-container');
     });
 
     it('should work as an attribute', function () {
       appendTemplate('<div ui-slider></div>');
-      expect(element).children().eq(0).toHaveClass('ui-slider-container');
+      expect(element.children().eq(0)).toHaveClass('ui-slider-container');
     });
 
   });
