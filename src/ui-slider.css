@@ -20,5 +20,9 @@
   margin-left: -5px;
   width : 11px;
   height : 21px;
-  background: #e6e6e6;
+  border: solid 1px #aaa;
+}
+
+.ui-slider-slider-thumb:hover {
+  background: #ddd;
 }
