@@ -5,8 +5,8 @@ module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
 
   // Task.
-  grunt.registerTask('default', ['jshint', 'karma:unit']);
-  grunt.registerTask('serve', ['connect:continuous', 'karma:continuous', 'watch']);
+  grunt.registerTask('default', ['jshint', 'karma:unit_jqlite', 'karma:unit_jquery']);
+  grunt.registerTask('serve', ['connect:continuous', 'karma:continuous_jquery',  'karma:continuous_jqlite', 'watch']);
   grunt.registerTask('build-doc', ['uglify', 'copy']);
 
 
@@ -15,6 +15,26 @@ module.exports = function (grunt) {
     var travisOptions = process.env.TRAVIS && { browsers: [ 'Firefox', 'PhantomJS'], reporters: ['dots'] };
     return grunt.util._.extend(options, customOptions, travisOptions);
   };
+
+  var files = [
+    'bower_components/jquery/jquery.js',
+    'test/jquery_remove.js',
+    'test/browserTrigger.js',
+    'bower_components/angular/angular.js',
+    'bower_components/angular-mocks/angular-mocks.js',
+    'src/*',
+    'test/*.spec.js'
+    ];
+
+  var filesJquery = [
+    'bower_components/jquery/jquery.js',
+    'test/jquery_remove.js',
+  ].concat(files);
+
+  var filesJqlite = [
+    'bower_components/jquery/jquery.js',
+    'test/jquery_remove.js',
+  ].concat(files);
 
   // Project configuration.
   grunt.initConfig({
@@ -44,9 +64,27 @@ module.exports = function (grunt) {
     // TESTER
     // =======
     karma: {
-      unit: testConfig('test/karma.conf.js'),
-      server: {configFile: 'test/karma.conf.js'},
-      continuous: {configFile: 'test/karma.conf.js', background: true }
+      unit_jquery: {
+        configFile: 'test/karma.conf.js',
+        port: 9876, singleRun: true,
+        options: { files: filesJquery }
+      },
+      unit_jqlite: {
+        configFile: 'test/karma.conf.js',
+        port: 5432, singleRun: true,
+        options: { files: filesJqlite }
+      },
+
+      continuous_jquery: {
+        configFile: 'test/karma.conf.js',
+        port: 9876, background: true,
+        options: { files: filesJquery }
+      },
+      continuous_jqlite: {
+        configFile: 'test/karma.conf.js',
+        port: 5432, background: true,
+        options: { files: filesJqlite }
+      }
     },
 
 
@@ -54,11 +92,11 @@ module.exports = function (grunt) {
     // =======
     watch: {
       test: {
-        files: ['src/<%= mainFileName %>.js', 'test/*.js'],
-        tasks: ['jshint', 'karma:unit:run']
+        files: ['src/*', 'test/*.js'],
+        tasks: ['jshint', 'karma:unit_jqlite:run', 'karma:unit_jquery:run']
       },
       demo: {
-        files: ['demo/*', '<%= mainFileName %>.js'],
+        files: ['demo/*', 'src/*'],
         tasks: ['uglify']
       }
     },
@@ -77,7 +115,7 @@ module.exports = function (grunt) {
       //options: {banner: '<%= meta.banner %>'},
       build: {
         files: {
-          'dist/<%= mainFile %>.min.js': ['<%= mainFile %>.js']
+          'dist/<%= mainFileName %>.min.js': ['src/<%= mainFileName %>.js']
         }
       }
     }

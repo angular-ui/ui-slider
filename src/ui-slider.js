@@ -184,17 +184,17 @@
 
 
             // Bind the click on the bar then you can move it all over the page.
-            iElement.bind('mousedown', function(e) {
+            iElement.bind('mousedown touchstart', function(e) {
               e.preventDefault();
               e.stopPropagation();
               _handleMouseEvent(e); // Handle simple click
-              htmlElement.bind('mousemove', _handleMouseEvent);
+              htmlElement.bind('mousemove touchmove', _handleMouseEvent);
               return false;
             });
-            htmlElement.bind('mouseup', function(e) {
+            htmlElement.bind('mouseup touchend', function() {
               // Don't preventDefault and stopPropagation
               // The html element needs to be free of doing anything !
-              htmlElement.unbind('mousemove');
+              htmlElement.unbind('mousemove touchmove');
             });
 
           }
