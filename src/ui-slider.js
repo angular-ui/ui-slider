@@ -49,7 +49,6 @@
 
         // Get all the page.
         var htmlElement = angular.element(document.body.parentElement);
-        var domElement = '<div class="ui-slider-container">\n  <div class="ui-slider-runnable-track">\n    <div class="ui-slider-thumb"></div>\n  </div>\n</div>';
 
         function isEmpty(value) {
           return angular.isUndefined(value) || value === '' || value === null || value !== value;
@@ -58,13 +57,17 @@
         return {
           restrict: 'AE',
           require: '?ngModel',
-          template: domElement,
+          template: '<div class="ui-slider-container">\n' +
+            '  <div class="ui-slider-runnable-track">\n' +
+            '    <div class="ui-slider-thumb"></div>\n' +
+            '  </div>\n' +
+            '</div>',
           link: function(scope, iElement, attrs, ngModel) {
 
             var animationFrameRequested, lastPos, max;
             var _cache = {};
-            var track = iElement.children().children();
-            var thumb = track.children();
+            var track = angular.element(iElement[0].getElementsByClassName('ui-slider-runnable-track'));
+            var thumb = angular.element(track[0].getElementsByClassName('ui-slider-thumb'));
 
             var options = angular.extend({}, scope.$eval(attrs.uiSlider));
 

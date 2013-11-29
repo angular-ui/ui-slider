@@ -35,8 +35,6 @@ var sliderTests = function(description, startEvent, moveEvent, endEvent) {
 
   describe('directive', function () {
 
-    var domResult = '<div class="ui-slider-container">\n  <div class="ui-slider-runnable-track">\n    <div class="ui-slider-slider-thumb"></div>\n  </div>\n</div>';
-
     afterEach(function () {
       if (element) {
         element.remove();
@@ -45,23 +43,22 @@ var sliderTests = function(description, startEvent, moveEvent, endEvent) {
 
     it('should have a expected result', function () {
       appendTemplate('<div ui-slider></div>');
-      expect(element.html()).toEqual(domResult);
+      expect(element.children().hasClass('ui-slider-container')).toBeTruthy();
     });
 
     it('should work as an element', function () {
       appendTemplate('<ui-slider></ui-slider>');
-      expect(element.html()).toEqual(domResult);
+      expect(element.children().hasClass('ui-slider-container')).toBeTruthy();
     });
 
     it('should work as an attribute', function () {
       appendTemplate('<div ui-slider></div>');
-      expect(element.html()).toEqual(domResult);
+      expect(element.children().hasClass('ui-slider-container')).toBeTruthy();
     });
-
 
     describe('default behaviour', function () {
 
-      var element_bb, thumb_elem;
+      var element_bb, $thumb;
       beforeEach(function () {
         appendTemplate('<div ui-slider></div>');
 
@@ -70,7 +67,7 @@ var sliderTests = function(description, startEvent, moveEvent, endEvent) {
 
         spyOn(window, 'requestAnimationFrame').andCallFake(function(fct) { fct(); });
         element_bb = element[0].getBoundingClientRect();
-        thumb_elem =  _jQuery(element[0]).find('.ui-slider-slider-thumb');
+        $thumb = _jQuery(element[0]).find('.ui-slider-thumb');
       });
 
       afterEach(function () {
@@ -84,9 +81,9 @@ var sliderTests = function(description, startEvent, moveEvent, endEvent) {
 
         // Default position
         expect(window.requestAnimationFrame).not.toHaveBeenCalled();
-        expect(thumb_elem.position().left).toEqual(0);
+        expect($thumb.position().left).toEqual(0);
 
-        thumb_bb = thumb_elem[0].getBoundingClientRect();
+        thumb_bb = $thumb[0].getBoundingClientRect();
         thumb_left_pos = thumb_bb.left;
 
         // Click on the middle
@@ -94,10 +91,10 @@ var sliderTests = function(description, startEvent, moveEvent, endEvent) {
           x : (element_bb.width / 2 + element_bb.left)|0
         });
         browserTrigger(element, endEvent);
-        thumb_bb = thumb_elem[0].getBoundingClientRect();
+        thumb_bb = $thumb[0].getBoundingClientRect();
 
         expect(window.requestAnimationFrame).toHaveBeenCalled();
-        expect((thumb_bb.left|0) + thumb_left_pos ).toEqual((element_bb.width / 2)|0);
+        expect((thumb_bb.left | 0) + thumb_left_pos).toEqual(element_bb.width / 2);
 
 
         // Click on the end
@@ -105,7 +102,7 @@ var sliderTests = function(description, startEvent, moveEvent, endEvent) {
           x : (element_bb.width + element_bb.left)|0
         });
         browserTrigger(document.body, endEvent);
-        thumb_bb = thumb_elem[0].getBoundingClientRect();
+        thumb_bb = $thumb[0].getBoundingClientRect();
 
         expect(window.requestAnimationFrame).toHaveBeenCalled();
         expect((thumb_bb.left|0) + thumb_left_pos ).toEqual((element_bb.width)|0);
@@ -114,7 +111,7 @@ var sliderTests = function(description, startEvent, moveEvent, endEvent) {
       it('should follow the ' + description + '', function () {
         var thumb_left_pos, thumb_bb;
 
-        thumb_bb = thumb_elem[0].getBoundingClientRect();
+        thumb_bb = $thumb[0].getBoundingClientRect();
         thumb_left_pos = thumb_bb.left;
 
         // Click on a global position
@@ -128,7 +125,7 @@ var sliderTests = function(description, startEvent, moveEvent, endEvent) {
           x : (element_bb.width / 4 + element_bb.left)|0
         });
         browserTrigger(document.body, endEvent);
-        thumb_bb = thumb_elem[0].getBoundingClientRect();
+        thumb_bb = $thumb[0].getBoundingClientRect();
 
         expect(window.requestAnimationFrame).toHaveBeenCalled();
         expect((thumb_bb.left|0) + thumb_left_pos ).toEqual((element_bb.width / 4)|0);
