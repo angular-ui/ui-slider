@@ -31,3 +31,12 @@
 .ui-slider-thumb:hover {
   background: #ddd;
 }
+
+.ui-slider-range {
+  position: absolute;
+  background: #aaa;
+  height: 100%;
+}
+
+.ui-slider-range-min { left: 0; }
+.ui-slider-range-max { right: 0; }
