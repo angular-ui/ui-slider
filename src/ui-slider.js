@@ -49,7 +49,7 @@
 
         // Get all the page.
         var htmlElement = angular.element(document.body.parentElement);
-        var domElement = '<div class="ui-slider-container">\n  <div class="ui-slider-runnable-track">\n    <div class="ui-slider-slider-thumb"></div>\n  </div>\n</div>';
+        var domElement = '<div class="ui-slider-container">\n  <div class="ui-slider-runnable-track">\n    <div class="ui-slider-thumb"></div>\n  </div>\n</div>';
 
         function isEmpty(value) {
           return angular.isUndefined(value) || value === '' || value === null || value !== value;
