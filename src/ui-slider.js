@@ -95,6 +95,14 @@
               }
             });
 
+            // Observe min attr (default 1)
+            attrs.$observe('step', function (newVal) {
+              _cache.step = +newVal || 1;
+              if (ngModel) {
+                ngModel.$render();
+              }
+            });
+
             function _cached_layout_values() {
 
               if (_cache.time && +new Date() < _cache.time + 1000) { return; } // after ~60 frames
@@ -124,8 +132,8 @@
                 var the_thumb_pos = (lastPos - _cache.trackOrigine - _cache.thumbSize / 2) / _cache.trackSize * 100;
 
                 // Use ngmodel.$formatters ??
-                if (options.step) {
-                  the_thumb_pos = Math.floor(the_thumb_pos / options.step) * options.step;
+                if (_cache.step) {
+                  the_thumb_pos = Math.floor(the_thumb_pos / _cache.step) * _cache.step;
                 }
 
                 // Here we clamp the result to be beetween 0 and 100
@@ -139,8 +147,8 @@
 
                   // Use ngmodel.$formatters ??
                   // reSteping...
-                  if (options.step) {
-                    the_thumb_value = Math.floor(the_thumb_value / options.step) * options.step;
+                  if (_cache.step) {
+                    the_thumb_value = Math.floor(the_thumb_value / _cache.step) * _cache.step;
                   }
                   ngModel.$setViewValue(parseFloat(the_thumb_value.toFixed(5)));
                   if (!scope.$$phase) {
@@ -162,8 +170,8 @@
                 _cached_layout_values();
 
                 // Use ngmodel.$formatters ??
-                if (options.step) {
-                  the_thumb_pos = Math.floor(the_thumb_pos / options.step) * options.step;
+                if (_cache.step) {
+                  the_thumb_pos = Math.floor(the_thumb_pos / _cache.step) * _cache.step;
                 }
 
                 // The value is on the correct range
