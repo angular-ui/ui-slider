@@ -49,7 +49,7 @@
 
         // Get all the page.
         var htmlElement = angular.element(document.body.parentElement);
-        var domElement = "<div class=\"ui-slider-container\">\n  <div class=\"ui-slider-runnable-track\">\n    <div class=\"ui-slider-slider-thumb\"></div>\n  </div>\n</div>";
+        var domElement = '<div class="ui-slider-container">\n  <div class="ui-slider-runnable-track">\n    <div class="ui-slider-slider-thumb"></div>\n  </div>\n</div>';
 
         function isEmpty(value) {
           return angular.isUndefined(value) || value === '' || value === null || value !== value;
@@ -94,7 +94,7 @@
 
             function _cached_layout_values() {
 
-              if (_cache.time && +new Date() < _cache.time + 1000) return; // after ~60 frames
+              if (_cache.time && +new Date() < _cache.time + 1000) { return; } // after ~60 frames
 
               // track bounding box
               var track_bb = track[0].getBoundingClientRect();
@@ -111,7 +111,7 @@
               lastPos = mouseEvent.x;
 
               // Cancel previous rAF call
-              if (animationFrameRequested) window.cancelAnimationFrame(animationFrameRequested);
+              if (animationFrameRequested) { window.cancelAnimationFrame(animationFrameRequested); }
 
               _cached_layout_values();
 
@@ -128,7 +128,7 @@
                 // Here we clamp the result to be beetween 0 and 100
                 the_thumb_pos = Math.min(Math.max(the_thumb_pos, 0), 100);
 
-                thumb.css('left', "" + the_thumb_pos + "%");
+                thumb.css('left', '' + the_thumb_pos + '%');
 
 
                 if (ngModel) {
@@ -170,11 +170,11 @@
 
 
                 // Cancel previous rAF call
-                if (animationFrameRequested) window.cancelAnimationFrame(animationFrameRequested);
+                if (animationFrameRequested) { window.cancelAnimationFrame(animationFrameRequested); }
 
                 // Animate the page outside the event
                 animationFrameRequested = window.requestAnimationFrame(function drawFromTheModelValue() {
-                  thumb.css('left', "" + the_thumb_pos + "%");
+                  thumb.css('left', '' + the_thumb_pos + '%');
                 });
               };
 

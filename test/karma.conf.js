@@ -2,6 +2,8 @@
 // Generated on Wed Nov 27 2013 14:23:40 GMT+0100 (CET)
 
 module.exports = function(config) {
+  'use strict';
+
   config.set({
 
     // base path, that will be used to resolve files and exclude
