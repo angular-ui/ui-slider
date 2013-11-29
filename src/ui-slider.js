@@ -108,7 +108,7 @@
 
             function _handleMouseEvent(mouseEvent) {
               // Store the mouse position for later
-              lastPos = mouseEvent.x;
+              lastPos = mouseEvent.clientX;
 
               // Cancel previous rAF call
               if (animationFrameRequested) { window.cancelAnimationFrame(animationFrameRequested); }
