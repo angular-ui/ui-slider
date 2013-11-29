@@ -64,16 +64,14 @@ module.exports = function (grunt) {
     // TESTER
     // =======
     karma: {
-      unit_jquery: {
-        configFile: 'test/karma.conf.js',
+      unit_jquery: testConfig('test/karma.conf.js', {
         port: 9876, singleRun: true,
         options: { files: filesJquery }
-      },
-      unit_jqlite: {
-        configFile: 'test/karma.conf.js',
+      }),
+      unit_jqlite:  testConfig('test/karma.conf.js', {
         port: 5432, singleRun: true,
         options: { files: filesJqlite }
-      },
+      }),
 
       continuous_jquery: {
         configFile: 'test/karma.conf.js',
