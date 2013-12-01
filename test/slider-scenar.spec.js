@@ -8,11 +8,19 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
     var scope, $compile, element;
 
 
+    /**
+     * UTILS
+     */
+
     function appendTemplate(tpl) {
       element = angular.element(tpl);
       angular.element(document.body).append(element);
       $compile(element)(scope);
     }
+
+    /**
+     * TESTS
+     */
 
     beforeEach(module('ui.slider'));
 
@@ -32,8 +40,28 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
       });
     });
 
+    afterEach(function () {
+      if (element) element.remove();
+    });
 
-    describe('directive', function () {
+    describe('default behaviour', function () {
+
+      var element_bb, $thumb, thumb_left_pos, thumb_bb;
+
+      function defaultBefore(html) {
+        appendTemplate(html || '<div ui-slider></div>');
+
+        // Explicit element width
+        _jQuery(element).width(100);
+
+        spyOn(window, 'requestAnimationFrame').andCallFake(function (fct) {
+          fct();
+        });
+        element_bb = element[0].getBoundingClientRect();
+        $thumb = _jQuery(element[0]).find('.ui-slider-thumb');
+        thumb_bb = $thumb[0].getBoundingClientRect();
+        thumb_left_pos = thumb_bb.left;
+      }
 
       afterEach(function () {
         if (element) {
@@ -41,134 +69,100 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
         }
       });
 
-      it('should have a expected result', function () {
-        appendTemplate('<div ui-slider></div>');
-        expect(element.children().hasClass('ui-slider-container')).toBeTruthy();
-      });
-
-      it('should work as an element', function () {
-        appendTemplate('<ui-slider></ui-slider>');
-        expect(element.children().hasClass('ui-slider-container')).toBeTruthy();
-      });
-
-      it('should work as an attribute', function () {
-        appendTemplate('<div ui-slider></div>');
-        expect(element.children().hasClass('ui-slider-container')).toBeTruthy();
-      });
-
-      describe('default behaviour', function () {
-
-        var element_bb, $thumb, thumb_left_pos, thumb_bb;
-
-        function defaultBefore(html) {
-          appendTemplate(html || '<div ui-slider></div>');
-
-          // Explicit element width
-          _jQuery(element).width(100);
-
-          spyOn(window, 'requestAnimationFrame').andCallFake(function (fct) {
-            fct();
-          });
-          element_bb = element[0].getBoundingClientRect();
-          $thumb = _jQuery(element[0]).find('.ui-slider-thumb');
-        }
-
-        afterEach(function () {
-          if (element) {
-            element.remove();
-          }
-        });
-
-        it('should be change the position of the thumb when we click on the track', function () {
-          defaultBefore();
-
-          // Default position
+      describe('the thumb', function () {
+        beforeEach(defaultBefore);
+        it('should be at the start (initially)', function () {
           expect(window.requestAnimationFrame).not.toHaveBeenCalled();
           expect($thumb.position().left).toEqual(0);
+        });
 
+        it('should stay at the start when clicking on it', function () {
+
+          // Click on the slider left
+          browserTrigger(element, startEvent, { x: element_bb.left });
+          browserTrigger(element, endEvent);
           thumb_bb = $thumb[0].getBoundingClientRect();
-          thumb_left_pos = thumb_bb.left;
 
-          // Click on the middle
-          browserTrigger(element, startEvent, {
-            x: (element_bb.width / 2 + element_bb.left) | 0
-          });
+          expect(window.requestAnimationFrame).toHaveBeenCalled();
+          expect(thumb_bb.left).toEqual(thumb_left_pos);
+
+
+          // Click on the thumb left
+          browserTrigger(element, startEvent, { x: thumb_bb.left });
+          browserTrigger(element, endEvent);
+          thumb_bb = $thumb[0].getBoundingClientRect();
+
+          expect(window.requestAnimationFrame).toHaveBeenCalled();
+          expect(thumb_bb.left).toEqual(thumb_left_pos);
+        });
+
+        it('should go to the middle of the slider', function () {
+          browserTrigger(element, startEvent, { x: element_bb.width / 2 + element_bb.left });
           browserTrigger(element, endEvent);
           thumb_bb = $thumb[0].getBoundingClientRect();
 
           expect(window.requestAnimationFrame).toHaveBeenCalled();
           expect((thumb_bb.left | 0) + thumb_left_pos).toEqual(element_bb.width / 2);
-
-
-          // Click on the end
-          browserTrigger(element, startEvent, {
-            x: (element_bb.width + element_bb.left) | 0
-          });
-          browserTrigger(document.body, endEvent);
-          thumb_bb = $thumb[0].getBoundingClientRect();
-
-          expect(window.requestAnimationFrame).toHaveBeenCalled();
-          expect((thumb_bb.left | 0) + thumb_left_pos).toEqual((element_bb.width) | 0);
         });
 
-        it('should follow the ' + description + '', function () {
-          defaultBefore();
-
-          thumb_bb = $thumb[0].getBoundingClientRect();
-          thumb_left_pos = thumb_bb.left;
-
-          // Click on a global position
-          browserTrigger(element, startEvent, {
-            x: (element_bb.width / 2 + element_bb.left) | 0
-          });
-          browserTrigger(document.body, moveEvent, {
-            x: (element_bb.width / 3 + element_bb.left) | 0
-          });
-          browserTrigger(document.body, moveEvent, {
-            x: (element_bb.width / 4 + element_bb.left) | 0
-          });
-          browserTrigger(document.body, endEvent);
+        it('should go to the end of the slider', function () {
+          browserTrigger(element, startEvent, { x: element_bb.width + element_bb.left });
+          browserTrigger(element, endEvent);
           thumb_bb = $thumb[0].getBoundingClientRect();
 
           expect(window.requestAnimationFrame).toHaveBeenCalled();
-          expect((thumb_bb.left | 0) + thumb_left_pos).toEqual((element_bb.width / 4) | 0);
+          expect((thumb_bb.left | 0) + thumb_left_pos).toEqual(element_bb.width);
         });
 
-        xit('should use a static step', function () {
-          defaultBefore('<div ui-slider step="25"></div>');
+        it('should follow the ' + description, function () {
+          browserTrigger(element, startEvent, { x: element_bb.left | 0 });
 
-          // Click on a global position
-          browserTrigger(element, startEvent, {
-            x: (element_bb.width / 4 + element_bb.left) | 0
-          });
+          // Start at the middle of the thumb
+          for (var i = Math.ceil(thumb_bb.width / 2); i < element_bb.width; ++i) {
+            browserTrigger(element, moveEvent, { x: i + element_bb.left});
+            thumb_bb = $thumb[0].getBoundingClientRect();
+            expect((thumb_bb.left | 0) + thumb_left_pos).toEqual(i);
+          }
+
           browserTrigger(document.body, endEvent);
+        });
+
+        it('should follow the ' + description + ' before ' + startEvent, function () {
+          expect(thumb_bb.left).toEqual(thumb_left_pos); // Obvious...
+
+          browserTrigger(element, moveEvent, { x: Math.random() * element_bb.width });
+          browserTrigger(element, endEvent);
           thumb_bb = $thumb[0].getBoundingClientRect();
 
-          expect(window.requestAnimationFrame).toHaveBeenCalled();
-          expect((thumb_bb.left | 0) + thumb_left_pos).toEqual(25);
+          expect(thumb_bb.left).toEqual(thumb_left_pos);
+        });
 
+        it('should follow the ' + description + ' after ' + startEvent, function () {
+          browserTrigger(element, startEvent, { x: element_bb.width + element_bb.left });
+          browserTrigger(element, endEvent);
 
-          // Click on a global position
-          browserTrigger(element, startEvent, {
-            x: (element_bb.left) | 0
-          });
-          browserTrigger(document.body, endEvent);
-
-          expect(window.requestAnimationFrame).toHaveBeenCalled();
-          expect((thumb_bb.left | 0) + thumb_left_pos).toEqual(0);
-
-
-          // Click on a global position
-          browserTrigger(element, startEvent, {
-            x: (3 * element_bb.width / 4 + element_bb.left) | 0
-          });
-          browserTrigger(document.body, endEvent);
+          // Move after the end event
+          browserTrigger(element, moveEvent, { x: Math.random() * element_bb.width });
+          browserTrigger(element, endEvent);
+          thumb_bb = $thumb[0].getBoundingClientRect()
 
           expect(window.requestAnimationFrame).toHaveBeenCalled();
-          expect((thumb_bb.left | 0) + thumb_left_pos).toEqual(50);
+          expect((thumb_bb.left | 0) + thumb_left_pos).toEqual(element_bb.width);
+        });
+      });
+
+
+      describe('the thumb', function () {
+        beforeEach(function () {
+          defaultBefore('<div ui-slider step="25"></div>s')
+        });
+        it('should be at the start (initially)', function () {
+          //expect(true).toBeFalsy();
         });
 
       });
+
+
     });
 
   });

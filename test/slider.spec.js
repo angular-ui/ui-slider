@@ -5,12 +5,19 @@ describe('uiSlider', function () {
   // declare these up here to be global to all tests
   var scope, $compile, element;
 
+  /**
+   * UTILS
+   */
 
   function appendTemplate(tpl) {
     element = angular.element(tpl);
     angular.element(document.body).append(element);
     $compile(element)(scope);
   }
+
+  /**
+   * TESTS
+   */
 
   beforeEach(module('ui.slider'));
 
@@ -21,14 +28,12 @@ describe('uiSlider', function () {
     $compile = _$compile_;
   }));
 
+  afterEach(function () {
+    if (element) element.remove();
+  });
 
   describe('directive', function () {
 
-    afterEach(function () {
-      if (element) {
-        element.remove();
-      }
-    });
 
     it('should have a expected result', function () {
       appendTemplate('<div ui-slider></div>');
