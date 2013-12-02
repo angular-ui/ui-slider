@@ -104,7 +104,7 @@ describe('uiSlider', function () {
         var ngCtrl = element.data('$ngModelController');
         expect(ngCtrl.$invalid).toBeTruthy();
         expect(ngCtrl.$error.number).toBeTruthy();
-        expect(ngCtrl.$viewValue).toEqual(0);
+        expect(ngCtrl.$viewValue).toBeNaN();
       });
 
       it('should be invalid \'cause of the min', function () {
@@ -112,7 +112,7 @@ describe('uiSlider', function () {
 
         expect(ngCtrl.$invalid).toBeTruthy();
         expect(ngCtrl.$error.min).toBeTruthy();
-        expect(ngCtrl.$viewValue).toEqual(0);
+        expect(ngCtrl.$viewValue).toBeNaN();
       });
 
       it('should be invalid \'cause of the max', function () {
@@ -120,7 +120,7 @@ describe('uiSlider', function () {
 
         expect(ngCtrl.$invalid).toBeTruthy();
         expect(ngCtrl.$error.max).toBeTruthy();
-        expect(ngCtrl.$viewValue).toEqual(0);
+        expect(ngCtrl.$viewValue).toBeNaN();
       });
 
       it('should be invalid \'cause of the step', function () {
@@ -128,7 +128,7 @@ describe('uiSlider', function () {
 
         expect(ngCtrl.$invalid).toBeTruthy();
         expect(ngCtrl.$error.step).toBeTruthy();
-        expect(ngCtrl.$viewValue).toEqual(0);
+        expect(ngCtrl.$viewValue).toBeNaN();
       });
     });
     // TODO: testing min max observation

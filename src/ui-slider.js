@@ -186,7 +186,7 @@
 
               // global formatter
               ngModel.$formatters.push(function (value) {
-                return angular.isNumber(value) ? value : 0;
+                return +value;
               });
 
 
