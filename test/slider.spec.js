@@ -131,8 +131,62 @@ describe('uiSlider', function () {
         expect(ngCtrl.$viewValue).toBeNaN();
       });
     });
-    // TODO: testing min max observation
-    // TODO: testing step observation
+
+    describe('on-the-fly', function () {
+      var ngCtrl;
+
+      beforeEach(function () {
+        scope.min = 10;
+        scope.max = 20;
+        scope.step = 1;
+        appendTemplate('<div ui-slider ng-model="foo" min="{{min}}"  max="{{max}}"  step="{{step}}" ></div>');
+        ngCtrl = element.data('$ngModelController');
+      });
+
+      it('should validate even if min value changes', function () {
+        scope.$apply("foo = 0");
+
+        expect(ngCtrl.$invalid).toBeTruthy();
+        expect(ngCtrl.$error.min).toBeTruthy();
+        expect(ngCtrl.$valid).toBeFalsy();
+
+        scope.min = 0;
+        scope.$digest();
+
+        expect(ngCtrl.$valid).toBeTruthy();
+        expect(ngCtrl.$error.min).toBeFalsy();
+        expect(ngCtrl.$invalid).toBeFalsy();
+      });
+
+      it('should validate even if max value changes on-the-fly', function () {
+        scope.$apply("foo = 30");
+        expect(ngCtrl.$invalid).toBeTruthy();
+        expect(ngCtrl.$error.max).toBeTruthy();
+        expect(ngCtrl.$valid).toBeFalsy();
+
+        scope.max = 30;
+        scope.$digest();
+
+        expect(ngCtrl.$valid).toBeTruthy();
+        expect(ngCtrl.$error.max).toBeFalsy();
+        expect(ngCtrl.$invalid).toBeFalsy();
+      });
+
+      it('should validate even if step value changes on-the-fly', function () {
+        scope.$apply("foo = 10.5");
+        expect(ngCtrl.$invalid).toBeTruthy();
+        expect(ngCtrl.$error.step).toBeTruthy();
+        expect(ngCtrl.$valid).toBeFalsy();
+
+        scope.step = 0.5;
+        scope.$digest();
+
+        expect(ngCtrl.$valid).toBeTruthy();
+        expect(ngCtrl.$error.step).toBeFalsy();
+        expect(ngCtrl.$invalid).toBeFalsy();
+      });
+
+    });
 
   });
 
