@@ -63,6 +63,7 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
 
       function defaultBefore(html) {
         appendTemplate(html || '<div ui-slider></div>');
+        scope.$digest();
 
         // Explicit element width
         _jQuery(element).width(100);
