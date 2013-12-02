@@ -86,6 +86,8 @@ describe('uiSlider', function () {
       //expect(scope.foo).toEqual(0);
     });
 
+    // TODO: testing min max observation
+    // TODO: testing step observation
 
   });
 

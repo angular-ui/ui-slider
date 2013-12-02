@@ -174,14 +174,79 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
       });
 
 
-      describe('the thumb', function () {
-        beforeEach(function () {
-          defaultBefore('<div ui-slider step="25"></div>s')
-        });
-        it('should be at the start (initially)', function () {
-          //expect(true).toBeFalsy();
+      /**
+       * TEST NG-MODEL HERE
+       */
+      it('should update the model', function () {
+        defaultBefore('<div ui-slider ng-model="foo"></div>');
+
+        scope.$apply(function () {
+          scope.foo = 50;
         });
 
+        thumb_bb = $thumb[0].getBoundingClientRect();
+        expect(Math.ceil(thumb_bb.left) - thumb_left_pos).toEqual(Math.round(element_bb.width / 2));
+
+        browserTrigger(element, startEvent, { x: element_bb.width + element_bb.left });
+        browserTrigger(element, endEvent);
+        thumb_bb = $thumb[0].getBoundingClientRect();
+
+        expect(scope.foo).toBe(100);
+      });
+
+      it('should not move cause max == min', function () {
+        defaultBefore('<div ui-slider max="0" min="0"></div>');
+        browserTrigger(element, startEvent, { x: element_bb.width + element_bb.left});
+        browserTrigger(element, endEvent);
+        thumb_bb = $thumb[0].getBoundingClientRect();
+
+        expect(window.requestAnimationFrame).toHaveBeenCalled();
+        expect(Math.ceil(thumb_bb.left) - thumb_left_pos).toEqual(0);
+      });
+
+      it('should not move cause max < min', function () {
+        defaultBefore('<div ui-slider max="0" min="10"></div>');
+        browserTrigger(element, startEvent, { x: element_bb.width + element_bb.left});
+        browserTrigger(element, endEvent);
+        thumb_bb = $thumb[0].getBoundingClientRect();
+
+        expect(window.requestAnimationFrame).toHaveBeenCalled();
+        expect(Math.ceil(thumb_bb.left) - thumb_left_pos).toEqual(0);
+      });
+
+      it('should move between -50 and 50', function () {
+        defaultBefore('<div ui-slider min="-50" max="50" ng-model="foo"></div>');
+        browserTrigger(element, startEvent, { x: element_bb.left | 0 });
+
+        for (var i = thumb_bb.left; i < element_bb.width / 3; ++i) {
+          browserTrigger(element, moveEvent, { x: i + element_bb.left});
+          // 0 <= the thumb left < element.width
+          expect(Math.ceil(thumb_bb.left) - thumb_left_pos).toBeBetween(0 - 1, element_bb.width);
+          expect(scope.foo).toBeBetween(-50, 50);
+        }
+
+        browserTrigger(document.body, endEvent);
+      });
+
+
+      it('should use a static step', function () {
+        defaultBefore('<div ui-slider  ng-model="foo" step="25"></div>');
+        browserTrigger(element, startEvent, { x: element_bb.left | 0 });
+        expect(Math.ceil(thumb_bb.left) - thumb_left_pos).toEqual(0);
+
+        browserTrigger(element, moveEvent, { x: element_bb.width / 2 + element_bb.left});
+        thumb_bb = $thumb[0].getBoundingClientRect();
+        expect(scope.foo).toEqual(50);
+        expect(Math.ceil(thumb_bb.left) - thumb_left_pos).toEqual(element_bb.width / 2);
+
+        browserTrigger(element, moveEvent, { x: element_bb.width / 2.5 + element_bb.left});
+        thumb_bb = $thumb[0].getBoundingClientRect();
+        expect(scope.foo).toEqual(25);
+
+        // FIXME: Phantom have a pixel of difference...
+        //expect( Math.ceil(thumb_bb.left) - thumb_left_pos ).toEqual( Math.round(element_bb.width / 4) );
+
+        browserTrigger(document.body, endEvent);
       });
 
 
