@@ -123,16 +123,14 @@
 
             function _formatValue(value) {
               var formattedValue = value;
-              if (_cache.min > _cache.max) return NaN;
+              if (_cache.min > _cache.max) return _cache.min;
               formattedValue = Math.floor(formattedValue / _cache.step) * _cache.step;
               formattedValue = Math.max(Math.min(formattedValue, _cache.max), _cache.min);
               return formattedValue;
             }
 
             function _drawFromValue(value) {
-              var drawValue = value;
-              if (isNaN(drawValue)) drawValue = 0;
-              drawValue = (value - _cache.min ) / (_cache.max - _cache.min) * 100;
+              var drawValue = (value - _cache.min ) / (_cache.max - _cache.min) * 100;
               thumb.css('left', drawValue + '%');
             }
 
