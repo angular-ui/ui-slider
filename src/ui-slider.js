@@ -81,7 +81,8 @@
 
             // Observe max attr (default 100)
             attrs.$observe('max', function(newVal) {
-              _cache.max = +newVal || 100;
+              _cache.max = +newVal;
+              _cache.max = !isNaN(_cache.max) ? _cache.max : 100;
               if (ngModel) {
                 ngModel.$render();
               }
@@ -89,7 +90,8 @@
 
             // Observe min attr (default 0)
             attrs.$observe('min', function(newVal) {
-              _cache.min = +newVal || 0;
+              _cache.min = +newVal;
+              _cache.min = !isNaN(_cache.min) ? _cache.min : 0;
               if (ngModel) {
                 ngModel.$render();
               }
@@ -97,7 +99,8 @@
 
             // Observe min attr (default 1)
             attrs.$observe('step', function (newVal) {
-              _cache.step = +newVal || 1;
+              _cache.step = +newVal;
+              _cache.step = !isNaN(_cache.step) && _cache.step > 0 ? _cache.step : 1;
               if (ngModel) {
                 ngModel.$render();
               }
