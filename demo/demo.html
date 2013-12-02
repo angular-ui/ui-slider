@@ -148,13 +148,26 @@
     </article>
 
     <article>
-    <h3>Color picker demos</h3>
+      <h3>Using range min</h3>
+
+      <div class="row">
+        <div class="col-sm-12" ng-init="range0=25;range1=75;">
+          <div ui-slider="{ range : 'min' }" ng-model="range0"></div>
+        </div>
+        <div class="col-sm-12">
+          <div ui-slider="{ range : 'max' }" ng-model="range1"></div>
+        </div>
+      </div>
+    </article>
+
+    <article>
+      <h3>Color picker demos</h3>
 
       <div class="row">
         <div class="col-sm-6" ng-init="red=128;green=128;blue=128">
-          <div ng-model="red" ui-slider min="0" max="255" step="1"></div>
-          <div ng-model="green" ui-slider min="0" max="255" step="1"></div>
-          <div ng-model="blue" ui-slider min="0" max="255" step="1"></div>
+          <div ng-model="red" ui-slider="{ range : 'min' }" min="0" max="255" step="1"></div>
+          <div ng-model="green" ui-slider="{ range : 'min' }" min="0" max="255" step="1"></div>
+          <div ng-model="blue" ui-slider="{ range : 'min' }" min="0" max="255" step="1"></div>
         </div>
         <div class="col-sm-6">
           <div class="pickedColor" ng-style="{ 'background-color' : 'rgb('+ red + ','+ green + ','+ blue + ')' }"></div>

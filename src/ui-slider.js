@@ -59,6 +59,7 @@
           require: '?ngModel',
           template: '<div class="ui-slider-container">\n' +
             '  <div class="ui-slider-runnable-track">\n' +
+            '    <div class="ui-slider-range"></div>\n' +
             '    <div class="ui-slider-thumb"></div>\n' +
             '  </div>\n' +
             '</div>',
@@ -71,12 +72,22 @@
             };
             var track = angular.element(iElement[0].getElementsByClassName('ui-slider-runnable-track'));
             var thumb = angular.element(track[0].getElementsByClassName('ui-slider-thumb'));
+            var range = angular.element(track[0].getElementsByClassName('ui-slider-range'));
 
             var options = angular.extend({}, scope.$eval(attrs.uiSlider));
 
             // Watch ui-slider (byVal) for changes and update
             scope.$watch(attrs.uiSlider, function(newVal) {
               options = angular.extend(options, newVal);
+
+              if (options.range === 'min') {
+                range.removeClass('ui-slider-range-max ui-slider-range-min');
+                range.addClass('ui-slider-range-min');
+              } else if (options.range === 'max') {
+                range.removeClass('ui-slider-range-max ui-slider-range-min');
+                range.addClass('ui-slider-range-max');
+              }
+
               if (ngModel) {
                 ngModel.$render();
               }
@@ -141,6 +152,12 @@
             function _drawFromValue(value) {
               var drawValue = (value - _cache.min ) / (_cache.max - _cache.min) * 100;
               thumb.css('left', drawValue + '%');
+
+              if (options.range === 'min') {
+                range.css('right', (100 - drawValue) + '%');
+              } else if (options.range === 'max') {
+                range.css('left', drawValue + '%');
+              }
             }
 
             function _handleMouseEvent(mouseEvent) {

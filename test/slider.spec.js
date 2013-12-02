@@ -190,4 +190,44 @@ describe('uiSlider', function () {
 
   });
 
+  describe('range option', function () {
+
+    beforeEach(function () {
+
+      spyOn(window, 'requestAnimationFrame').andCallFake(function (fct) {
+        fct();
+      });
+
+    });
+
+    it('should display the ui-slider-range element', function () {
+      appendTemplate('<div ui-slider="{ range : \'min\' }" ng-model="foo" ></div>');
+      scope.$apply("foo = 25");
+      expect(window.requestAnimationFrame).toHaveBeenCalled();
+
+      var $rangeElm = _jQuery(element[0]).find('.ui-slider-range');
+      expect($rangeElm.length).toBeGreaterThan(0);
+      expect($rangeElm.hasClass('ui-slider-range-min')).toBeTruthy();
+      expect($rangeElm.width()).toBeGreaterThan(0);
+      expect($rangeElm.height()).toBeGreaterThan(0);
+    });
+
+
+    it('should display the ui-slider-range element', function () {
+      appendTemplate('<div ui-slider="{ range : \'max\' }" ng-model="foo" ></div>');
+      scope.$apply("foo = 25");
+      expect(window.requestAnimationFrame).toHaveBeenCalled();
+
+      var $rangeElm = _jQuery(element[0]).find('.ui-slider-range');
+      expect($rangeElm.length).toBeGreaterThan(0);
+      expect($rangeElm.hasClass('ui-slider-range-max')).toBeTruthy();
+      expect($rangeElm.width()).toBeGreaterThan(0);
+      expect($rangeElm.height()).toBeGreaterThan(0);
+    });
+
+    describe('range', function () {
+
+    });
+  });
+
 });

@@ -18,7 +18,7 @@
 }
 
 .ui-slider-thumb {
-  position: relative;
+  position: absolute;
   cursor: pointer;
   top: -8px;
   margin-left: -5px;
