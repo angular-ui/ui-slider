@@ -96,9 +96,12 @@ module.exports = function (grunt) {
         files: ['src/*', 'test/*.js'],
         tasks: ['jshint', 'karma:unit_jqlite:run', 'karma:unit_jquery:run']
       },
+      src: {
+        files: ['src/*'],
+        tasks: ['dist']
+      },
       demo: {
-        files: ['demo/*', 'src/*'],
-        tasks: ['uglify']
+        files: ['demo/*']
       }
     },
 
