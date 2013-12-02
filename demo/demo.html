@@ -114,8 +114,8 @@
       <hr>
 
       <div class="row">
-        <div class="col-sm-6">Max : <input type="number" ng-model="sliderMax"/></div>
-        <div class="col-sm-6">Min : <input type="number" ng-model="sliderMin"/></div>
+        <div class="col-sm-6">Min : <input type="number" ng-model="sliderMin" ng-init="sliderMin=-25"/></div>
+        <div class="col-sm-6">Max : <input type="number" ng-model="sliderMax" ng-init="sliderMax=25"/></div>
       </div>
       <div class="row">
         <div class="col-sm-12 text-center">current value : {{sliderMinMaxValue}}</div>
