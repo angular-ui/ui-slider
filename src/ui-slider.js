@@ -120,6 +120,22 @@
               _cache.thumbSize = thumb_bb.width;
             }
 
+
+            function _formatValue(value) {
+              var formattedValue = value;
+              if (_cache.min > _cache.max) return NaN;
+              formattedValue = Math.floor(formattedValue / _cache.step) * _cache.step;
+              formattedValue = Math.max(Math.min(formattedValue, _cache.max), _cache.min);
+              return formattedValue;
+            }
+
+            function _drawFromValue(value) {
+              var drawValue = value;
+              if (isNaN(drawValue)) drawValue = 0;
+              drawValue = (value - _cache.min ) / (_cache.max - _cache.min) * 100;
+              thumb.css('left', drawValue + '%');
+            }
+
             function _handleMouseEvent(mouseEvent) {
               // Store the mouse position for later
               lastPos = mouseEvent.clientX;
@@ -127,32 +143,16 @@
               // Cancel previous rAF call
               if (animationFrameRequested) { window.cancelAnimationFrame(animationFrameRequested); }
 
-              _cached_layout_values();
-
               // Animate the page outside the event
               animationFrameRequested = window.requestAnimationFrame(function drawAndUpdateTheModel() {
+                _cached_layout_values();
 
-                var the_thumb_pos = (lastPos - _cache.trackOrigine - _cache.thumbSize / 2) / _cache.trackSize * 100;
-
-                // Use ngmodel.$formatters ??
-                if (_cache.step) {
-                  the_thumb_pos = Math.floor(the_thumb_pos / _cache.step) * _cache.step;
-                }
-
-                // Here we clamp the result to be beetween 0 and 100
-                the_thumb_pos = Math.min(Math.max(the_thumb_pos, 0), 100);
-
-                thumb.css('left', '' + the_thumb_pos + '%');
-
+                var the_thumb_value;
+                the_thumb_value = _cache.min + (lastPos - _cache.trackOrigine) / _cache.trackSize * (_cache.max - _cache.min);
+                the_thumb_value = _formatValue(the_thumb_value);
+                _drawFromValue(the_thumb_value);
 
                 if (ngModel) {
-                  var the_thumb_value = _cache.min + the_thumb_pos / 100 * (_cache.max - _cache.min);
-
-                  // Use ngmodel.$formatters ??
-                  // reSteping...
-                  if (_cache.step) {
-                    the_thumb_value = Math.floor(the_thumb_value / _cache.step) * _cache.step;
-                  }
                   ngModel.$setViewValue(parseFloat(the_thumb_value.toFixed(5)));
                   if (!scope.$$phase) {
                     scope.$apply();
@@ -168,27 +168,15 @@
               });
 
               ngModel.$render = function() {
-                var the_thumb_pos = ngModel.$viewValue;
-
-                _cached_layout_values();
-
-                // Use ngmodel.$formatters ??
-                if (_cache.step) {
-                  the_thumb_pos = Math.floor(the_thumb_pos / _cache.step) * _cache.step;
-                }
-
-                // The value is on the correct range
-                the_thumb_pos = Math.max(Math.min(the_thumb_pos, _cache.max), _cache.min);
-                // Get the position in percentage
-                the_thumb_pos = (the_thumb_pos - _cache.min) / (_cache.max - _cache.min) * 100;
-
+                var the_thumb_value = _formatValue(ngModel.$viewValue);
 
                 // Cancel previous rAF call
                 if (animationFrameRequested) { window.cancelAnimationFrame(animationFrameRequested); }
 
                 // Animate the page outside the event
                 animationFrameRequested = window.requestAnimationFrame(function drawFromTheModelValue() {
-                  thumb.css('left', '' + the_thumb_pos + '%');
+                  _cached_layout_values();
+                  _drawFromValue(the_thumb_value);
                 });
               };
 
