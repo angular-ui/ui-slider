@@ -84,6 +84,7 @@
               _cache.max = +newVal;
               _cache.max = !isNaN(_cache.max) ? _cache.max : 100;
               if (ngModel) {
+                if (!ngModel.$pristine) ngModel.$setViewValue(_formatValue(ngModel.$viewValue));
                 ngModel.$render();
               }
             });
@@ -93,6 +94,7 @@
               _cache.min = +newVal;
               _cache.min = !isNaN(_cache.min) ? _cache.min : 0;
               if (ngModel) {
+                if (!ngModel.$pristine) ngModel.$setViewValue(_formatValue(ngModel.$viewValue));
                 ngModel.$render();
               }
             });
