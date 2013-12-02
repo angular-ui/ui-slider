@@ -161,9 +161,6 @@
             }
 
             if (ngModel) {
-              ngModel.$formatters.push(function(value) {
-                return ((angular.isNumber(value)) ? value : 0);
-              });
 
               ngModel.$render = function() {
                 var the_thumb_value = _formatValue(ngModel.$viewValue);
@@ -178,6 +175,52 @@
                 });
               };
 
+              // global formatter
+              ngModel.$formatters.push(function (value) {
+                return angular.isNumber(value) ? value : 0;
+              });
+
+
+              // min validation
+              var minValidator = function minValidator(value) {
+                if (!ngModel.$isEmpty(value) && value < _cache.min) {
+                  ngModel.$setValidity('min', false);
+                  return undefined;
+                } else {
+                  ngModel.$setValidity('min', true);
+                  return value;
+                }
+              };
+
+              ngModel.$parsers.push(minValidator);
+              ngModel.$formatters.push(minValidator);
+
+
+              // max validation
+              var maxValidator = function maxValidator(value) {
+                if (!ngModel.$isEmpty(value) && value > _cache.max) {
+                  ngModel.$setValidity('max', false);
+                  return undefined;
+                } else {
+                  ngModel.$setValidity('max', true);
+                  return value;
+                }
+              };
+
+              ngModel.$parsers.push(maxValidator);
+              ngModel.$formatters.push(maxValidator);
+
+
+              // First formatter to force number type
+              ngModel.$formatters.push(function (value) {
+                if (ngModel.$isEmpty(value) || angular.isNumber(value)) {
+                  ngModel.$setValidity('number', true);
+                  return value;
+                } else {
+                  ngModel.$setValidity('number', false);
+                  return undefined;
+                }
+              });
             }
 
 

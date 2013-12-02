@@ -74,18 +74,57 @@ describe('uiSlider', function () {
       expect(Math.ceil(thumb_bb.left) - thumbOriginLeft).toEqual(0);
     });
 
-    it('should deal with strings', function () {
-      appendTemplate('<div ui-slider ng-model="foo" ></div>');
-      //scope.$digest();
+    describe('validation', function () {
+      var ngCtrl;
 
-      scope.$apply(function () {
-        scope.foo = '1';
+      beforeEach(function () {
+        appendTemplate('<div ui-slider ng-model="foo" name="bar"></div>');
+        scope.$apply("foo = 25");
+        ngCtrl = element.data('$ngModelController');
       });
 
-      // TODO : Add validation and formatting...
-      //expect(scope.foo).toEqual(0);
-    });
+      it('should init the properties', function () {
+        scope.foo = 50;
+        expect(ngCtrl.$dirty).toBeFalsy();
+        expect(ngCtrl.$pristine).toBeTruthy();
+        expect(ngCtrl.$valid).toBeTruthy();
+        expect(ngCtrl.$invalid).toBeFalsy();
 
+        expect(ngCtrl.$viewValue).toBeDefined();
+        expect(ngCtrl.$modelValue).toBeDefined();
+
+        expect(ngCtrl.$formatters.length).toEqual(4);
+        expect(ngCtrl.$parsers.length).toEqual(2);
+
+        expect(ngCtrl.$name).toBe('bar');
+      });
+
+      it('should be invalid \'cause not a number', function () {
+        scope.$apply("foo = '1'");
+
+        var ngCtrl = element.data('$ngModelController');
+        expect(ngCtrl.$invalid).toBeTruthy();
+        expect(ngCtrl.$error.number).toBeTruthy();
+        expect(ngCtrl.$viewValue).toEqual(0);
+      });
+
+      it('should be invalid \'cause of the min', function () {
+        scope.$apply("foo = -1");
+
+        expect(ngCtrl.$invalid).toBeTruthy();
+        expect(ngCtrl.$error.min).toBeTruthy();
+        expect(ngCtrl.$viewValue).toEqual(0);
+      });
+
+      it('should be invalid \'cause of the max', function () {
+        scope.$apply("foo = 1000");
+
+        expect(ngCtrl.$invalid).toBeTruthy();
+        expect(ngCtrl.$error.max).toBeTruthy();
+        expect(ngCtrl.$viewValue).toEqual(0);
+      });
+
+    });
     // TODO: testing min max observation
     // TODO: testing step observation
 
