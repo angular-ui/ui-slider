@@ -75,7 +75,7 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
         $thumb = _jQuery(element[0]).find('.ui-slider-thumb');
         thumb_bb = $thumb[0].getBoundingClientRect();
         // Yeah... don't trust the browser... it can return a float number...
-        thumb_left_pos =  Math.ceil(thumb_bb.left);
+        thumb_left_pos = Math.ceil(thumb_bb.left);
       }
 
       afterEach(function () {
@@ -99,16 +99,16 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
           thumb_bb = $thumb[0].getBoundingClientRect();
 
           expect(window.requestAnimationFrame).toHaveBeenCalled();
-          expect( Math.ceil(thumb_bb.left)).toEqual(thumb_left_pos);
+          expect(Math.ceil(thumb_bb.left)).toEqual(thumb_left_pos);
 
 
           // Click on the thumb left
-          browserTrigger(element, startEvent, { x:  Math.ceil(thumb_bb.left) });
+          browserTrigger(element, startEvent, { x: Math.ceil(thumb_bb.left) });
           browserTrigger(element, endEvent);
           thumb_bb = $thumb[0].getBoundingClientRect();
 
           expect(window.requestAnimationFrame).toHaveBeenCalled();
-          expect( Math.ceil(thumb_bb.left)).toEqual(thumb_left_pos);
+          expect(Math.ceil(thumb_bb.left)).toEqual(thumb_left_pos);
         });
 
         it('should go to the middle of the slider', function () {
@@ -117,7 +117,7 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
           thumb_bb = $thumb[0].getBoundingClientRect();
 
           expect(window.requestAnimationFrame).toHaveBeenCalled();
-          expect( Math.ceil(thumb_bb.left) - thumb_left_pos).toEqual(Math.floor(element_bb.width / 2));
+          expect(Math.ceil(thumb_bb.left) - thumb_left_pos).toEqual(Math.floor(element_bb.width / 2));
         });
 
         it('should go to the end of the slider', function () {
@@ -126,7 +126,7 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
           thumb_bb = $thumb[0].getBoundingClientRect();
 
           expect(window.requestAnimationFrame).toHaveBeenCalled();
-          expect( Math.ceil(thumb_bb.left) - thumb_left_pos).toEqual(element_bb.width);
+          expect(Math.ceil(thumb_bb.left) - thumb_left_pos).toEqual(element_bb.width);
         });
 
         it('should follow the ' + description, function () {
@@ -134,29 +134,29 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
 
           // Start at the middle of the thumb
           var thumbMiddle = Math.ceil(thumb_bb.width / 2),
-            // FIXME : the actual step processing as a tolerance of some pixels...
+          // FIXME : the actual step processing as a tolerance of some pixels...
             tolerance = Math.ceil(element_bb.width / 50)
-          ;
-          for (var i = thumbMiddle; i < element_bb.width ; ++i) {
+            ;
+          for (var i = thumbMiddle; i < element_bb.width; ++i) {
             browserTrigger(element, moveEvent, { x: i + element_bb.left});
             thumb_bb = $thumb[0].getBoundingClientRect();
             // FIXME : the actual step processing as a tolerance of some pixels...
             //expect( Math.ceil(thumb_bb.left) - thumb_left_pos).toEqual(i);
-            expect( Math.ceil(thumb_bb.left) - thumb_left_pos ).toBeBetween(i - tolerance, i + tolerance);
+            expect(Math.ceil(thumb_bb.left) - thumb_left_pos).toBeBetween(i - tolerance, i + tolerance);
           }
 
           browserTrigger(document.body, endEvent);
         });
 
         it('should not follow the ' + description + ' before ' + startEvent, function () {
-          expect( Math.ceil(thumb_bb.left)).toEqual(thumb_left_pos); // Obvious...
+          expect(Math.ceil(thumb_bb.left)).toEqual(thumb_left_pos); // Obvious...
 
           browserTrigger(element, moveEvent, { x: Math.random() * element_bb.width });
           browserTrigger(element, endEvent);
           thumb_bb = $thumb[0].getBoundingClientRect();
 
           expect(window.requestAnimationFrame).not.toHaveBeenCalled();
-          expect( Math.ceil(thumb_bb.left)).toEqual(thumb_left_pos);
+          expect(Math.ceil(thumb_bb.left)).toEqual(thumb_left_pos);
         });
 
         it('should not follow the ' + description + ' after ' + startEvent, function () {
@@ -169,7 +169,7 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
           thumb_bb = $thumb[0].getBoundingClientRect();
 
           expect(window.requestAnimationFrame).toHaveBeenCalled();
-          expect( Math.ceil(thumb_bb.left) - thumb_left_pos).toEqual(element_bb.width);
+          expect(Math.ceil(thumb_bb.left) - thumb_left_pos).toEqual(element_bb.width);
         });
       });
 
@@ -189,7 +189,6 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
 
         browserTrigger(element, startEvent, { x: element_bb.width + element_bb.left });
         browserTrigger(element, endEvent);
-        thumb_bb = $thumb[0].getBoundingClientRect();
 
         expect(scope.foo).toBe(100);
       });
