@@ -129,7 +129,27 @@
     </article>
 
     <article>
-      <h3>Color picker demos</h3>
+      <h3>In Form validation</h3>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <form name="myForm">
+            <input type="number" class="form-control" ng-model="formModel" step="0.5"/>
+
+            <div ng-model="formModel" ui-slider name="input" min="10" max="20" step="1"></div>
+          </form>
+        </div>
+        <div class="col-sm-6">formModel = {{formModel}} <br/>
+          myForm.input.$valid = {{myForm.input.$valid}} <br/>
+          myForm.input.$error = {{myForm.input.$error}} <br/>
+          myForm.$valid = {{myForm.$valid}} <br/>
+          myForm.$error.required = {{!!myForm.$error.required}}
+        </div>
+      </div>
+    </article>
+
+    <article>
+    <h3>Color picker demos</h3>
 
       <div class="row">
         <div class="col-sm-6" ng-init="red=128;green=128;blue=128">
