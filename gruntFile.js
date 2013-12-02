@@ -5,9 +5,9 @@ module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
 
   // Task.
-  grunt.registerTask('default', ['jshint', 'karma:unit_jqlite', 'karma:unit_jquery']);
+  grunt.registerTask('default', ['jshint', 'karma:unit_jqlite', 'karma:unit_jquery', 'dist']);
   grunt.registerTask('serve', ['connect:continuous', 'karma:continuous_jquery',  'karma:continuous_jqlite', 'watch']);
-  grunt.registerTask('build-doc', ['uglify', 'copy']);
+  grunt.registerTask('dist', ['copy', 'uglify']);
 
 
   var testConfig = function (configFile, customOptions) {
@@ -117,6 +117,15 @@ module.exports = function (grunt) {
       build: {
         files: {
           'dist/<%= mainFileName %>.min.js': ['src/<%= mainFileName %>.js']
+        }
+      }
+    },
+
+    copy: {
+      build: {
+        files: {
+          'dist/<%= mainFileName %>.js': ['src/<%= mainFileName %>.js'],
+          'dist/<%= mainFileName %>.css': ['src/<%= mainFileName %>.css']
         }
       }
     }
