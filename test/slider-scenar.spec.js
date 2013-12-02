@@ -66,7 +66,7 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
         scope.$digest();
 
         // Explicit element width
-        _jQuery(element).width(100);
+        _jQuery(element).width(234);
 
         spyOn(window, 'requestAnimationFrame').andCallFake(function (fct) {
           fct();
