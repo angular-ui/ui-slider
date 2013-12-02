@@ -84,7 +84,6 @@ describe('uiSlider', function () {
       });
 
       it('should init the properties', function () {
-        scope.foo = 50;
         expect(ngCtrl.$dirty).toBeFalsy();
         expect(ngCtrl.$pristine).toBeTruthy();
         expect(ngCtrl.$valid).toBeTruthy();
@@ -93,8 +92,8 @@ describe('uiSlider', function () {
         expect(ngCtrl.$viewValue).toBeDefined();
         expect(ngCtrl.$modelValue).toBeDefined();
 
-        expect(ngCtrl.$formatters.length).toEqual(4);
-        expect(ngCtrl.$parsers.length).toEqual(2);
+        expect(ngCtrl.$formatters.length).toEqual(5);
+        expect(ngCtrl.$parsers.length).toEqual(3);
 
         expect(ngCtrl.$name).toBe('bar');
       });
@@ -124,6 +123,13 @@ describe('uiSlider', function () {
         expect(ngCtrl.$viewValue).toEqual(0);
       });
 
+      it('should be invalid \'cause of the step', function () {
+        scope.$apply("foo = 0.5");
+
+        expect(ngCtrl.$invalid).toBeTruthy();
+        expect(ngCtrl.$error.step).toBeTruthy();
+        expect(ngCtrl.$viewValue).toEqual(0);
+      });
     });
     // TODO: testing min max observation
     // TODO: testing step observation

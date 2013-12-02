@@ -212,6 +212,20 @@
               ngModel.$parsers.push(maxValidator);
               ngModel.$formatters.push(maxValidator);
 
+              // step validation
+              var stepValidator = function stepValidator(value) {
+                if (!ngModel.$isEmpty(value) && value !== Math.floor(value / _cache.step) * _cache.step) {
+                  ngModel.$setValidity('step', false);
+                  return undefined;
+                } else {
+                  ngModel.$setValidity('step', true);
+                  return value;
+                }
+              };
+
+              ngModel.$parsers.push(stepValidator);
+              ngModel.$formatters.push(stepValidator);
+
 
               // First formatter to force number type
               ngModel.$formatters.push(function (value) {
