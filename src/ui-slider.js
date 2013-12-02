@@ -65,7 +65,10 @@
           link: function(scope, iElement, attrs, ngModel) {
 
             var animationFrameRequested, lastPos, max;
-            var _cache = {};
+            var _cache = {
+              // FIXME: formatters runs before observers
+              min : scope.$eval(attrs.min), max : scope.$eval(attrs.max), step : scope.$eval(attrs.step)
+            };
             var track = angular.element(iElement[0].getElementsByClassName('ui-slider-runnable-track'));
             var thumb = angular.element(track[0].getElementsByClassName('ui-slider-thumb'));
 
