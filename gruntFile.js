@@ -54,7 +54,7 @@ module.exports = function (grunt) {
       options: {
         port: grunt.option('port') || '8000',
         hostname: grunt.option('host') || 'localhost',
-        open: 'http://<%= connect.options.hostname %>:<%= connect.options.port %>/demo',
+        open: 'http://<%= connect.options.hostname %>:<%= connect.options.port %>/demo/demo.html',
         livereload: true
       },
       server: { options: { keepalive: true } },
