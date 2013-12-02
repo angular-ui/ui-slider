@@ -34,7 +34,6 @@ describe('uiSlider', function () {
 
   describe('directive', function () {
 
-
     it('should have a expected result', function () {
       appendTemplate('<div ui-slider></div>');
       expect(element.children().hasClass('ui-slider-container')).toBeTruthy();
@@ -49,6 +48,45 @@ describe('uiSlider', function () {
       appendTemplate('<div ui-slider></div>');
       expect(element.children().hasClass('ui-slider-container')).toBeTruthy();
     });
+  });
+
+  describe('ngModel', function () {
+    var thumbElm, thumbOriginLeft, thumb_bb;
+
+    function _initThumbValues() {
+      thumbElm = _jQuery(element[0]).find('.ui-slider-thumb')[0];
+      thumbOriginLeft = thumbElm.getBoundingClientRect().left;
+    }
+
+    it('should render at 0 if null', function () {
+      appendTemplate('<div ui-slider ng-model="foo"></div>');
+      _initThumbValues();
+
+      thumb_bb = thumbElm.getBoundingClientRect();
+      expect(Math.ceil(thumb_bb.left) - thumbOriginLeft).toEqual(0);
+
+      scope.$apply(function () {
+        scope.foo = null;
+      });
+
+      thumb_bb = thumbElm.getBoundingClientRect();
+
+      expect(Math.ceil(thumb_bb.left) - thumbOriginLeft).toEqual(0);
+    });
+
+    it('should deal with strings', function () {
+      appendTemplate('<div ui-slider ng-model="foo" ></div>');
+      //scope.$digest();
+
+      scope.$apply(function () {
+        scope.foo = '1';
+      });
+
+      // TODO : Add validation and formatting...
+      //expect(scope.foo).toEqual(0);
+    });
+
+
   });
 
 });
