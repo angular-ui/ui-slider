@@ -52,7 +52,7 @@ module.exports = function (grunt) {
 
     connect: {
       options: {
-        port: grunt.option('port') || '8000',
+        port: grunt.option('port') || '8888',
         hostname: grunt.option('host') || 'localhost',
         open: 'http://<%= connect.options.hostname %>:<%= connect.options.port %>/demo/demo.html',
         livereload: true
@@ -89,6 +89,9 @@ module.exports = function (grunt) {
     // WATCHER
     // =======
     watch: {
+      options: {
+        livereload: true
+      },
       test: {
         files: ['src/*', 'test/*.js'],
         tasks: ['jshint', 'karma:unit_jqlite:run', 'karma:unit_jquery:run']
