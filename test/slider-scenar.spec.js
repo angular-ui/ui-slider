@@ -74,7 +74,8 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
         element_bb = element[0].getBoundingClientRect();
         $thumb = _jQuery(element[0]).find('.ui-slider-thumb');
         thumb_bb = $thumb[0].getBoundingClientRect();
-        thumb_left_pos = thumb_bb.left;
+        // Yeah... don't trust the browser... it can return a float number...
+        thumb_left_pos =  Math.ceil(thumb_bb.left);
       }
 
       afterEach(function () {
@@ -98,16 +99,16 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
           thumb_bb = $thumb[0].getBoundingClientRect();
 
           expect(window.requestAnimationFrame).toHaveBeenCalled();
-          expect(thumb_bb.left).toEqual(thumb_left_pos);
+          expect( Math.ceil(thumb_bb.left)).toEqual(thumb_left_pos);
 
 
           // Click on the thumb left
-          browserTrigger(element, startEvent, { x: thumb_bb.left });
+          browserTrigger(element, startEvent, { x:  Math.ceil(thumb_bb.left) });
           browserTrigger(element, endEvent);
           thumb_bb = $thumb[0].getBoundingClientRect();
 
           expect(window.requestAnimationFrame).toHaveBeenCalled();
-          expect(thumb_bb.left).toEqual(thumb_left_pos);
+          expect( Math.ceil(thumb_bb.left)).toEqual(thumb_left_pos);
         });
 
         it('should go to the middle of the slider', function () {
@@ -116,7 +117,7 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
           thumb_bb = $thumb[0].getBoundingClientRect();
 
           expect(window.requestAnimationFrame).toHaveBeenCalled();
-          expect((thumb_bb.left | 0) + thumb_left_pos).toEqual(element_bb.width / 2);
+          expect( Math.ceil(thumb_bb.left) - thumb_left_pos).toEqual(Math.floor(element_bb.width / 2));
         });
 
         it('should go to the end of the slider', function () {
@@ -125,7 +126,7 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
           thumb_bb = $thumb[0].getBoundingClientRect();
 
           expect(window.requestAnimationFrame).toHaveBeenCalled();
-          expect((thumb_bb.left | 0) + thumb_left_pos).toEqual(element_bb.width);
+          expect( Math.ceil(thumb_bb.left) - thumb_left_pos).toEqual(element_bb.width);
         });
 
         it('should follow the ' + description, function () {
@@ -141,27 +142,28 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
           browserTrigger(document.body, endEvent);
         });
 
-        it('should follow the ' + description + ' before ' + startEvent, function () {
-          expect(thumb_bb.left).toEqual(thumb_left_pos); // Obvious...
+        it('should not follow the ' + description + ' before ' + startEvent, function () {
+          expect( Math.ceil(thumb_bb.left)).toEqual(thumb_left_pos); // Obvious...
 
           browserTrigger(element, moveEvent, { x: Math.random() * element_bb.width });
           browserTrigger(element, endEvent);
           thumb_bb = $thumb[0].getBoundingClientRect();
 
-          expect(thumb_bb.left).toEqual(thumb_left_pos);
+          expect(window.requestAnimationFrame).not.toHaveBeenCalled();
+          expect( Math.ceil(thumb_bb.left)).toEqual(thumb_left_pos);
         });
 
-        it('should follow the ' + description + ' after ' + startEvent, function () {
+        it('should not follow the ' + description + ' after ' + startEvent, function () {
           browserTrigger(element, startEvent, { x: element_bb.width + element_bb.left });
           browserTrigger(element, endEvent);
 
           // Move after the end event
           browserTrigger(element, moveEvent, { x: Math.random() * element_bb.width });
           browserTrigger(element, endEvent);
-          thumb_bb = $thumb[0].getBoundingClientRect()
+          thumb_bb = $thumb[0].getBoundingClientRect();
 
           expect(window.requestAnimationFrame).toHaveBeenCalled();
-          expect((thumb_bb.left | 0) + thumb_left_pos).toEqual(element_bb.width);
+          expect( Math.ceil(thumb_bb.left) - thumb_left_pos).toEqual(element_bb.width);
         });
       });
 
@@ -178,6 +180,7 @@ var sliderTests = function (description, startEvent, moveEvent, endEvent) {
 
 
     });
+
 
   });
 };
