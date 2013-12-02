@@ -84,29 +84,33 @@
 
             // Observe max attr (default 100)
             attrs.$observe('max', function(newVal) {
+              var oldVal = _cache.max;
               _cache.max = +newVal;
               _cache.max = !isNaN(_cache.max) ? _cache.max : 100;
               if (ngModel) {
-                if (!ngModel.$pristine) ngModel.$setViewValue(_formatValue(ngModel.$viewValue));
+                if (!angular.isUndefined(oldVal) && oldVal !== _cache.max) ngModel.$setViewValue(_formatValue(ngModel.$viewValue));
                 ngModel.$render();
               }
             });
 
             // Observe min attr (default 0)
             attrs.$observe('min', function(newVal) {
+              var oldVal = _cache.min;
               _cache.min = +newVal;
               _cache.min = !isNaN(_cache.min) ? _cache.min : 0;
               if (ngModel) {
-                if (!ngModel.$pristine) ngModel.$setViewValue(_formatValue(ngModel.$viewValue));
+                if (!angular.isUndefined(oldVal) && oldVal !== _cache.min) ngModel.$setViewValue(_formatValue(ngModel.$viewValue));
                 ngModel.$render();
               }
             });
 
             // Observe min attr (default 1)
             attrs.$observe('step', function (newVal) {
+              var oldVal = _cache.step;
               _cache.step = +newVal;
               _cache.step = !isNaN(_cache.step) && _cache.step > 0 ? _cache.step : 1;
               if (ngModel) {
+                if (!angular.isUndefined(oldVal) && oldVal !== _cache.step) ngModel.$setViewValue(_formatValue(ngModel.$viewValue));
                 ngModel.$render();
               }
             });
