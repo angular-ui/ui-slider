@@ -13,6 +13,7 @@ describe('uiSlider', function () {
     element = angular.element(tpl);
     angular.element(document.body).append(element);
     $compile(element)(scope);
+    scope.$digest();
   }
 
   /**
