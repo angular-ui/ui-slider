@@ -3,10 +3,17 @@
 beforeEach(function () {
 
   this.addMatchers({
+
+    // NG MODEL VALIDATION
     toBeInvalid: cssMatcher('ng-invalid', 'ng-valid'),
     toBeValid: cssMatcher('ng-valid', 'ng-invalid'),
     toBeDirty: cssMatcher('ng-dirty', 'ng-pristine'),
-    toBePristine: cssMatcher('ng-pristine', 'ng-dirty')
+    toBePristine: cssMatcher('ng-pristine', 'ng-dirty'),
+
+    // OTHER
+    toHasClass: function () {
+      return cssMatcher.apply(null, arguments).apply(this)
+    }
   });
 
   function cssMatcher(presentClasses, absentClasses) {
