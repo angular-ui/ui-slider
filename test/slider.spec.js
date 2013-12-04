@@ -264,44 +264,54 @@ describe('uiSlider', function () {
     });
   });
 
-  xdescribe('range', function () {
+  describe('range', function () {
+    var $range;
 
-    beforeEach(function () {
+    function setupRange(tpl) {
+      appendTemplate(
+        '<ui-slider class="ui-slider-default">' +
+          '<ui-slider-track >' +
+          tpl +
+          '<ui-slider-thumb ng-model="foo"></ui-slider-thumb>' +
+          '</ui-slider-track>' +
+          '</ui-slider>'
+      );
+      $range = _jQuery(element[0]).find('ui-slider-range');
+    }
 
-      spyOn(window, 'requestAnimationFrame').andCallFake(function (fct) {
-        fct();
-      });
-
+    it('should be hidden (somehow)', function () {
+      setupRange('<ui-slider-range></ui-slider-range>');
+      expect($range.position().left).toEqual(0);
+      expect($range.width()).toEqual(0);
     });
 
-    it('should display the ui-slider-range element', function () {
-      appendTemplate('<div ui-slider="{ range : \'min\' }" ng-model="foo" ></div>');
-      scope.$apply("foo = 25");
-      expect(window.requestAnimationFrame).toHaveBeenCalled();
-
-      var $rangeElm = _jQuery(element[0]).find('.ui-slider-range');
-      expect($rangeElm.length).toBeGreaterThan(0);
-      expect($rangeElm.hasClass('ui-slider-range-min')).toBeTruthy();
-      expect($rangeElm.width()).toBeGreaterThan(0);
-      expect($rangeElm.height()).toBeGreaterThan(0);
+    it('should display a static range that end at 50%', function () {
+      setupRange('<ui-slider-range end="50"></ui-slider-range>');
+      expect($range.position().left).toEqual(0);
+      expect($range.width()).toEqual(Math.round($range.parent().width() / 2));
     });
 
+    it('should display a range from 0 to cursor', function () {
+      setupRange('<ui-slider-range end="{{foo}}"></ui-slider-range>');
+      expect($range.position().left).toEqual(0);
+      expect($range.width()).toEqual(0);
 
-    it('should display the ui-slider-range element', function () {
-      appendTemplate('<div ui-slider="{ range : \'max\' }" ng-model="foo" ></div>');
-      scope.$apply("foo = 25");
-      expect(window.requestAnimationFrame).toHaveBeenCalled();
-
-      var $rangeElm = _jQuery(element[0]).find('.ui-slider-range');
-      expect($rangeElm.length).toBeGreaterThan(0);
-      expect($rangeElm.hasClass('ui-slider-range-max')).toBeTruthy();
-      expect($rangeElm.width()).toBeGreaterThan(0);
-      expect($rangeElm.height()).toBeGreaterThan(0);
+      scope.$apply("foo = 50");
+      // FIXME left position must be at half of the targeted thumb's width
+      expect($range.width()).toEqual(Math.round($range.parent().width() / 2));
     });
 
-    describe('range', function () {
+    it('should display a range from cursor to 100', function () {
+      setupRange('<ui-slider-range start="{{foo}}"></ui-slider-range>');
+      scope.$apply("foo = 0");
+      expect($range.position().left).toEqual(0);
+      expect($range.width()).toEqual($range.parent().width());
 
+      scope.$apply("foo = 50");
+      // FIXME left position must be at half of the targeted thumb's width
+      expect($range.position().left).toEqual($range.parent().width() / 2);
     });
+
   });
 
 });
