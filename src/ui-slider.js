@@ -84,18 +84,21 @@
           iAttrs.$observe('min', function(newVal) {
             controller.min = +newVal;
             controller.min = !isNaN(controller.min) ? controller.min : 0;
+            //TODO Add on fly validation
           });
 
           // Observe the max attr (default 100)
           iAttrs.$observe('max', function(newVal) {
             controller.max = +newVal;
             controller.max = !isNaN(controller.max) ? controller.max : 100;
+            //TODO Add on fly validation
           });
 
           // Observe the step attr (default 1)
           iAttrs.$observe('step', function (newVal) {
             controller.step = +newVal;
             controller.step = !isNaN(controller.step) && controller.step > 0 ? controller.step : 1;
+            //TODO Add on fly validation
           });
 
         }
@@ -250,7 +253,7 @@
               return Math.min(Math.min(value, _cache.max), uiSliderCtrl.max);
             });
             ngModel.$formatters.push(function maxValidator(value) {
-              if (!ngModel.$isEmpty(value) && value > _cache.max) {
+              if (!ngModel.$isEmpty(value) && (value > _cache.max || value > uiSliderCtrl.max)) {
                 ngModel.$setValidity('max', false);
                 return undefined;
               } else {
@@ -264,7 +267,7 @@
               return Math.max(Math.max(value, _cache.min), uiSliderCtrl.min);
             });
             ngModel.$formatters.push(function minValidator(value) {
-              if (!ngModel.$isEmpty(value) && value < _cache.min) {
+              if (!ngModel.$isEmpty(value) && (value < _cache.min || value < uiSliderCtrl.min)) {
                 ngModel.$setValidity('min', false);
                 return undefined;
               } else {

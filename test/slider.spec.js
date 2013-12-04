@@ -101,7 +101,7 @@ describe('uiSlider', function () {
     });
   });
 
-  describe('ngModel', function () {
+  describe('thumb ngModel', function () {
     var $thumb, thumbOriginLeft;
 
     function setupThumb(tpl) {
@@ -230,7 +230,41 @@ describe('uiSlider', function () {
 
   });
 
-  xdescribe('range option', function () {
+  describe('track', function () {
+    var $thumb;
+
+    beforeEach(function () {
+      scope.min = 10;
+      scope.max = 20;
+      scope.step = 1;
+      appendTemplate(
+        '<ui-slider class="ui-slider-default">' +
+          '<ui-slider-track min="{{min}}"  max="{{max}}"  step="{{step}}" >' +
+          '<ui-slider-thumb ng-model="foo"></ui-slider-thumb>' +
+          '</ui-slider-track>' +
+          '</ui-slider>'
+      );
+      $thumb = _jQuery(element[0]).find('ui-slider-thumb');
+    });
+
+    it('should influence the thumb limitation', function () {
+      scope.$apply("foo = 0");
+      expect($thumb).toBeInvalid();
+      expect($thumb).toHasClass('ng-invalid-min', 'ng-valid-min');
+
+      scope.$apply("foo = 30");
+      expect($thumb).toBeInvalid();
+      expect($thumb).toHasClass('ng-invalid-max', 'ng-valid-max');
+
+      scope.$apply("foo = 11.5");
+      expect($thumb).toBeInvalid();
+      expect($thumb).toHasClass('ng-invalid-step', 'ng-valid-step');
+
+      //TODO Add on fly validation
+    });
+  });
+
+  xdescribe('range', function () {
 
     beforeEach(function () {
 
