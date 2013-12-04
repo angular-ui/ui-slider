@@ -93,7 +93,7 @@ module.exports = function (grunt) {
         livereload: true
       },
       test: {
-        files: ['src/*', 'test/*.js'],
+        files: ['src/*', 'test/*.js', '**/.jshintrc'],
         tasks: ['jshint', 'karma:unit_jqlite:run', 'karma:unit_jquery:run']
       },
       src: {
@@ -109,8 +109,14 @@ module.exports = function (grunt) {
     // CODE QUALITY
     // ============
     jshint: {
-      all: ['src/*.js', 'gruntFile.js', 'demo/*.js'],
-      options: { jshintrc: '.jshintrc' }
+      "source and demo" : {
+        files: { src : ['src/*.js', 'gruntFile.js', 'demo/*.js'] },
+        options: { jshintrc: '.jshintrc' }
+      },
+      tests : {
+        files: { src : ['test/*.spec.js'] },
+        options: { jshintrc: 'test/.jshintrc' }
+      }
     },
 
     // MINIFIER
