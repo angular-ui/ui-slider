@@ -159,7 +159,7 @@
 
             function getFormattedValue(value) {
               var formattedValue = value;
-              formattedValue = _formatValue(formattedValue, controller.min, controller.max, controller.step);
+              formattedValue = _formatValue(formattedValue, uiSliderCtrl.min, uiSliderCtrl.max, uiSliderCtrl.step);
               formattedValue = _formatValue(formattedValue, _cache.min, _cache.max, _cache.step);
               return formattedValue;
             }
@@ -194,11 +194,11 @@
 
             // Observe the step attr (default 1)
             iAttrs.$observe('step', function (newVal) {
-              var oldVal = _cache.max;
+              var oldVal = _cache.step;
               _cache.step = +newVal;
               _cache.step = !isNaN(_cache.step) && _cache.step > 0 ? _cache.step : 1;
 
-              if (!angular.isUndefined(oldVal) && oldVal !== _cache.max) {
+              if (!angular.isUndefined(oldVal) && oldVal !== _cache.step) {
                 ngModel.$setViewValue(getFormattedValue(ngModel.$viewValue));
               }
               ngModel.$render();
@@ -215,7 +215,7 @@
 
               // Animate the page outside the event
               animationFrameRequested = window.requestAnimationFrame(function drawFromTheModelValue() {
-                var the_thumb_pos = (ngModel.$viewValue - controller.min ) / (controller.max - controller.min) * 100;
+                var the_thumb_pos = (ngModel.$viewValue - uiSliderCtrl.min ) / (uiSliderCtrl.max - uiSliderCtrl.min) * 100;
                 iElement.css('left', the_thumb_pos + '%');
               });
             };
@@ -247,7 +247,7 @@
 
             // Checks that it's less then the maximum
             ngModel.$parsers.push(function maxParser(value) {
-              return Math.min(Math.min(value, _cache.max), controller.max);
+              return Math.min(Math.min(value, _cache.max), uiSliderCtrl.max);
             });
             ngModel.$formatters.push(function maxValidator(value) {
               if (!ngModel.$isEmpty(value) && value > _cache.max) {
@@ -261,7 +261,7 @@
 
             // Checks that it's more then the minimum
             ngModel.$parsers.push(function minParser(value) {
-              return Math.max(Math.max(value, _cache.min), controller.min);
+              return Math.max(Math.max(value, _cache.min), uiSliderCtrl.min);
             });
             ngModel.$formatters.push(function minValidator(value) {
               if (!ngModel.$isEmpty(value) && value < _cache.min) {
@@ -335,9 +335,9 @@
 
               _cached_layout_values();
 
-              var the_thumb_value = controller.min + (_cache.lastPos - _cache.trackOrigine) / _cache.trackSize * (controller.max - controller.min);
+              var the_thumb_value = uiSliderCtrl.min + (_cache.lastPos - _cache.trackOrigine) / _cache.trackSize * (uiSliderCtrl.max - uiSliderCtrl.min);
               the_thumb_value = Math.max(Math.min(the_thumb_value, _cache.max), _cache.min);
-              the_thumb_value = Math.max(Math.min(the_thumb_value, controller.max), controller.min);
+              the_thumb_value = Math.max(Math.min(the_thumb_value, uiSliderCtrl.max), uiSliderCtrl.min);
 
               ngModel.$setViewValue(parseFloat(the_thumb_value.toFixed(5)));
               if (!scope.$root.$$phase) {
