@@ -157,7 +157,7 @@
               return formattedValue;
             }
 
-            function getFormatedValue(value) {
+            function getFormattedValue(value) {
               var formattedValue = value;
               formattedValue = _formatValue(formattedValue, controller.min, controller.max, controller.step);
               formattedValue = _formatValue(formattedValue, _cache.min, _cache.max, _cache.step);
@@ -175,7 +175,7 @@
               _cache.min = !isNaN(_cache.min) ? _cache.min : 0;
 
               if (!angular.isUndefined(oldVal) && oldVal !== _cache.max) {
-                ngModel.$setViewValue(getFormatedValue(ngModel.$viewValue));
+                ngModel.$setViewValue(getFormattedValue(ngModel.$viewValue));
               }
               ngModel.$render();
             });
@@ -187,7 +187,7 @@
               _cache.max = !isNaN(_cache.max) ? _cache.max : 100;
 
               if (!angular.isUndefined(oldVal) && oldVal !== _cache.max) {
-                ngModel.$setViewValue(getFormatedValue(ngModel.$viewValue));
+                ngModel.$setViewValue(getFormattedValue(ngModel.$viewValue));
               }
               ngModel.$render();
             });
@@ -199,7 +199,7 @@
               _cache.step = !isNaN(_cache.step) && _cache.step > 0 ? _cache.step : 1;
 
               if (!angular.isUndefined(oldVal) && oldVal !== _cache.max) {
-                ngModel.$setViewValue(getFormatedValue(ngModel.$viewValue));
+                ngModel.$setViewValue(getFormattedValue(ngModel.$viewValue));
               }
               ngModel.$render();
             });
