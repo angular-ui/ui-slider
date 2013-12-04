@@ -74,28 +74,28 @@
     function() {
       return {
         restrict: 'EAC',
-        require: ['^uiSlider'],
-        link: function(scope, iElement, iAttrs) {
+        require: '^uiSlider',
+        link: function (scope, iElement, iAttrs, controller) {
           ////////////////////////////////////////////////////////////////////
           // OBSERVERS
           ////////////////////////////////////////////////////////////////////
 
           // Observe the min attr (default 0)
           iAttrs.$observe('min', function(newVal) {
-            scope.min = +newVal;
-            scope.min = !isNaN(scope.min) ? scope.min : 0;
+            controller.min = +newVal;
+            controller.min = !isNaN(controller.min) ? controller.min : 0;
           });
 
           // Observe the max attr (default 100)
           iAttrs.$observe('max', function(newVal) {
-            scope.max = +newVal;
-            scope.max = !isNaN(scope.max) ? scope.max : 100;
+            controller.max = +newVal;
+            controller.max = !isNaN(controller.max) ? controller.max : 100;
           });
 
           // Observe the step attr (default 1)
           iAttrs.$observe('step', function (newVal) {
-            scope.step = +newVal;
-            scope.step = !isNaN(scope.step) && scope.step > 0 ? scope.step : 1;
+            controller.step = +newVal;
+            controller.step = !isNaN(controller.step) && controller.step > 0 ? controller.step : 1;
           });
 
         }
@@ -212,7 +212,7 @@
 
               // Animate the page outside the event
               animationFrameRequested = window.requestAnimationFrame(function drawFromTheModelValue() {
-                var the_thumb_pos = (ngModel.$viewValue- scope.min ) / (scope.max - scope.min) * 100;
+                var the_thumb_pos = (ngModel.$viewValue - controller.min ) / (controller.max - controller.min) * 100;
                 iElement.css('left', the_thumb_pos + '%');
               });
             };
@@ -244,7 +244,7 @@
 
             // Checks that it's less then the maximum
             ngModel.$parsers.push(function maxParser(value) {
-              return Math.min(Math.min(value, _cache.max), scope.max);
+              return Math.min(Math.min(value, _cache.max), controller.max);
             });
             ngModel.$formatters.push(function maxValidator(value) {
               if (!ngModel.$isEmpty(value) && value > _cache.max) {
@@ -258,7 +258,7 @@
 
             // Checks that it's more then the minimum
             ngModel.$parsers.push(function minParser(value) {
-              return Math.max(Math.max(value, _cache.min), scope.min);
+              return Math.max(Math.max(value, _cache.min), controller.min);
             });
             ngModel.$formatters.push(function minValidator(value) {
               if (!ngModel.$isEmpty(value) && value < _cache.min) {
@@ -332,9 +332,9 @@
 
               _cached_layout_values();
 
-              var the_thumb_value = scope.min + (_cache.lastPos - _cache.trackOrigine) / _cache.trackSize * (scope.max - scope.min);
+              var the_thumb_value = controller.min + (_cache.lastPos - _cache.trackOrigine) / _cache.trackSize * (controller.max - controller.min);
               the_thumb_value = Math.max(Math.min(the_thumb_value, _cache.max), _cache.min);
-              the_thumb_value = Math.max(Math.min(the_thumb_value, scope.max), scope.min);
+              the_thumb_value = Math.max(Math.min(the_thumb_value, controller.max), controller.min);
 
               ngModel.$setViewValue(parseFloat(the_thumb_value.toFixed(5)));
               if (!scope.$root.$$phase) {
