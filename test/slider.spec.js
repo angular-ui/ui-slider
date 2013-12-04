@@ -1,6 +1,6 @@
 'use strict';
 
-describe('uiSlider', function () {
+xdescribe('uiSlider', function () {
 
   // declare these up here to be global to all tests
   var scope, $compile, element;

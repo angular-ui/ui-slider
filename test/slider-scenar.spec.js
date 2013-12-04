@@ -2,7 +2,7 @@
 
 // Wrapper to abstract over using touch events or mouse events.
 var sliderTests = function (description, startEvent, moveEvent, endEvent) {
-  describe('uiSlider with ' + description + ' events', function () {
+  xdescribe('uiSlider with ' + description + ' events', function () {
 
     // declare these up here to be global to all tests
     var scope, $compile, element;
