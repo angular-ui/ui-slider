@@ -1,17 +1,16 @@
 'use strict';
 
-(function() {
+(function () {
   var msie = parseInt((/msie (\d+)/.exec(navigator.userAgent.toLowerCase()) || [])[1], 10);
 
   function indexOf(array, obj) {
     if (array.indexOf) return array.indexOf(obj);
 
-    for ( var i = 0; i < array.length; i++) {
+    for (var i = 0; i < array.length; i++) {
       if (obj === array[i]) return i;
     }
     return -1;
   }
-
 
 
   /**
@@ -33,23 +32,23 @@
     var y = eventData.y;
 
     var inputType = (element.type) ? element.type.toLowerCase() : null,
-        nodeName = element.nodeName.toLowerCase();
+      nodeName = element.nodeName.toLowerCase();
 
     if (!eventType) {
       eventType = {
-        'text':            'change',
-        'textarea':        'change',
-        'hidden':          'change',
-        'password':        'change',
-        'button':          'click',
-        'submit':          'click',
-        'reset':           'click',
-        'image':           'click',
-        'checkbox':        'click',
-        'radio':           'click',
-        'select-one':      'change',
+        'text': 'change',
+        'textarea': 'change',
+        'hidden': 'change',
+        'password': 'change',
+        'button': 'click',
+        'submit': 'click',
+        'reset': 'click',
+        'image': 'click',
+        'checkbox': 'click',
+        'radio': 'click',
+        'select-one': 'change',
         'select-multiple': 'change',
-        '_default_':       'click'
+        '_default_': 'click'
       }[inputType || '_default_'];
     }
 
@@ -66,7 +65,7 @@
 
     if (msie < 9) {
       if (inputType == 'radio' || inputType == 'checkbox') {
-          element.checked = !element.checked;
+        element.checked = !element.checked;
       }
 
       // WTF!!! Error: Unspecified error.
@@ -79,7 +78,7 @@
       // TODO(vojta): create event objects with pressed keys to get it working on IE<9
       var ret = element.fireEvent('on' + eventType);
       if (inputType == 'submit') {
-        while(element) {
+        while (element) {
           if (element.nodeName.toLowerCase() == 'form') {
             element.fireEvent('onsubmit');
             break;
@@ -90,8 +89,8 @@
       return ret;
     } else {
       var evnt;
-      if(/transitionend/.test(eventType)) {
-        if(window.WebKitTransitionEvent) {
+      if (/transitionend/.test(eventType)) {
+        if (window.WebKitTransitionEvent) {
           evnt = new WebKitTransitionEvent(eventType, eventData);
           evnt.initEvent(eventType, false, true);
         }
@@ -99,14 +98,14 @@
           try {
             evnt = new TransitionEvent(eventType, eventData);
           }
-          catch(e) {
+          catch (e) {
             evnt = document.createEvent('TransitionEvent');
             evnt.initTransitionEvent(eventType, null, null, null, eventData.elapsedTime || 0);
           }
         }
       }
-      else if(/animationend/.test(eventType)) {
-        if(window.WebKitAnimationEvent) {
+      else if (/animationend/.test(eventType)) {
+        if (window.WebKitAnimationEvent) {
           evnt = new WebKitAnimationEvent(eventType, eventData);
           evnt.initEvent(eventType, false, true);
         }
@@ -114,7 +113,7 @@
           try {
             evnt = new AnimationEvent(eventType, eventData);
           }
-          catch(e) {
+          catch (e) {
             evnt = document.createEvent('AnimationEvent');
             evnt.initAnimationEvent(eventType, null, null, null, eventData.elapsedTime || 0);
           }
@@ -125,7 +124,7 @@
         x = x || 0;
         y = y || 0;
         evnt.initMouseEvent(eventType, true, true, window, 0, x, y, x, y, pressed('ctrl'),
-            pressed('alt'), pressed('shift'), pressed('meta'), 0, element);
+          pressed('alt'), pressed('shift'), pressed('meta'), 0, element);
       }
 
       /* we're unable to change the timeStamp value directly so this
@@ -133,17 +132,17 @@
        * read */
       evnt.$manualTimeStamp = eventData.timeStamp;
 
-      if(!evnt) return;
+      if (!evnt) return;
 
       var originalPreventDefault = evnt.preventDefault,
-          appWindow = element.ownerDocument.defaultView,
-          fakeProcessDefault = true,
-          finalProcessDefault,
-          angular = appWindow.angular || {};
+        appWindow = element.ownerDocument.defaultView,
+        fakeProcessDefault = true,
+        finalProcessDefault,
+        angular = appWindow.angular || {};
 
       // igor: temporary fix for https://bugzilla.mozilla.org/show_bug.cgi?id=684208
       angular['ff-684208-preventDefault'] = false;
-      evnt.preventDefault = function() {
+      evnt.preventDefault = function () {
         fakeProcessDefault = false;
         return originalPreventDefault.apply(evnt, arguments);
       };

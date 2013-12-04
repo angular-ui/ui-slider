@@ -17,9 +17,7 @@ module.exports = function (grunt) {
   };
 
   var files = [
-    'bower_components/jquery/jquery.js',
-    'test/jquery_remove.js',
-    'test/browserTrigger.js',
+    'test/helpers/browserTrigger.js',
     'bower_components/angular/angular.js',
     'bower_components/angular-mocks/angular-mocks.js',
     'src/*',
@@ -28,12 +26,12 @@ module.exports = function (grunt) {
 
   var filesJquery = [
     'bower_components/jquery/jquery.js',
-    'test/jquery_remove.js',
+    'test/helpers/jquery_remove.js',
   ].concat(files);
 
   var filesJqlite = [
     'bower_components/jquery/jquery.js',
-    'test/jquery_remove.js',
+    'test/helpers/jquery_alias.js',
   ].concat(files);
 
   // Project configuration.
