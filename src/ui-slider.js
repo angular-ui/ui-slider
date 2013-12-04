@@ -42,87 +42,264 @@
    * UI.Slider
    */
   angular.module('ui.slider', []).value('uiSliderConfig', {})
-    .directive('uiSlider', [
+    .controller('uiSliderController', ['$element', function uiSliderCtrl($element) {
+
+      this.element = $element;
+
+    }])
+
+
+    .directive('uiSlider',
       function() {
+        return {
+          restrict: 'EAC',
+          controller : 'uiSliderController'
+        };
+      })
 
 
+    .directive('uiSliderTrack',
+    function() {
+      return {
+        restrict: 'EAC',
+        require: ['^uiSlider'],
+        link: function(scope, iElement, iAttrs) {
+          ////////////////////////////////////////////////////////////////////
+          // OBSERVERS
+          ////////////////////////////////////////////////////////////////////
+
+          // Observe the min attr (default 0)
+          iAttrs.$observe('min', function(newVal) {
+            scope.min = +newVal;
+            scope.min = !isNaN(scope.min) ? scope.min : 0;
+          });
+
+          // Observe the max attr (default 100)
+          iAttrs.$observe('max', function(newVal) {
+            scope.max = +newVal;
+            scope.max = !isNaN(scope.max) ? scope.max : 100;
+          });
+
+          // Observe the step attr (default 1)
+          iAttrs.$observe('step', function (newVal) {
+            scope.step = +newVal;
+            scope.step = !isNaN(scope.step) && scope.step > 0 ? scope.step : 1;
+          });
+
+        }
+      };
+    })
+
+    .directive('uiSliderRange',
+    function() {
+      return {
+        restrict: 'EAC',
+        require: ['^uiSlider'],
+        scope: { start : '@', end : '@' },
+        link: function(scope, iElement, iAttrs) {
+          ////////////////////////////////////////////////////////////////////
+          // OBSERVERS
+          ////////////////////////////////////////////////////////////////////
+
+          // Observe the start attr (default 0%)
+          iAttrs.$observe('start', function(newVal) {
+            var val = !isNaN(+newVal) ? +newVal : 0;
+            iElement.css('left', val + '%');
+          });
+
+          // Observe the min attr (default 100%)
+          iAttrs.$observe('end', function(newVal) {
+            var val = !isNaN(+newVal) ? +newVal : 100;
+            iElement.css('right', (100 - val) + '%');
+          });
+
+        }
+      };
+    }
+  )
+
+    .directive('uiSliderThumb',
+    function() {
         // Get all the page.
         var htmlElement = angular.element(document.body.parentElement);
 
-        function isEmpty(value) {
-          return angular.isUndefined(value) || value === '' || value === null || value !== value;
-        }
-
         return {
-          restrict: 'AE',
-          require: '?ngModel',
-          template: '<div class="ui-slider-container">\n' +
-            '  <div class="ui-slider-runnable-track">\n' +
-            '    <div class="ui-slider-range"></div>\n' +
-            '    <div class="ui-slider-thumb"></div>\n' +
-            '  </div>\n' +
-            '</div>',
-          link: function(scope, iElement, attrs, ngModel) {
-
-            var animationFrameRequested, lastPos, max;
+          restrict: 'EAC',
+          require: ['^uiSlider', '?ngModel'],
+          link: function(scope, iElement, iAttrs, controller){
+            if (!controller[1]) return;
+            var ngModel = controller[1];
+            var uiSliderCtrl = controller[0];
+            var animationFrameRequested;
             var _cache = {
               // FIXME: formatters runs before observers
-              min : scope.$eval(attrs.min), max : scope.$eval(attrs.max), step : scope.$eval(attrs.step)
+              min : scope.$eval(iAttrs.min), max : scope.$eval(iAttrs.max), step : scope.$eval(iAttrs.step)
             };
-            var track = angular.element(iElement[0].getElementsByClassName('ui-slider-runnable-track'));
-            var thumb = angular.element(track[0].getElementsByClassName('ui-slider-thumb'));
-            var range = angular.element(track[0].getElementsByClassName('ui-slider-range'));
 
-            var options = angular.extend({}, scope.$eval(attrs.uiSlider));
+            ////////////////////////////////////////////////////////////////////
+            // UTILS
+            ////////////////////////////////////////////////////////////////////
 
-            // Watch ui-slider (byVal) for changes and update
-            scope.$watch(attrs.uiSlider, function(newVal) {
-              options = angular.extend(options, newVal);
+            function _formatValue(value) {
+              var formattedValue = value;
+              if (_cache.min > _cache.max) return _cache.min;
+              formattedValue = Math.floor(formattedValue / _cache.step) * _cache.step;
+              formattedValue = Math.max(Math.min(formattedValue, _cache.max), _cache.min);
 
-              if (options.range === 'min') {
-                range.removeClass('ui-slider-range-max ui-slider-range-min');
-                range.addClass('ui-slider-range-min');
-              } else if (options.range === 'max') {
-                range.removeClass('ui-slider-range-max ui-slider-range-min');
-                range.addClass('ui-slider-range-max');
-              }
+              return formattedValue;
+            }
 
-              if (ngModel) {
-                ngModel.$render();
-              }
-            }, true);
+            ////////////////////////////////////////////////////////////////////
+            // OBSERVERS
+            ////////////////////////////////////////////////////////////////////
 
-            // Observe max attr (default 100)
-            attrs.$observe('max', function(newVal) {
-              var oldVal = _cache.max;
-              _cache.max = +newVal;
-              _cache.max = !isNaN(_cache.max) ? _cache.max : 100;
-              if (ngModel) {
-                if (!angular.isUndefined(oldVal) && oldVal !== _cache.max) ngModel.$setViewValue(_formatValue(ngModel.$viewValue));
-                ngModel.$render();
-              }
-            });
-
-            // Observe min attr (default 0)
-            attrs.$observe('min', function(newVal) {
+            // Observe the min attr (default 0)
+            iAttrs.$observe('min', function(newVal) {
               var oldVal = _cache.min;
               _cache.min = +newVal;
               _cache.min = !isNaN(_cache.min) ? _cache.min : 0;
-              if (ngModel) {
-                if (!angular.isUndefined(oldVal) && oldVal !== _cache.min) ngModel.$setViewValue(_formatValue(ngModel.$viewValue));
-                ngModel.$render();
+
+              if (!angular.isUndefined(oldVal) && oldVal !== _cache.max) {
+                ngModel.$setViewValue(_formatValue(ngModel.$viewValue));
+              }
+              ngModel.$render();
+            });
+
+            // Observe the max attr (default 100)
+            iAttrs.$observe('max', function(newVal) {
+              var oldVal = _cache.max;
+              _cache.max = +newVal;
+              _cache.max = !isNaN(_cache.max) ? _cache.max : 100;
+
+              if (!angular.isUndefined(oldVal) && oldVal !== _cache.max) {
+                ngModel.$setViewValue(_formatValue(ngModel.$viewValue));
+              }
+              ngModel.$render();
+            });
+
+            // Observe the step attr (default 1)
+            iAttrs.$observe('step', function (newVal) {
+              var oldVal = _cache.max;
+              _cache.step = +newVal;
+              _cache.step = !isNaN(_cache.step) && _cache.step > 0 ? _cache.step : 1;
+
+              if (!angular.isUndefined(oldVal) && oldVal !== _cache.max) {
+                ngModel.$setViewValue(_formatValue(ngModel.$viewValue));
+              }
+              ngModel.$render();
+            });
+
+            ////////////////////////////////////////////////////////////////////
+            // RENDERING
+            ////////////////////////////////////////////////////////////////////
+
+            ngModel.$render = function() {
+
+              // Cancel previous rAF call
+              if (animationFrameRequested) { window.cancelAnimationFrame(animationFrameRequested); }
+
+              // Animate the page outside the event
+              animationFrameRequested = window.requestAnimationFrame(function drawFromTheModelValue() {
+                var the_thumb_pos = (ngModel.$viewValue- scope.min ) / (scope.max - scope.min) * 100;
+                iElement.css('left', the_thumb_pos + '%');
+              });
+            };
+
+
+
+            ////////////////////////////////////////////////////////////////////
+            // FORMATTING
+            ////////////////////////////////////////////////////////////////////
+
+            // Final view format
+            ngModel.$formatters.push(function (value) {
+              return +value;
+            });
+
+            // Checks that it's on the step
+            ngModel.$parsers.push(function stepParser(value) {
+              return Math.floor(value / _cache.step) * _cache.step;
+            });
+            ngModel.$formatters.push(function stepValidator(value) {
+              if (!ngModel.$isEmpty(value) && value !== Math.floor(value / _cache.step) * _cache.step) {
+                ngModel.$setValidity('step', false);
+                return undefined;
+              } else {
+                ngModel.$setValidity('step', true);
+                return value;
               }
             });
 
-            // Observe min attr (default 1)
-            attrs.$observe('step', function (newVal) {
-              var oldVal = _cache.step;
-              _cache.step = +newVal;
-              _cache.step = !isNaN(_cache.step) && _cache.step > 0 ? _cache.step : 1;
-              if (ngModel) {
-                if (!angular.isUndefined(oldVal) && oldVal !== _cache.step) ngModel.$setViewValue(_formatValue(ngModel.$viewValue));
-                ngModel.$render();
+            // Checks that it's less then the maximum
+            ngModel.$parsers.push(function maxParser(value) {
+              return Math.min(Math.min(value, _cache.max), scope.max);
+            });
+            ngModel.$formatters.push(function maxValidator(value) {
+              if (!ngModel.$isEmpty(value) && value > _cache.max) {
+                ngModel.$setValidity('max', false);
+                return undefined;
+              } else {
+                ngModel.$setValidity('max', true);
+                return value;
               }
+            });
+
+            // Checks that it's more then the minimum
+            ngModel.$parsers.push(function minParser(value) {
+              return Math.max(Math.max(value, _cache.min), scope.min);
+            });
+            ngModel.$formatters.push(function minValidator(value) {
+              if (!ngModel.$isEmpty(value) && value < _cache.min) {
+                ngModel.$setValidity('min', false);
+                return undefined;
+              } else {
+                ngModel.$setValidity('min', true);
+                return value;
+              }
+            });
+
+
+            // First check that a number is used
+            ngModel.$formatters.push(function numberValidator(value) {
+              if (ngModel.$isEmpty(value) || angular.isNumber(value)) {
+                ngModel.$setValidity('number', true);
+                return +value;
+              } else {
+                ngModel.$setValidity('number', false);
+                return undefined;
+              }
+            });
+
+            ////////////////////////////////////////////////////////////////////
+            // USER EVENT BINDING
+            ////////////////////////////////////////////////////////////////////
+
+            var hasMultipleThumb = iElement.parent()[0].getElementsByClassName('ui-slider-thumb').length;
+            hasMultipleThumb += iElement.parent()[0].getElementsByTagName('ui-slider-thumb').length;
+            //TODO add attribute name "[ui-slider-thumb]" ...
+            hasMultipleThumb = hasMultipleThumb > 1;
+
+            // Bind the click on the bar then you can move it all over the page.
+            if (!hasMultipleThumb){
+              uiSliderCtrl.element.on('mousedown touchstart', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                _handleMouseEvent(e); // Handle simple click
+                htmlElement.bind('mousemove touchmove', _handleMouseEvent);
+                return false;
+              });
+            }else{
+              iElement.on('mousedown touchstart', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                htmlElement.bind('mousemove touchmove', _handleMouseEvent);
+                return false;
+              });
+            }
+            htmlElement.on('mouseup touchend', function() {
+              // Don't preventDefault and stopPropagation
+              // The html element needs to be free of doing anything !
+              htmlElement.unbind('mousemove touchmove');
             });
 
             function _cached_layout_values() {
@@ -130,159 +307,34 @@
               if (_cache.time && +new Date() < _cache.time + 1000) { return; } // after ~60 frames
 
               // track bounding box
-              var track_bb = track[0].getBoundingClientRect();
-              var thumb_bb = thumb[0].getBoundingClientRect();
+              var track_bb = iElement.parent()[0].getBoundingClientRect();
 
               _cache.time = +new Date();
               _cache.trackOrigine = track_bb.left;
               _cache.trackSize = track_bb.width;
-              _cache.thumbSize = thumb_bb.width;
-            }
-
-
-            function _formatValue(value) {
-              var formattedValue = value;
-              if (_cache.min > _cache.max) return _cache.min;
-              formattedValue = Math.floor(formattedValue / _cache.step) * _cache.step;
-              formattedValue = Math.max(Math.min(formattedValue, _cache.max), _cache.min);
-              return formattedValue;
-            }
-
-            function _drawFromValue(value) {
-              var drawValue = (value - _cache.min ) / (_cache.max - _cache.min) * 100;
-              thumb.css('left', drawValue + '%');
-
-              if (options.range === 'min') {
-                range.css('right', (100 - drawValue) + '%');
-              } else if (options.range === 'max') {
-                range.css('left', drawValue + '%');
-              }
             }
 
             function _handleMouseEvent(mouseEvent) {
               // Store the mouse position for later
-              lastPos = mouseEvent.clientX;
+              _cache.lastPos = mouseEvent.clientX;
 
-              // Cancel previous rAF call
-              if (animationFrameRequested) { window.cancelAnimationFrame(animationFrameRequested); }
+              _cached_layout_values();
 
-              // Animate the page outside the event
-              animationFrameRequested = window.requestAnimationFrame(function drawAndUpdateTheModel() {
-                _cached_layout_values();
+              var the_thumb_value = scope.min + (_cache.lastPos - _cache.trackOrigine) / _cache.trackSize * (scope.max - scope.min);
+              the_thumb_value = Math.max(Math.min(the_thumb_value, _cache.max), _cache.min);
+              the_thumb_value = Math.max(Math.min(the_thumb_value, scope.max), scope.min);
 
-                var the_thumb_value;
-                the_thumb_value = _cache.min + (lastPos - _cache.trackOrigine) / _cache.trackSize * (_cache.max - _cache.min);
-                the_thumb_value = _formatValue(the_thumb_value);
-                _drawFromValue(the_thumb_value);
-
-                if (ngModel) {
-                  ngModel.$setViewValue(parseFloat(the_thumb_value.toFixed(5)));
-                  if (!scope.$$phase) {
-                    scope.$apply();
-                  }
-                }
-              });
-
+              ngModel.$setViewValue(parseFloat(the_thumb_value.toFixed(5)));
+              if (!scope.$root.$$phase) {
+                scope.$root.$apply();
+              }
+              ngModel.$render();
             }
-
-            if (ngModel) {
-
-              ngModel.$render = function() {
-                var the_thumb_value = _formatValue(ngModel.$viewValue);
-
-                // Cancel previous rAF call
-                if (animationFrameRequested) { window.cancelAnimationFrame(animationFrameRequested); }
-
-                // Animate the page outside the event
-                animationFrameRequested = window.requestAnimationFrame(function drawFromTheModelValue() {
-                  _cached_layout_values();
-                  _drawFromValue(the_thumb_value);
-                });
-              };
-
-              // global formatter
-              ngModel.$formatters.push(function (value) {
-                return +value;
-              });
-
-
-              // min validation
-              var minValidator = function minValidator(value) {
-                if (!ngModel.$isEmpty(value) && value < _cache.min) {
-                  ngModel.$setValidity('min', false);
-                  return undefined;
-                } else {
-                  ngModel.$setValidity('min', true);
-                  return value;
-                }
-              };
-
-              ngModel.$parsers.push(minValidator);
-              ngModel.$formatters.push(minValidator);
-
-
-              // max validation
-              var maxValidator = function maxValidator(value) {
-                if (!ngModel.$isEmpty(value) && value > _cache.max) {
-                  ngModel.$setValidity('max', false);
-                  return undefined;
-                } else {
-                  ngModel.$setValidity('max', true);
-                  return value;
-                }
-              };
-
-              ngModel.$parsers.push(maxValidator);
-              ngModel.$formatters.push(maxValidator);
-
-              // step validation
-              var stepValidator = function stepValidator(value) {
-                if (!ngModel.$isEmpty(value) && value !== Math.floor(value / _cache.step) * _cache.step) {
-                  ngModel.$setValidity('step', false);
-                  return undefined;
-                } else {
-                  ngModel.$setValidity('step', true);
-                  return value;
-                }
-              };
-
-              ngModel.$parsers.push(stepValidator);
-              ngModel.$formatters.push(stepValidator);
-
-
-              // First formatter to force number type
-              ngModel.$formatters.push(function (value) {
-                if (ngModel.$isEmpty(value) || angular.isNumber(value)) {
-                  ngModel.$setValidity('number', true);
-                  return value;
-                } else {
-                  ngModel.$setValidity('number', false);
-                  return undefined;
-                }
-              });
-            }
-
-
-
-
-            // Bind the click on the bar then you can move it all over the page.
-            iElement.bind('mousedown touchstart', function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              _handleMouseEvent(e); // Handle simple click
-              htmlElement.bind('mousemove touchmove', _handleMouseEvent);
-              return false;
-            });
-            htmlElement.bind('mouseup touchend', function() {
-              // Don't preventDefault and stopPropagation
-              // The html element needs to be free of doing anything !
-              htmlElement.unbind('mousemove touchmove');
-            });
 
           }
         };
       }
-    ]);
+    );
 
 
 

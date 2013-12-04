@@ -1,25 +1,54 @@
+
+/* =UI.Slider
+-----------------------------------------------------------------------------*/
+
 *, *:before, *:after {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
-.ui-slider-container {
-  -webkit-user-modify: read-only;
-  height: 21px;
-}
-
-.ui-slider-runnable-track {
+ui-slider, [ui-slider], .ui-slider {
   position: relative;
   display: block;
+}
+
+ui-slider-track, [ui-slider-track], .ui-slider-track {
+  position: relative;
+  display: block;
+}
+
+ui-slider-thumb, [ui-slider-thumb], .ui-slider-thumb {
+  position: absolute;
+  cursor: pointer;
+}
+
+ui-slider-range, [ui-slider-range], .ui-slider-range {
+  position: absolute;
+  height: 100%;
+}
+
+.ui-slider-range-min { left: 0; }
+.ui-slider-range-max { right: 0; }
+
+
+/* =UI.Slider default style
+-----------------------------------------------------------------------------*/
+.ui-slider-default {
+  height: 20px;
+}
+
+.ui-slider-default ui-slider-track,
+.ui-slider-default [ui-slider-track],
+.ui-slider-default .ui-slider-track {
   background: #ddd;
   height: 5px;
   top: 8px;
 }
 
-.ui-slider-thumb {
-  position: absolute;
-  cursor: pointer;
+.ui-slider-default ui-slider-thumb,
+.ui-slider-default [ui-slider-thumb],
+.ui-slider-default .ui-slider-thumb {
   top: -8px;
   margin-left: -5px;
   width : 11px;
@@ -28,15 +57,15 @@
   border: solid 1px #aaa;
 }
 
-.ui-slider-thumb:hover {
+.ui-slider-default ui-slider-thumb:hover,
+.ui-slider-default [ui-slider-thumb]:hover,
+.ui-slider-default .ui-slider-thumb:hover {
   background: #ddd;
 }
 
-.ui-slider-range {
-  position: absolute;
-  background: #aaa;
-  height: 100%;
-}
 
-.ui-slider-range-min { left: 0; }
-.ui-slider-range-max { right: 0; }
+.ui-slider-default ui-slider-range,
+.ui-slider-default [ui-slider-range],
+.ui-slider-default .ui-slider-range{
+  background: #aaa;
+}
