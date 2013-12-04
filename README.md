@@ -34,32 +34,90 @@ var myAppModule = angular.module('MyApp', ['ui.slider']);
 Finally, add the directive to your html,
 as attribute :
 
-```html
-<div ui-slider="{expression}"
-   [name="{string}"]
-   [min="{expression}"]
-   [max="{expression}"]
-   [step="{expression}"]
-  ></div>
+```xml
+<div ui-slider></div>
+// or
+<ui-slider class="ui-slider-default">
+  <ui-slider-track
+    [min="{expression}"]
+    [max="{expression}"]
+    [step="{expression}"]
+   >
+
+    <ui-slider-range
+      [start="{expression}"]
+      [end="{expression}"]
+     ></ui-slider-range>
+
+    <ui-slider-thumb
+      ng-model="{string}"
+      [name="{string}"]
+      [min="{expression}"]
+      [max="{expression}"]
+      [step="{expression}"]
+     ></ui-slider-thumb>
+
+  </ui-slider-track>
+</ui-slider>
 ```
 
 ### Parameters
 
-* name : Property name of the form under which the control is published.
-* min : Sets the minimum value allowed.
-* max : Sets the maximum value allowed.
-* step : Sets the legal number intervals.
+* ui-slider-track
+  * min : Sets the minimum value allowed for all of its thumb children.
+  * max : Sets the maximum value allowed for all of its thumb children.
+  * step : Sets the legal number intervals for all of its thumb children.
 
-### Options
+* ui-slider-thumb
+  * ng-model : Mandatory! Assignable angular expression to data-bind to.
+  * name : Property name of the form under which the control is published.
+  * min : Sets its minimum value allowed.
+  * max : Sets its maximum value allowed.
+  * step : Sets its legal number intervals.
 
-* range _(string)_:
-  * 'min' : A min range goes from the slider min to one handle.
-  * 'max' : A max range goes from one handle to the slider max.
+* ui-slider-range
+  * start : Sets the start of the range (in percent).
+  * end : Sets the end of the range (in percent).
 
 Example
 
 ```xml
-<div ng-model="_red" ui-slider="{ range : 'min' }" min="0" max="255" step="1"></div>
+<ui-slider class="ui-slider-default">
+  <ui-slider-track>
+    <ui-slider-thumb ng-model='_'></ui-slider-thumb>
+  </ui-slider-track>
+</ui-slider>
+// or
+<ui-slider class="ui-slider-default">
+  <ui-slider-track>
+    <ui-slider-range ></ui-slider-range>
+    <ui-slider-thumb ng-model='_a'></ui-slider-thumb>
+  </ui-slider-track>
+</ui-slider>
+// or
+<ui-slider class="ui-slider-default">
+  <ui-slider-track>
+    <ui-slider-range start='{{_b}}'></ui-slider-range>
+    <ui-slider-thumb ng-model='_b'></ui-slider-thumb>
+  </ui-slider-track>
+</ui-slider>
+// or
+<ui-slider class="ui-slider-default">
+  <ui-slider-track>
+    <ui-slider-range start='{{_c}}' end='{{_d}}'></ui-slider-range>
+    <ui-slider-thumb ng-model='_c' max='{{_d}}'></ui-slider-thumb>
+    <ui-slider-thumb ng-model='_d' min='{{_c}}'></ui-slider-thumb>
+  </ui-slider-track>
+</ui-slider>
+// or
+<ui-slider class="ui-slider-default">
+  <ui-slider-track>
+    <ui-slider-range start='{{_min}}' end='{{_max}}'></ui-slider-range>
+    <ui-slider-thumb ng-model='_min' max='{{_max}}'></ui-slider-thumb>
+    <ui-slider-thumb ng-model='_middle' min='{{_min}}' max='{{_max}}'></ui-slider-thumb>
+    <ui-slider-thumb ng-model='_max' min='{{_min}}'></ui-slider-thumb>
+  </ui-slider-track>
+</ui-slider>
 ```
 
 
