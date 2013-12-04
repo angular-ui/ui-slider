@@ -143,21 +143,24 @@
             var ngModel = controller[1];
             var uiSliderCtrl = controller[0];
             var animationFrameRequested;
-            var _cache = {
-              // FIXME: formatters runs before observers
-              min : scope.$eval(iAttrs.min), max : scope.$eval(iAttrs.max), step : scope.$eval(iAttrs.step)
-            };
+            var _cache = {};
 
             ////////////////////////////////////////////////////////////////////
             // UTILS
             ////////////////////////////////////////////////////////////////////
 
-            function _formatValue(value) {
+            function _formatValue(value, min, max, step) {
               var formattedValue = value;
-              if (_cache.min > _cache.max) return _cache.min;
-              formattedValue = Math.floor(formattedValue / _cache.step) * _cache.step;
-              formattedValue = Math.max(Math.min(formattedValue, _cache.max), _cache.min);
+              if (min > max) return max;
+              formattedValue = Math.floor(formattedValue / step) * step;
+              formattedValue = Math.max(Math.min(formattedValue, max), min);
+              return formattedValue;
+            }
 
+            function getFormatedValue(value) {
+              var formattedValue = value;
+              formattedValue = _formatValue(formattedValue, controller.min, controller.max, controller.step);
+              formattedValue = _formatValue(formattedValue, _cache.min, _cache.max, _cache.step);
               return formattedValue;
             }
 
@@ -172,7 +175,7 @@
               _cache.min = !isNaN(_cache.min) ? _cache.min : 0;
 
               if (!angular.isUndefined(oldVal) && oldVal !== _cache.max) {
-                ngModel.$setViewValue(_formatValue(ngModel.$viewValue));
+                ngModel.$setViewValue(getFormatedValue(ngModel.$viewValue));
               }
               ngModel.$render();
             });
@@ -184,7 +187,7 @@
               _cache.max = !isNaN(_cache.max) ? _cache.max : 100;
 
               if (!angular.isUndefined(oldVal) && oldVal !== _cache.max) {
-                ngModel.$setViewValue(_formatValue(ngModel.$viewValue));
+                ngModel.$setViewValue(getFormatedValue(ngModel.$viewValue));
               }
               ngModel.$render();
             });
@@ -196,7 +199,7 @@
               _cache.step = !isNaN(_cache.step) && _cache.step > 0 ? _cache.step : 1;
 
               if (!angular.isUndefined(oldVal) && oldVal !== _cache.max) {
-                ngModel.$setViewValue(_formatValue(ngModel.$viewValue));
+                ngModel.$setViewValue(getFormatedValue(ngModel.$viewValue));
               }
               ngModel.$render();
             });

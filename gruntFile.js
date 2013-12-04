@@ -20,6 +20,7 @@ module.exports = function (grunt) {
     'test/helpers/browserTrigger.js',
     'bower_components/angular/angular.js',
     'bower_components/angular-mocks/angular-mocks.js',
+    'test/helpers/matchers.js',
     'src/*',
     'test/*.spec.js'
     ];
@@ -91,7 +92,7 @@ module.exports = function (grunt) {
         livereload: true
       },
       test: {
-        files: ['src/*', 'test/*.js', '**/.jshintrc'],
+        files: ['src/*', 'test/**', '**/.jshintrc'],
         tasks: ['jshint', 'karma:unit_jqlite:run', 'karma:unit_jquery:run']
       },
       src: {
