@@ -119,12 +119,16 @@
           // Observe the start attr (default 0%)
           iAttrs.$observe('start', function(newVal) {
             var val = !isNaN(+newVal) ? +newVal : 0;
+            // TODO add half of th width of the targeted thumb ([ng-model='+ iAttrs.$attr.start + '])
             iElement.css('left', val + '%');
           });
 
           // Observe the min attr (default 100%)
           iAttrs.$observe('end', function(newVal) {
-            var val = !isNaN(+newVal) ? +newVal : 100;
+            // Don't display the range if no attr are specified
+            var displayed = angular.isDefined(iAttrs.start) || angular.isDefined(iAttrs.end);
+            var val = !isNaN(+newVal) ? +newVal : displayed ? 100 : 0;
+            // TODO add half of th width of the targeted thumb ([ng-model='+ iAttrs.$attr.end + '])
             iElement.css('right', (100 - val) + '%');
           });
 
