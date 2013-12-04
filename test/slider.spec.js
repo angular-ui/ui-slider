@@ -126,9 +126,10 @@ describe('uiSlider', function () {
       var ngCtrl;
 
       beforeEach(function () {
-        appendTemplate('<div ui-slider ng-model="foo" name="bar"></div>');
+        setupThumb('<ui-slider-thumb ng-model="foo" name="bar"></ui-slider-thumb>');
         scope.$apply("foo = 25");
-        ngCtrl = element.data('$ngModelController');
+        expect(window.requestAnimationFrame).toHaveBeenCalled();
+        ngCtrl = angular.element($thumb[0]).data('$ngModelController');
       });
 
       it('should init the properties', function () {
@@ -149,7 +150,6 @@ describe('uiSlider', function () {
       it('should be invalid \'cause not a number', function () {
         scope.$apply("foo = '1'");
 
-        var ngCtrl = element.data('$ngModelController');
         expect(ngCtrl.$invalid).toBeTruthy();
         expect(ngCtrl.$error.number).toBeTruthy();
         expect(ngCtrl.$viewValue).toBeNaN();
@@ -180,15 +180,15 @@ describe('uiSlider', function () {
       });
     });
 
-    describe('on-the-fly', function () {
+    xdescribe('on-the-fly', function () {
       var ngCtrl;
 
       beforeEach(function () {
         scope.min = 10;
         scope.max = 20;
         scope.step = 1;
-        appendTemplate('<div ui-slider ng-model="foo" min="{{min}}"  max="{{max}}"  step="{{step}}" ></div>');
-        ngCtrl = element.data('$ngModelController');
+        setupThumb('<ui-slider-thumb ng-model="foo" min="{{min}}"  max="{{max}}"  step="{{step}}"></ui-slider-thumb>');
+        ngCtrl = angular.element($thumb[0]).data('$ngModelController');
       });
 
       it('should validate even if min value changes', function () {
