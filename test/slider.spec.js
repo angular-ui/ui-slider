@@ -86,12 +86,15 @@ describe('uiSlider', function () {
         var $thumb = _jQuery(thumb[0]);
         var virtualModel = $thumb.attr('ng-model');
         expect($thumb.position().left).toEqual(0);
+        expect($thumb).toBePristine();
         expect(scope[virtualModel]).toBeUndefined();
 
         scope.$apply(virtualModel + " = 50");
         expect(window.requestAnimationFrame).toHaveBeenCalled();
         expect(scope[virtualModel]).toBeDefined();
 
+        expect($thumb).toBePristine();
+        expect($thumb).toBeValid();
         expect($thumb.position().left).toEqual($thumb.parent().width() / 2 );
       });
 
@@ -103,7 +106,7 @@ describe('uiSlider', function () {
 
     function setupThumb(tpl) {
       appendTemplate(
-        '<ui-slider>' +
+        '<ui-slider class="ui-slider-default">' +
           '<ui-slider-track>' +
           tpl +
           '</ui-slider-track>'+
@@ -134,10 +137,8 @@ describe('uiSlider', function () {
       });
 
       it('should init the properties', function () {
-        expect(ngCtrl.$dirty).toBeFalsy();
-        expect(ngCtrl.$pristine).toBeTruthy();
-        expect(ngCtrl.$valid).toBeTruthy();
-        expect(ngCtrl.$invalid).toBeFalsy();
+        expect($thumb).toBePristine();
+        expect($thumb).toBeValid();
 
         expect(ngCtrl.$viewValue).toBeDefined();
         expect(ngCtrl.$modelValue).toBeDefined();
@@ -148,91 +149,81 @@ describe('uiSlider', function () {
         expect(ngCtrl.$name).toBe('bar');
       });
 
+      it('should be valid', function () {
+        expect($thumb).toBeValid();
+        expect($thumb).toHasClass('ng-valid-min ng-valid-max ng-valid-step', 'ng-invalid-min ng-invalid-max ng-invalid-step');
+      });
+
       it('should be invalid \'cause not a number', function () {
         scope.$apply("foo = '1'");
 
-        expect(ngCtrl.$invalid).toBeTruthy();
-        expect(ngCtrl.$error.number).toBeTruthy();
+        expect($thumb).toBeInvalid();
+        expect($thumb).toHasClass('ng-invalid-number', 'ng-valid-number');
         expect(ngCtrl.$viewValue).toBeNaN();
       });
 
       it('should be invalid \'cause of the min', function () {
         scope.$apply("foo = -1");
 
-        expect(ngCtrl.$invalid).toBeTruthy();
-        expect(ngCtrl.$error.min).toBeTruthy();
+        expect($thumb).toBeInvalid();
+        expect($thumb).toHasClass('ng-invalid-min', 'ng-valid-min');
         expect(ngCtrl.$viewValue).toBeNaN();
       });
 
       it('should be invalid \'cause of the max', function () {
         scope.$apply("foo = 1000");
 
-        expect(ngCtrl.$invalid).toBeTruthy();
-        expect(ngCtrl.$error.max).toBeTruthy();
+        expect($thumb).toBeInvalid();
+        expect($thumb).toHasClass('ng-invalid-max', 'ng-valid-max');
         expect(ngCtrl.$viewValue).toBeNaN();
       });
 
       it('should be invalid \'cause of the step', function () {
         scope.$apply("foo = 0.5");
 
-        expect(ngCtrl.$invalid).toBeTruthy();
-        expect(ngCtrl.$error.step).toBeTruthy();
+        expect($thumb).toBeInvalid();
+        expect($thumb).toHasClass('ng-invalid-step', 'ng-valid-step');
         expect(ngCtrl.$viewValue).toBeNaN();
       });
     });
 
-    xdescribe('on-the-fly', function () {
-      var ngCtrl;
+    describe('on-the-fly', function () {
 
       beforeEach(function () {
         scope.min = 10;
         scope.max = 20;
         scope.step = 1;
         setupThumb('<ui-slider-thumb ng-model="foo" min="{{min}}"  max="{{max}}"  step="{{step}}"></ui-slider-thumb>');
-        ngCtrl = angular.element($thumb[0]).data('$ngModelController');
       });
 
       it('should validate even if min value changes', function () {
         scope.$apply("foo = 0");
+        expect($thumb).toBeInvalid();
+        expect($thumb).toHasClass('ng-invalid-min', 'ng-valid-min');
 
-        expect(ngCtrl.$invalid).toBeTruthy();
-        expect(ngCtrl.$error.min).toBeTruthy();
-        expect(ngCtrl.$valid).toBeFalsy();
-
-        scope.min = 0;
-        scope.$digest();
-
-        expect(ngCtrl.$valid).toBeTruthy();
-        expect(ngCtrl.$error.min).toBeFalsy();
-        expect(ngCtrl.$invalid).toBeFalsy();
+        scope.$apply("min = 0");
+        expect($thumb).toBeValid();
+        expect($thumb).toHasClass('ng-valid-min', 'ng-invalid-min');
       });
 
       it('should validate even if max value changes on-the-fly', function () {
         scope.$apply("foo = 30");
-        expect(ngCtrl.$invalid).toBeTruthy();
-        expect(ngCtrl.$error.max).toBeTruthy();
-        expect(ngCtrl.$valid).toBeFalsy();
+        expect($thumb).toBeInvalid();
+        expect($thumb).toHasClass('ng-invalid-max', 'ng-valid-max');
 
-        scope.max = 30;
-        scope.$digest();
-
-        expect(ngCtrl.$valid).toBeTruthy();
-        expect(ngCtrl.$error.max).toBeFalsy();
-        expect(ngCtrl.$invalid).toBeFalsy();
+        scope.$apply("max = 30");
+        expect($thumb).toBeValid();
+        expect($thumb).toHasClass('ng-valid-max', 'ng-invalid-max');
       });
 
       it('should validate even if step value changes on-the-fly', function () {
         scope.$apply("foo = 10.5");
-        expect(ngCtrl.$invalid).toBeTruthy();
-        expect(ngCtrl.$error.step).toBeTruthy();
-        expect(ngCtrl.$valid).toBeFalsy();
+        expect($thumb).toBeInvalid();
+        expect($thumb).toHasClass('ng-invalid-step', 'ng-valid-step');
 
-        scope.step = 0.5;
-        scope.$digest();
-
-        expect(ngCtrl.$valid).toBeTruthy();
-        expect(ngCtrl.$error.step).toBeFalsy();
-        expect(ngCtrl.$invalid).toBeFalsy();
+        scope.$apply("step = 0.5");
+        expect($thumb).toBeValid();
+        expect($thumb).toHasClass('ng-valid-step', 'ng-invalid-step');
       });
 
     });
