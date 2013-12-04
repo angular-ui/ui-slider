@@ -1,6 +1,6 @@
 'use strict';
 
-xdescribe('uiSlider', function () {
+describe('uiSlider', function () {
 
   // declare these up here to be global to all tests
   var scope, $compile, element;
@@ -28,50 +28,98 @@ xdescribe('uiSlider', function () {
     $compile = _$compile_;
   }));
 
+  // Spy on the requestAnimationFrame to directly trigger it
+  beforeEach(function(){
+    spyOn(window, 'requestAnimationFrame').andCallFake(function (fct) {
+      fct();
+    });
+  });
+
   afterEach(function () {
     if (element) element.remove();
   });
 
-  describe('directive', function () {
-
+  describe('restrictions', function () {
     it('should have a expected result', function () {
       appendTemplate('<div ui-slider></div>');
-      expect(element.children().hasClass('ui-slider-container')).toBeTruthy();
+      expect(element.children().length).toBeGreaterThan(0);
     });
 
     it('should work as an element', function () {
       appendTemplate('<ui-slider></ui-slider>');
-      expect(element.children().hasClass('ui-slider-container')).toBeTruthy();
+      expect(element.children().length).toBeGreaterThan(0);
     });
 
-    it('should work as an attribute', function () {
-      appendTemplate('<div ui-slider></div>');
-      expect(element.children().hasClass('ui-slider-container')).toBeTruthy();
+    it('should work as a class', function () {
+      appendTemplate('<div class="ui-slider"></div>');
+      expect(element.children().length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('static', function () {
+    var track, thumb;
+    beforeEach(function(){
+      appendTemplate('<ui-slider></ui-slider>');
+
+      track = element.children();
+      thumb = track.children();
+    });
+
+    it('should have a track and a thumb', function () {
+      expect(element[0].tagName).toBe('UI-SLIDER');
+      expect(track[0].tagName).toBe('UI-SLIDER-TRACK');
+      expect(thumb[0].tagName).toBe('UI-SLIDER-THUMB');
+    });
+
+    describe('the thumb', function () {
+
+      it('should have a ngModel attr', function () {
+        expect(thumb.attr('ng-model')).toBeTruthy();
+      });
+
+      it('should have a virtual key as ngModel attr', function () {
+        expect(thumb.attr('ng-model')).toMatch(/^__\w{5,10}/);
+      });
+
+      it('should move went the model change', function () {
+        var $thumb = _jQuery(thumb[0]);
+        var virtualModel = $thumb.attr('ng-model');
+        expect($thumb.position().left).toEqual(0);
+        expect(scope[virtualModel]).toBeUndefined();
+
+        scope.$apply(virtualModel + " = 50");
+        expect(window.requestAnimationFrame).toHaveBeenCalled();
+        expect(scope[virtualModel]).toBeDefined();
+
+        expect($thumb.position().left).toEqual($thumb.parent().width() / 2 );
+      });
+
     });
   });
 
   describe('ngModel', function () {
-    var thumbElm, thumbOriginLeft, thumb_bb;
+    var $thumb, thumbOriginLeft;
 
-    function _initThumbValues() {
-      thumbElm = _jQuery(element[0]).find('.ui-slider-thumb')[0];
-      thumbOriginLeft = thumbElm.getBoundingClientRect().left;
+    function setupThumb(tpl) {
+      appendTemplate(
+        '<ui-slider>' +
+          '<ui-slider-track>' +
+          tpl +
+          '</ui-slider-track>'+
+          '</ui-slider>'
+      );
+      $thumb = _jQuery(element[0]).find('ui-slider-thumb');
+      thumbOriginLeft = $thumb.position().left;
     }
 
     it('should render at 0 if null', function () {
-      appendTemplate('<div ui-slider ng-model="foo"></div>');
-      _initThumbValues();
+      setupThumb('<ui-slider-thumb ng-model="foo"></ui-slider-thumb>');
+      expect($thumb.position().left).toEqual(0);
 
-      thumb_bb = thumbElm.getBoundingClientRect();
-      expect(Math.ceil(thumb_bb.left) - thumbOriginLeft).toEqual(0);
+      scope.$apply("foo = null");
+      expect(window.requestAnimationFrame).toHaveBeenCalled();
 
-      scope.$apply(function () {
-        scope.foo = null;
-      });
-
-      thumb_bb = thumbElm.getBoundingClientRect();
-
-      expect(Math.ceil(thumb_bb.left) - thumbOriginLeft).toEqual(0);
+      expect($thumb.position().left).toEqual(0);
     });
 
     describe('validation', function () {
@@ -190,7 +238,7 @@ xdescribe('uiSlider', function () {
 
   });
 
-  describe('range option', function () {
+  xdescribe('range option', function () {
 
     beforeEach(function () {
 

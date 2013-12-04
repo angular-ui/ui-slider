@@ -53,7 +53,19 @@
       function() {
         return {
           restrict: 'EAC',
-          controller : 'uiSliderController'
+          controller : 'uiSliderController',
+          compile: function(tElement, tAttrs){
+            if (tElement.children().length === 0){
+              // Create a default slider for design purpose.
+              tElement.addClass('ui-slider-default');
+              tElement.append(
+                '<ui-slider-track>' +
+                  // Use a virtual scope key to allow
+                  '<ui-slider-thumb ng-model="__' + Math.random().toString(36).substring(7) + '"></ui-slider-thumb>' +
+                  '</ui-slider-track>'
+              );
+            }
+          }
         };
       })
 
