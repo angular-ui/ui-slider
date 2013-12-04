@@ -1,4 +1,3 @@
-// requestAnimationFrame polyfill by Erik MÃ¶ller. fixes from Paul Irish and Tino Zijdel
 (function (window, document) {
   'use strict';
 
