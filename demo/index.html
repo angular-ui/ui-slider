@@ -49,32 +49,44 @@
       <div class="row">
         <div class="col-sm-6"> current value : {{_sliderValue}} %</div>
         <div class="col-sm-6">
-          <div ng-model="_sliderValue" ui-slider></div>
+          <ui-slider class="ui-slider-default">
+            <ui-slider-track>
+              <ui-slider-thumb ng-model="_sliderValue"></ui-slider-thumb>
+            </ui-slider-track>
+          </ui-slider>
         </div>
       </div>
 
     </article>
 
-    <article>
+    <article ng-init="_sliderUnderValue=50">
       <h3>Step demo</h3>
 
       <div class="row">
         <div class="col-sm-12 text-center">current value : {{_sliderUnderValue}}</div>
       </div>
 
-      <h4>No step</h4>
+      <h4>No step (default 1)</h4>
 
       <div class="row">
-        <div class="col-sm-12 overflow-hidden" ng-init="_sliderUnderValue=50">
-          <div ng-model="_sliderUnderValue" ui-slider></div>
+        <div class="col-sm-12">
+          <ui-slider class="ui-slider-default">
+            <ui-slider-track>
+              <ui-slider-thumb ng-model="_sliderUnderValue"></ui-slider-thumb>
+            </ui-slider-track>
+          </ui-slider>
         </div>
       </div>
 
       <h4>step : 5</h4>
 
       <div class="row">
-        <div class="col-sm-12 overflow-hidden" ng-init="_sliderUnderValue=50">
-          <div ng-model="_sliderUnderValue" ui-slider step="5"></div>
+        <div class="col-sm-12 overflow-hidden">
+          <ui-slider class="ui-slider-default">
+            <ui-slider-track step="5">
+              <ui-slider-thumb ng-model="_sliderUnderValue"></ui-slider-thumb>
+            </ui-slider-track>
+          </ui-slider>
         </div>
       </div>
 
@@ -82,16 +94,24 @@
       <h4>step : 0.5</h4>
 
       <div class="row">
-        <div class="col-sm-12 overflow-hidden" ng-init="_sliderUnderValue=50">
-          <div ng-model="_sliderUnderValue" ui-slider step="0.5"></div>
+        <div class="col-sm-12 overflow-hidden">
+          <ui-slider class="ui-slider-default">
+            <ui-slider-track step="0.5">
+              <ui-slider-thumb ng-model="_sliderUnderValue"></ui-slider-thumb>
+            </ui-slider-track>
+          </ui-slider>
         </div>
       </div>
 
       <h4>step : <input type="number" class="form-control" ng-model="_sliderStep" ng-init="_sliderStep=25"/></h4>
 
       <div class="row">
-        <div class="col-sm-12 overflow-hidden" ng-init="_sliderUnderValue=50">
-          <div ng-model="_sliderUnderValue" ui-slider step="{{_sliderStep}}"></div>
+        <div class="col-sm-12 overflow-hidden">
+          <ui-slider class="ui-slider-default">
+            <ui-slider-track step="{{_sliderStep}}">
+              <ui-slider-thumb ng-model="_sliderUnderValue"></ui-slider-thumb>
+            </ui-slider-track>
+          </ui-slider>
         </div>
       </div>
 
