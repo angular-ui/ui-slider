@@ -59,51 +59,41 @@
               // Create a default slider for design purpose.
               tElement.addClass('ui-slider-default');
               tElement.append(
-                '<ui-slider-track>' +
                   // Use a virtual scope key to allow
-                  '<ui-slider-thumb ng-model="__' + Math.random().toString(36).substring(7) + '"></ui-slider-thumb>' +
-                  '</ui-slider-track>'
+                '<ui-slider-thumb ng-model="__' + Math.random().toString(36).substring(7) + '"></ui-slider-thumb>'
               );
             }
+
+            return function (scope, iElement, iAttrs, controller) {
+              ////////////////////////////////////////////////////////////////////
+              // OBSERVERS
+              ////////////////////////////////////////////////////////////////////
+
+              // Observe the min attr (default 0)
+              iAttrs.$observe('min', function (newVal) {
+                controller.min = +newVal;
+                controller.min = !isNaN(controller.min) ? controller.min : 0;
+                //TODO Add on fly validation
+              });
+
+              // Observe the max attr (default 100)
+              iAttrs.$observe('max', function (newVal) {
+                controller.max = +newVal;
+                controller.max = !isNaN(controller.max) ? controller.max : 100;
+                //TODO Add on fly validation
+              });
+
+              // Observe the step attr (default 1)
+              iAttrs.$observe('step', function (newVal) {
+                controller.step = +newVal;
+                controller.step = !isNaN(controller.step) && controller.step > 0 ? controller.step : 1;
+                //TODO Add on fly validation
+              });
+
+            };
           }
         };
       })
-
-
-    .directive('uiSliderTrack',
-    function() {
-      return {
-        restrict: 'EAC',
-        require: '^uiSlider',
-        link: function (scope, iElement, iAttrs, controller) {
-          ////////////////////////////////////////////////////////////////////
-          // OBSERVERS
-          ////////////////////////////////////////////////////////////////////
-
-          // Observe the min attr (default 0)
-          iAttrs.$observe('min', function(newVal) {
-            controller.min = +newVal;
-            controller.min = !isNaN(controller.min) ? controller.min : 0;
-            //TODO Add on fly validation
-          });
-
-          // Observe the max attr (default 100)
-          iAttrs.$observe('max', function(newVal) {
-            controller.max = +newVal;
-            controller.max = !isNaN(controller.max) ? controller.max : 100;
-            //TODO Add on fly validation
-          });
-
-          // Observe the step attr (default 1)
-          iAttrs.$observe('step', function (newVal) {
-            controller.step = +newVal;
-            controller.step = !isNaN(controller.step) && controller.step > 0 ? controller.step : 1;
-            //TODO Add on fly validation
-          });
-
-        }
-      };
-    })
 
     .directive('uiSliderRange',
     function() {

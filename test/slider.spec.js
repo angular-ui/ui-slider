@@ -62,13 +62,11 @@ describe('uiSlider', function () {
     beforeEach(function(){
       appendTemplate('<ui-slider></ui-slider>');
 
-      track = element.children();
-      thumb = track.children();
+      thumb = element.children();
     });
 
     it('should have a track and a thumb', function () {
       expect(element[0].tagName).toBe('UI-SLIDER');
-      expect(track[0].tagName).toBe('UI-SLIDER-TRACK');
       expect(thumb[0].tagName).toBe('UI-SLIDER-THUMB');
     });
 
@@ -107,9 +105,7 @@ describe('uiSlider', function () {
     function setupThumb(tpl) {
       appendTemplate(
         '<ui-slider class="ui-slider-default">' +
-          '<ui-slider-track>' +
           tpl +
-          '</ui-slider-track>'+
           '</ui-slider>'
       );
       $thumb = _jQuery(element[0]).find('ui-slider-thumb');
@@ -238,10 +234,8 @@ describe('uiSlider', function () {
       scope.max = 20;
       scope.step = 1;
       appendTemplate(
-        '<ui-slider class="ui-slider-default">' +
-          '<ui-slider-track min="{{min}}"  max="{{max}}"  step="{{step}}" >' +
+        '<ui-slider class="ui-slider-default" min="{{min}}"  max="{{max}}"  step="{{step}}">' +
           '<ui-slider-thumb ng-model="foo"></ui-slider-thumb>' +
-          '</ui-slider-track>' +
           '</ui-slider>'
       );
       $thumb = _jQuery(element[0]).find('ui-slider-thumb');
@@ -270,10 +264,8 @@ describe('uiSlider', function () {
     function setupRange(tpl) {
       appendTemplate(
         '<ui-slider class="ui-slider-default">' +
-          '<ui-slider-track >' +
           tpl +
           '<ui-slider-thumb ng-model="foo"></ui-slider-thumb>' +
-          '</ui-slider-track>' +
           '</ui-slider>'
       );
       $range = _jQuery(element[0]).find('ui-slider-range');
