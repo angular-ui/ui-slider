@@ -108,6 +108,8 @@ Example
 </ui-slider>
 ```
 
+[Range and funny demo](http://plnkr.co/RcyoUq)
+
 
 ## Testing
 
