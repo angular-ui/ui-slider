@@ -37,8 +37,7 @@ as attribute :
 ```xml
 <div ui-slider></div>
 // or
-<ui-slider class="ui-slider-default">
-  <ui-slider-track
+<ui-slider class="ui-slider-default"
     [min="{expression}"]
     [max="{expression}"]
     [step="{expression}"]
@@ -57,13 +56,12 @@ as attribute :
       [step="{expression}"]
      ></ui-slider-thumb>
 
-  </ui-slider-track>
 </ui-slider>
 ```
 
 ### Parameters
 
-* ui-slider-track
+* ui-slider
   * min : Sets the minimum value allowed for all of its thumb children.
   * max : Sets the maximum value allowed for all of its thumb children.
   * step : Sets the legal number intervals for all of its thumb children.
@@ -83,40 +81,30 @@ Example
 
 ```xml
 <ui-slider class="ui-slider-default">
-  <ui-slider-track>
-    <ui-slider-thumb ng-model='_'></ui-slider-thumb>
-  </ui-slider-track>
+  <ui-slider-thumb ng-model='_'></ui-slider-thumb>
 </ui-slider>
 // or
 <ui-slider class="ui-slider-default">
-  <ui-slider-track>
-    <ui-slider-range ></ui-slider-range>
-    <ui-slider-thumb ng-model='_a'></ui-slider-thumb>
-  </ui-slider-track>
+  <ui-slider-range ></ui-slider-range>
+  <ui-slider-thumb ng-model='_a'></ui-slider-thumb>
 </ui-slider>
 // or
 <ui-slider class="ui-slider-default">
-  <ui-slider-track>
-    <ui-slider-range start='{{_b}}'></ui-slider-range>
-    <ui-slider-thumb ng-model='_b'></ui-slider-thumb>
-  </ui-slider-track>
+  <ui-slider-range start='{{_b}}'></ui-slider-range>
+  <ui-slider-thumb ng-model='_b'></ui-slider-thumb>
 </ui-slider>
 // or
 <ui-slider class="ui-slider-default">
-  <ui-slider-track>
-    <ui-slider-range start='{{_c}}' end='{{_d}}'></ui-slider-range>
-    <ui-slider-thumb ng-model='_c' max='{{_d}}'></ui-slider-thumb>
-    <ui-slider-thumb ng-model='_d' min='{{_c}}'></ui-slider-thumb>
-  </ui-slider-track>
+  <ui-slider-range start='{{_c}}' end='{{_d}}'></ui-slider-range>
+  <ui-slider-thumb ng-model='_c' max='{{_d}}'></ui-slider-thumb>
+  <ui-slider-thumb ng-model='_d' min='{{_c}}'></ui-slider-thumb>
 </ui-slider>
 // or
 <ui-slider class="ui-slider-default">
-  <ui-slider-track>
-    <ui-slider-range start='{{_min}}' end='{{_max}}'></ui-slider-range>
-    <ui-slider-thumb ng-model='_min' max='{{_max}}'></ui-slider-thumb>
-    <ui-slider-thumb ng-model='_middle' min='{{_min}}' max='{{_max}}'></ui-slider-thumb>
-    <ui-slider-thumb ng-model='_max' min='{{_min}}'></ui-slider-thumb>
-  </ui-slider-track>
+  <ui-slider-range start='{{_min}}' end='{{_max}}'></ui-slider-range>
+  <ui-slider-thumb ng-model='_min' max='{{_max}}'></ui-slider-thumb>
+  <ui-slider-thumb ng-model='_middle' min='{{_min}}' max='{{_max}}'></ui-slider-thumb>
+  <ui-slider-thumb ng-model='_max' min='{{_min}}'></ui-slider-thumb>
 </ui-slider>
 ```
 
