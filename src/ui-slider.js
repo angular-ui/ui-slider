@@ -45,6 +45,9 @@
     .controller('uiSliderController', ['$element', function uiSliderCtrl($element) {
 
       this.element = $element;
+      this.min = 0;
+      this.max = 100;
+      this.step = 1;
 
     }])
 
@@ -53,7 +56,7 @@
       return {
         restrict: 'EAC',
         controller: 'uiSliderController',
-        compile: function (tElement, tAttrs) {
+        compile: function (tElement) {
           if (tElement.children().length === 0) {
             // Create a default slider for design purpose.
             tElement.addClass('ui-slider-default');
@@ -72,21 +75,21 @@
             iAttrs.$observe('min', function (newVal) {
               controller.min = +newVal;
               controller.min = !isNaN(controller.min) ? controller.min : 0;
-              //TODO Add on fly validation
+              scope.$emit('global min changed');
             });
 
             // Observe the max attr (default 100)
             iAttrs.$observe('max', function (newVal) {
               controller.max = +newVal;
               controller.max = !isNaN(controller.max) ? controller.max : 100;
-              //TODO Add on fly validation
+              scope.$emit('global max changed');
             });
 
             // Observe the step attr (default 1)
             iAttrs.$observe('step', function (newVal) {
               controller.step = +newVal;
               controller.step = !isNaN(controller.step) && controller.step > 0 ? controller.step : 1;
-              //TODO Add on fly validation
+              scope.$emit('global step changed');
             });
 
           };
@@ -97,9 +100,9 @@
     .directive('uiSliderRange', function () {
       return {
         restrict: 'EAC',
-        require: ['^uiSlider'],
+        require: '^uiSlider',
         scope: { start: '@', end: '@' },
-        link: function (scope, iElement, iAttrs) {
+        link: function (scope, iElement, iAttrs, controller) {
           ////////////////////////////////////////////////////////////////////
           // OBSERVERS
           ////////////////////////////////////////////////////////////////////
@@ -107,6 +110,7 @@
           // Observe the start attr (default 0%)
           iAttrs.$observe('start', function (newVal) {
             var val = !isNaN(+newVal) ? +newVal : 0;
+            val = (val - controller.min ) / (controller.max - controller.min) * 100;
             // TODO add half of th width of the targeted thumb ([ng-model='+ iAttrs.$attr.start + '])
             iElement.css('left', val + '%');
           });
@@ -116,6 +120,7 @@
             // Don't display the range if no attr are specified
             var displayed = angular.isDefined(iAttrs.start) || angular.isDefined(iAttrs.end);
             var val = !isNaN(+newVal) ? +newVal : displayed ? 100 : 0;
+            val = (val - controller.min ) / (controller.max - controller.min) * 100;
             // TODO add half of th width of the targeted thumb ([ng-model='+ iAttrs.$attr.end + '])
             iElement.css('right', (100 - val) + '%');
           });
@@ -136,7 +141,11 @@
           var ngModel = controller[1];
           var uiSliderCtrl = controller[0];
           var animationFrameRequested;
-          var _cache = {};
+          var _cache = {
+            min: uiSliderCtrl.min,
+            max: uiSliderCtrl.max,
+            step: uiSliderCtrl.step
+          };
 
           ////////////////////////////////////////////////////////////////////
           // UTILS
@@ -152,9 +161,14 @@
 
           function getFormattedValue(value) {
             var formattedValue = value;
-            formattedValue = _formatValue(formattedValue, uiSliderCtrl.min, uiSliderCtrl.max, uiSliderCtrl.step);
             formattedValue = _formatValue(formattedValue, _cache.min, _cache.max, _cache.step);
             return formattedValue;
+          }
+
+          function updateIfChanged(newVal, oldVal) {
+            if (!angular.isUndefined(oldVal) && !isNaN(ngModel.$modelValue) && oldVal !== newVal) {
+              ngModel.$setViewValue(getFormattedValue(ngModel.$modelValue));
+            }
           }
 
           ////////////////////////////////////////////////////////////////////
@@ -162,46 +176,73 @@
           ////////////////////////////////////////////////////////////////////
 
           // Observe the min attr (default 0)
-          iAttrs.$observe('min', function (newVal) {
+          iAttrs.$observe('min', function observeMin(newVal) {
             var oldVal = _cache.min;
             _cache.min = +newVal;
             _cache.min = !isNaN(_cache.min) ? _cache.min : 0;
 
-            if (!angular.isUndefined(oldVal) && oldVal !== _cache.max) {
-              ngModel.$setViewValue(getFormattedValue(ngModel.$viewValue));
-            }
+            updateIfChanged(_cache.min, oldVal);
+
+            ngModel.$render();
+          });
+          scope.$on('global min changed', function observeGlobalMin() {
+            var oldVal = _cache.min;
+
+            _cache.min = (angular.isDefined(iAttrs.min)) ? _cache.min : uiSliderCtrl.min;
+            // Secure no NaN here...
+            _cache.min = !isNaN(_cache.min) ? _cache.min : 0;
+
+            updateIfChanged(_cache.min, oldVal);
             ngModel.$render();
           });
 
           // Observe the max attr (default 100)
-          iAttrs.$observe('max', function (newVal) {
+          iAttrs.$observe('max', function observeMax(newVal) {
             var oldVal = _cache.max;
             _cache.max = +newVal;
             _cache.max = !isNaN(_cache.max) ? _cache.max : 100;
 
-            if (!angular.isUndefined(oldVal) && oldVal !== _cache.max) {
-              ngModel.$setViewValue(getFormattedValue(ngModel.$viewValue));
-            }
+            updateIfChanged(_cache.max, oldVal);
+
+            ngModel.$render();
+          });
+          scope.$on('global max changed', function observeGlobalMax() {
+            var oldVal = _cache.max;
+
+            _cache.max = (angular.isDefined(iAttrs.max)) ? _cache.max : uiSliderCtrl.max;
+            // Secure no NaN here...
+            _cache.max = !isNaN(_cache.max) ? _cache.max : 100;
+
+            updateIfChanged(_cache.max, oldVal);
             ngModel.$render();
           });
 
           // Observe the step attr (default 1)
-          iAttrs.$observe('step', function (newVal) {
+          iAttrs.$observe('step', function observeStep(newVal) {
             var oldVal = _cache.step;
             _cache.step = +newVal;
             _cache.step = !isNaN(_cache.step) && _cache.step > 0 ? _cache.step : 1;
 
-            if (!angular.isUndefined(oldVal) && oldVal !== _cache.step) {
-              ngModel.$setViewValue(getFormattedValue(ngModel.$viewValue));
-            }
+            updateIfChanged(_cache.step, oldVal);
+
             ngModel.$render();
           });
+          scope.$on('global step changed', function observeGlobalStep() {
+            var oldVal = _cache.step;
 
+            _cache.step = (angular.isDefined(iAttrs.step)) ? _cache.step : uiSliderCtrl.step;
+
+            // Secure no NaN here...
+            _cache.step = !isNaN(_cache.step) && _cache.step > 0 ? _cache.step : 1;
+
+            updateIfChanged(_cache.step, oldVal);
+            ngModel.$render();
+          });
           ////////////////////////////////////////////////////////////////////
           // RENDERING
           ////////////////////////////////////////////////////////////////////
 
-          ngModel.$render = function () {
+          ngModel.$render = function ngModelRender() {
 
             // Cancel previous rAF call
             if (animationFrameRequested) {
@@ -215,11 +256,9 @@
             });
           };
 
-
           ////////////////////////////////////////////////////////////////////
           // FORMATTING
           ////////////////////////////////////////////////////////////////////
-
           // Final view format
           ngModel.$formatters.push(function (value) {
             return +value;
@@ -227,6 +266,7 @@
 
           // Checks that it's on the step
           ngModel.$parsers.push(function stepParser(value) {
+            ngModel.$setValidity('step', true);
             return Math.floor(value / _cache.step) * _cache.step;
           });
           ngModel.$formatters.push(function stepValidator(value) {
@@ -241,10 +281,11 @@
 
           // Checks that it's less then the maximum
           ngModel.$parsers.push(function maxParser(value) {
-            return Math.min(Math.min(value, _cache.max), uiSliderCtrl.max);
+            ngModel.$setValidity('max', true);
+            return Math.min(value, _cache.max);
           });
           ngModel.$formatters.push(function maxValidator(value) {
-            if (!ngModel.$isEmpty(value) && (value > _cache.max || value > uiSliderCtrl.max)) {
+            if (!ngModel.$isEmpty(value) && value > _cache.max) {
               ngModel.$setValidity('max', false);
               return undefined;
             } else {
@@ -255,10 +296,11 @@
 
           // Checks that it's more then the minimum
           ngModel.$parsers.push(function minParser(value) {
-            return Math.max(Math.max(value, _cache.min), uiSliderCtrl.min);
+            ngModel.$setValidity('min', true);
+            return Math.max(value, _cache.min);
           });
           ngModel.$formatters.push(function minValidator(value) {
-            if (!ngModel.$isEmpty(value) && (value < _cache.min || value < uiSliderCtrl.min)) {
+            if (!ngModel.$isEmpty(value) && value < _cache.min) {
               ngModel.$setValidity('min', false);
               return undefined;
             } else {
@@ -272,13 +314,12 @@
           ngModel.$formatters.push(function numberValidator(value) {
             if (ngModel.$isEmpty(value) || angular.isNumber(value)) {
               ngModel.$setValidity('number', true);
-              return +value;
+              return value;
             } else {
               ngModel.$setValidity('number', false);
               return undefined;
             }
           });
-
           ////////////////////////////////////////////////////////////////////
           // USER EVENT BINDING
           ////////////////////////////////////////////////////////////////////
@@ -332,8 +373,7 @@
             _cached_layout_values();
 
             var the_thumb_value = uiSliderCtrl.min + (_cache.lastPos - _cache.trackOrigine) / _cache.trackSize * (uiSliderCtrl.max - uiSliderCtrl.min);
-            the_thumb_value = Math.max(Math.min(the_thumb_value, _cache.max), _cache.min);
-            the_thumb_value = Math.max(Math.min(the_thumb_value, uiSliderCtrl.max), uiSliderCtrl.min);
+            the_thumb_value = getFormattedValue(the_thumb_value);
 
             ngModel.$setViewValue(parseFloat(the_thumb_value.toFixed(5)));
             if (!scope.$root.$$phase) {

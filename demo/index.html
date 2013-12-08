@@ -50,9 +50,7 @@
         <div class="col-sm-6"> current value : {{_sliderValue}} %</div>
         <div class="col-sm-6">
           <ui-slider class="ui-slider-default">
-            <ui-slider-track>
-              <ui-slider-thumb ng-model="_sliderValue"></ui-slider-thumb>
-            </ui-slider-track>
+            <ui-slider-thumb ng-model="_sliderValue"></ui-slider-thumb>
           </ui-slider>
         </div>
       </div>
@@ -71,9 +69,7 @@
       <div class="row">
         <div class="col-sm-12">
           <ui-slider class="ui-slider-default">
-            <ui-slider-track>
-              <ui-slider-thumb ng-model="_sliderUnderValue"></ui-slider-thumb>
-            </ui-slider-track>
+            <ui-slider-thumb ng-model="_sliderUnderValue"></ui-slider-thumb>
           </ui-slider>
         </div>
       </div>
@@ -83,9 +79,7 @@
       <div class="row">
         <div class="col-sm-12 overflow-hidden">
           <ui-slider class="ui-slider-default">
-            <ui-slider-track step="5">
-              <ui-slider-thumb ng-model="_sliderUnderValue"></ui-slider-thumb>
-            </ui-slider-track>
+            <ui-slider-thumb ng-model="_sliderUnderValue" step="5"></ui-slider-thumb>
           </ui-slider>
         </div>
       </div>
@@ -96,9 +90,7 @@
       <div class="row">
         <div class="col-sm-12 overflow-hidden">
           <ui-slider class="ui-slider-default">
-            <ui-slider-track step="0.5">
-              <ui-slider-thumb ng-model="_sliderUnderValue"></ui-slider-thumb>
-            </ui-slider-track>
+            <ui-slider-thumb ng-model="_sliderUnderValue" step="0.5"></ui-slider-thumb>
           </ui-slider>
         </div>
       </div>
@@ -108,9 +100,7 @@
       <div class="row">
         <div class="col-sm-12 overflow-hidden">
           <ui-slider class="ui-slider-default">
-            <ui-slider-track step="{{_sliderStep}}">
-              <ui-slider-thumb ng-model="_sliderUnderValue"></ui-slider-thumb>
-            </ui-slider-track>
+            <ui-slider-thumb ng-model="_sliderUnderValue" step="{{_sliderStep}}"></ui-slider-thumb>
           </ui-slider>
         </div>
       </div>
@@ -125,7 +115,9 @@
       <div class="row">
         <div class="col-sm-6"> current value : {{_sliderMinMaxValue0}}</div>
         <div class="col-sm-6">
-          <div ng-model="_sliderMinMaxValue0" min="-50" max="50" ui-slider></div>
+          <ui-slider class="ui-slider-default"  min="-50" max="50">
+            <ui-slider-thumb ng-model="_sliderMinMaxValue0"></ui-slider-thumb>
+          </ui-slider>
           <span class="relative pull-left">-50</span>
           <span class="relative pull-right">50</span>
         </div>
@@ -143,7 +135,9 @@
       <div class="row">
         <div class="col-sm-12 text-center">current value : {{_sliderMinMaxValue1}}</div>
         <div class="col-sm-12 overflow-hidden clearfix" ng-init="_sliderMinMaxValue1=0">
-          <div ng-model="_sliderMinMaxValue1" min="{{_sliderMin}}" max="{{_sliderMax}}" ui-slider></div>
+          <ui-slider class="ui-slider-default" min="{{_sliderMin}}" max="{{_sliderMax}}">
+            <ui-slider-thumb ng-model="_sliderMinMaxValue1"></ui-slider-thumb>
+          </ui-slider>
           <span class="relative pull-left">{{_sliderMin}}</span>
           <span class="relative pull-right">{{_sliderMax}}</span>
         </div>
@@ -159,7 +153,9 @@
           <form name="_myForm">
             <input type="number" class="form-control" ng-model="_formModel" step="0.5"/>
 
-            <div ng-model="_formModel" ui-slider name="input" min="10" max="20" step="1"></div>
+            <ui-slider class="ui-slider-default" min="10" max="20">
+              <ui-slider-thumb ng-model="_formModel" name="input"></ui-slider-thumb>
+            </ui-slider>
           </form>
         </div>
         <div class="col-sm-6">_formModel = {{_formModel}} <br/>
@@ -174,11 +170,24 @@
       <h3>Using range min</h3>
 
       <div class="row">
-        <div class="col-sm-12" ng-init="_range0=25;_range1=75;">
-          <div ui-slider="{ range : 'min' }" ng-model="_range0"></div>
+        <div class="col-sm-12" ng-init="_range0=25">
+          <ui-slider class="ui-slider-default">
+            <ui-slider-range end="{{_range0}}"></ui-slider-range>
+            <ui-slider-thumb ng-model="_range0"></ui-slider-thumb>
+          </ui-slider>
         </div>
-        <div class="col-sm-12">
-          <div ui-slider="{ range : 'max' }" ng-model="_range1"></div>
+        <div class="col-sm-12" ng-init="_range1=75">
+          <ui-slider class="ui-slider-default">
+            <ui-slider-range start="{{_range1}}"></ui-slider-range>
+            <ui-slider-thumb ng-model="_range1"></ui-slider-thumb>
+          </ui-slider>
+        </div>
+        <div class="col-sm-12" ng-init="_c=0;_d=100;">
+        <ui-slider class="ui-slider-default">
+          <ui-slider-range start='{{_c}}' end='{{_d}}'></ui-slider-range>
+          <ui-slider-thumb ng-model='_c' max='{{_d}}'></ui-slider-thumb>
+          <ui-slider-thumb ng-model='_d' min='{{_c}}'></ui-slider-thumb>
+        </ui-slider>
         </div>
       </div>
     </article>
@@ -188,9 +197,18 @@
 
       <div class="row">
         <div class="col-sm-6" ng-init="_red=128;_green=128;_blue=128">
-          <div ng-model="_red" ui-slider="{ range : 'min' }" min="0" max="255" step="1"></div>
-          <div ng-model="_green" ui-slider="{ range : 'min' }" min="0" max="255" step="1"></div>
-          <div ng-model="_blue" ui-slider="{ range : 'min' }" min="0" max="255" step="1"></div>
+          <ui-slider class="ui-slider-default" min="0" max="255">
+            <ui-slider-range end="{{_red}}"></ui-slider-range>
+            <ui-slider-thumb ng-model="_red"></ui-slider-thumb>
+          </ui-slider>
+          <ui-slider class="ui-slider-default" min="0" max="255">
+            <ui-slider-range end="{{_green}}"></ui-slider-range>
+            <ui-slider-thumb ng-model="_green"></ui-slider-thumb>
+          </ui-slider>
+          <ui-slider class="ui-slider-default" min="0" max="255">
+            <ui-slider-range end="{{_blue}}"></ui-slider-range>
+            <ui-slider-thumb ng-model="_blue"></ui-slider-thumb>
+          </ui-slider>
         </div>
         <div class="col-sm-6">
           <div class="pickedColor"

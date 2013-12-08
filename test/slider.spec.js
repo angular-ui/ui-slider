@@ -30,7 +30,7 @@ describe('uiSlider', function () {
   }));
 
   // Spy on the requestAnimationFrame to directly trigger it
-  beforeEach(function(){
+  beforeEach(function () {
     spyOn(window, 'requestAnimationFrame').andCallFake(function (fct) {
       fct();
     });
@@ -59,7 +59,7 @@ describe('uiSlider', function () {
 
   describe('static', function () {
     var track, thumb;
-    beforeEach(function(){
+    beforeEach(function () {
       appendTemplate('<ui-slider></ui-slider>');
 
       thumb = element.children();
@@ -77,7 +77,7 @@ describe('uiSlider', function () {
       });
 
       it('should have a virtual key as ngModel attr', function () {
-        expect(thumb.attr('ng-model')).toMatch(/^__\w{5,10}/);
+        expect(thumb.attr('ng-model')).toMatch(/^__\w*/);
       });
 
       it('should move went the model change', function () {
@@ -93,7 +93,7 @@ describe('uiSlider', function () {
 
         expect($thumb).toBePristine();
         expect($thumb).toBeValid();
-        expect($thumb.position().left).toEqual($thumb.parent().width() / 2 );
+        expect($thumb.get(0).style.left).toEqual('50%');
       });
 
     });
@@ -226,36 +226,66 @@ describe('uiSlider', function () {
 
   });
 
-  describe('track', function () {
+  describe('slider', function () {
     var $thumb;
 
     beforeEach(function () {
       scope.min = 10;
       scope.max = 20;
       scope.step = 1;
+      spyOn(scope, "$emit").andCallThrough();
       appendTemplate(
         '<ui-slider class="ui-slider-default" min="{{min}}"  max="{{max}}"  step="{{step}}">' +
           '<ui-slider-thumb ng-model="foo"></ui-slider-thumb>' +
           '</ui-slider>'
       );
       $thumb = _jQuery(element[0]).find('ui-slider-thumb');
+      expect(scope.$emit).toHaveBeenCalled();
+      expect(scope.$emit.callCount).toEqual(3);
     });
 
-    it('should influence the thumb limitation', function () {
+    it('should influence the thumb min', function () {
+      scope.$emit.reset();
+
       scope.$apply("foo = 0");
       expect($thumb).toBeInvalid();
       expect($thumb).toHasClass('ng-invalid-min', 'ng-valid-min');
+
+      scope.$apply("min = 0");
+      expect(scope.$emit).toHaveBeenCalledWith('global min changed');
+
+      expect($thumb).toBeValid();
+      expect($thumb).toHasClass('ng-valid-min', 'ng-invalid-min');
+    });
+
+    it('should influence the thumb max', function () {
+      scope.$emit.reset();
 
       scope.$apply("foo = 30");
       expect($thumb).toBeInvalid();
       expect($thumb).toHasClass('ng-invalid-max', 'ng-valid-max');
 
-      scope.$apply("foo = 11.5");
+      scope.$apply("max = 30");
+      expect(scope.$emit).toHaveBeenCalledWith('global max changed');
+
+      expect($thumb).toBeValid();
+      expect($thumb).toHasClass('ng-valid-max', 'ng-invalid-max');
+    });
+
+    it('should influence the thumb step', function () {
+      scope.$emit.reset();
+
+      scope.$apply("foo = 10.5");
       expect($thumb).toBeInvalid();
       expect($thumb).toHasClass('ng-invalid-step', 'ng-valid-step');
 
-      //TODO Add on fly validation
+      scope.$apply("step = 0.5");
+      expect(scope.$emit).toHaveBeenCalledWith('global step changed');
+
+      expect($thumb).toBeValid();
+      expect($thumb).toHasClass('ng-valid-step', 'ng-invalid-step');
     });
+
   });
 
   describe('range', function () {
@@ -273,35 +303,37 @@ describe('uiSlider', function () {
 
     it('should be hidden (somehow)', function () {
       setupRange('<ui-slider-range></ui-slider-range>');
-      expect($range.position().left).toEqual(0);
-      expect($range.width()).toEqual(0);
+      expect($range.get(0).style.left).toEqual('0%');
+      expect($range.get(0).style.right).toEqual('100%');
     });
 
     it('should display a static range that end at 50%', function () {
       setupRange('<ui-slider-range end="50"></ui-slider-range>');
-      expect($range.position().left).toEqual(0);
-      expect($range.width()).toEqual(Math.round($range.parent().width() / 2));
+      expect($range.get(0).style.left).toEqual('0%');
+      expect($range.get(0).style.right).toEqual('50%');
     });
 
     it('should display a range from 0 to cursor', function () {
       setupRange('<ui-slider-range end="{{foo}}"></ui-slider-range>');
-      expect($range.position().left).toEqual(0);
-      expect($range.width()).toEqual(0);
+      expect($range.get(0).style.left).toEqual('0%');
+      expect($range.get(0).style.right).toEqual('100%');
 
       scope.$apply("foo = 50");
+      expect($range.get(0).style.left).toEqual('0%');
       // FIXME left position must be at half of the targeted thumb's width
-      expect($range.width()).toEqual(Math.round($range.parent().width() / 2));
+      expect($range.get(0).style.right).toEqual('50%');
     });
 
     it('should display a range from cursor to 100', function () {
       setupRange('<ui-slider-range start="{{foo}}"></ui-slider-range>');
       scope.$apply("foo = 0");
-      expect($range.position().left).toEqual(0);
-      expect($range.width()).toEqual($range.parent().width());
+      expect($range.get(0).style.left).toEqual('0%');
+      expect($range.get(0).style.right).toEqual('0%');
 
       scope.$apply("foo = 50");
       // FIXME left position must be at half of the targeted thumb's width
-      expect($range.position().left).toEqual($range.parent().width() / 2);
+      expect($range.get(0).style.left).toEqual('50%');
+      expect($range.get(0).style.right).toEqual('0%');
     });
 
   });
