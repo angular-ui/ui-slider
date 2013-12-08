@@ -1,0 +1,38 @@
+{
+  "immed": true,
+  "newcap": true,
+  "noarg": true,
+  "noempty": true,
+  "nonew": true,
+  "trailing": true,
+  "maxlen": 200,
+  "boss": true,
+  "eqnull": true,
+  "expr": true,
+  "globalstrict": true,
+  "laxbreak": true,
+  "loopfunc": true,
+  "sub": true,
+  "undef": true,
+  "browser": true,
+  "globals": {
+    "module"     : false,
+
+    "angular"    : false,
+    "inject"     : false,
+    "_jQuery"    : false,
+    "browserTrigger": false,
+
+    "it"         : false,
+    "iit"        : false,
+    "xit"        : false,
+    "describe"   : false,
+    "ddescribe"  : false,
+    "xdescribe"  : false,
+    "dump"      : false,
+    "beforeEach" : false,
+    "afterEach"  : false,
+    "expect"     : false,
+    "spyOn"      : false
+  }
+}

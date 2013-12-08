@@ -1,0 +1,82 @@
+
+/* =UI.Slider
+-----------------------------------------------------------------------------*/
+
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+ui-slider, [ui-slider], .ui-slider {
+  position: relative;
+  display: block;
+}
+
+ui-slider:after,
+[ui-slider]:after,
+.ui-slider:after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: block;
+  content: '';
+  z-index: -1;
+}
+
+ui-slider-thumb, [ui-slider-thumb], .ui-slider-thumb {
+  position: absolute;
+  cursor: pointer;
+}
+
+ui-slider-range, [ui-slider-range], .ui-slider-range {
+  position: absolute;
+  height: 100%;
+  left: 0;
+  right: 100%;
+}
+
+.ui-slider-range-min {
+}
+
+.ui-slider-range-max {
+}
+
+/* =UI.Slider default style
+-----------------------------------------------------------------------------*/
+.ui-slider-default {
+  height: 20px;
+  margin-right: 11px;
+}
+
+.ui-slider-default:after {
+  background: #ddd;
+  height: 5px;
+  top: 8px;
+  left: 11px;
+}
+
+.ui-slider-default ui-slider-thumb,
+.ui-slider-default [ui-slider-thumb],
+.ui-slider-default .ui-slider-thumb {
+  width : 11px;
+  height : 21px;
+  background: #ccc;
+  border: solid 1px #aaa;
+}
+
+.ui-slider-default ui-slider-thumb:hover,
+.ui-slider-default [ui-slider-thumb]:hover,
+.ui-slider-default .ui-slider-thumb:hover {
+  background: #ddd;
+}
+
+
+.ui-slider-default ui-slider-range,
+.ui-slider-default [ui-slider-range],
+.ui-slider-default .ui-slider-range{
+  background: #aaa;
+  top: 8px;
+  height: 5px;
+  margin-left: 11px;
+}
