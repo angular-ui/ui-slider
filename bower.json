@@ -5,7 +5,9 @@
   "author": "https://github.com/angular-ui/ui-slider/graphs/contributors",
   "license": "MIT",
   "homepage": "http://angular-ui.github.com",
-  "main": "./ui-slider.js",
+  "main": [
+    "src/slider.js"
+  ],
   "ignore": [
     "**/.*",
     "node_modules",
