@@ -63,7 +63,9 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                 // Watch ui-slider (byVal) for changes and update
                 scope.$watch(attrs.uiSlider, function(newVal) {
                     init();
-                    elm.slider('option', newVal);
+                    if(newVal != undefined) {
+                      elm.slider('option', newVal);
+                    }
                 }, true);
 
                 // Late-bind to prevent compiler clobbering
