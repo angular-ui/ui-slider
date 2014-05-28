@@ -15,6 +15,9 @@
 			padding: 1em;
 			background-color: #FFE;
 		}
+		li {
+			list-style-position: inside;
+		}
 		.sliderExample {
 			width: 640px;
 			padding: 2em;
@@ -45,13 +48,16 @@
 <body ng-controller="sliderDemoCtrl">
 
 	<h1>AngularUI Slider demo</h1>
-	<div class="sliderExample">
+	<ol>
+	<li>
+	<div class="sliderExample"><a name="ex1"></a>
 		<strong>Step slider with event listeners (see console log)</strong>
 		<div ui-slider min="0" max="50" ng-model="demoVals.sliderExample1"></div>
 		<input type="text" ng-model="demoVals.sliderExample1" />	
 	</div>
-	
-	<div class="sliderExample">
+	</li>
+	<li>
+	<div class="sliderExample"><a name="ex2"></a>
 		<div>
 			<strong>Slider - vertical, step value 5</strong>
 		</div>
@@ -74,62 +80,69 @@
 			<input type="text" ng-model="demoVals.sliderExample2" />
 		</div>
 	</div>
-	
-	<div class="sliderExample">
+	</li>
+	<li>
+	<div class="sliderExample"><a name="ex3"></a>
 		<strong>Slider - start value 14</strong>
 		<div ui-slider min="0" max="20" ng-model="demoVals.sliderExample3"></div>
 		<input type="text" ng-model="demoVals.sliderExample3" />
 	</div>
-
-	<div class="sliderExample">
+	</li>
+	<li>
+	<div class="sliderExample"><a name="ex4"></a>
 		<strong>Dual sliders - start value 14</strong>
 		<div ui-slider min="0" max="20" ng-model="demoVals.sliderExample4"></div>
 		<div ui-slider min="0" max="20" ng-model="demoVals.sliderExample4"></div>
 		<input type="text" ng-model="demoVals.sliderExample4" />
 	</div>
-
-	<div class="sliderExample">
+	</li>
+	<li>
+	<div class="sliderExample"><a name="ex5"></a>
 		<strong>Slider - default min and max</strong>
 		<div ui-slider ng-model="demoVals.sliderExample5"></div>
 		<input type="text" ng-model="demoVals.sliderExample5" />
 	</div>
-
-	<div class="sliderExample">
+	</li>
+	<li>
+	<div class="sliderExample"><a name="ex6"></a>
 		<strong>Slider - range max (instead of min)</strong>
 		<div ui-slider="{range: 'max'}" ng-model="demoVals.sliderExample6"></div>
 		<input type="text" ng-model="demoVals.sliderExample6" />
 	</div>
-
-	<h2>Examples with decimals</h2>
-	
-	<div class="sliderExample">
+	</li>
+	<li>
+	<div class="sliderExample"><a name="ex7"></a>
 		<strong>Slider - range values, step with decimals</strong>
 		<div ui-slider="{range: true}" min="0" max="100" step="0.01" use-decimals ng-model="demoVals.sliderExample7"></div>
 		<input type="text" ng-model="demoVals.sliderExample7" />
 	</div>
-
-	<div class="sliderExample">
+	</li>
+	<li>
+	<div class="sliderExample"><a name="ex8"></a>
 		<strong>Slider - start value 0.34, step with decimals (try increase/decrease with arrow keys)</strong>
 		<div ui-slider min="0.00" max="2.00" step="0.01" use-decimals ng-model="demoVals.sliderExample8"></div>
 		<div ui-slider min="0.00" max="2.00" step="0.01" use-decimals ng-model="demoVals.sliderExample8"></div>
 		<input type="text" ng-model="demoVals.sliderExample8" />
 	</div>
-
-	<div class="sliderExample">
+	</li>
+	<li>
+	<div class="sliderExample"><a name="ex9"></a>
 		<strong>Slider - start value [-0.52, 0.54], step with decimals from min -1.00 to max 1.00 (try increase/decrease with arrow keys)</strong>
 		<div ui-slider="{range: true}" min="-1.00" max="1.00" step="0.01" use-decimals ng-model="demoVals.sliderExample9"></div>
 		<div ui-slider="{range: true}" min="-1.00" max="1.00" step="0.01" use-decimals ng-model="demoVals.sliderExample9"></div>
 		<input type="text" ng-model="demoVals.sliderExample9" />
 	</div>
-
-	<div class="sliderExample">
+	</li>
+	<li>
+	<div class="sliderExample">><a name="ex10"></a>
 		<strong>Slider - start value -0.37, step with decimals from min -1.00 to max 1.00</strong>
 		<div ui-slider min="-1.00" max="1.00" step="0.01" use-decimals ng-model="demoVals.sliderExample10"></div>
 		<div ui-slider min="-1.00" max="1.00" step="0.01" use-decimals ng-model="demoVals.sliderExample10"></div>
 		<input type="text" ng-model="demoVals.sliderExample10" />
 	</div>
-
-	<div class="sliderExample">
+	</li>
+	<li>
+	<div class="sliderExample"><a name="ex11"></a>
 		<strong>Simple <a href="http://jqueryui.com/slider/#colorpicker">Colorpicker</a></strong>
 		<div id="red" ui-slider="colorpicker.options" ng-model="colorpicker.red"></div>
 		Red: <input ng-model="colorpicker.red">
@@ -139,8 +152,9 @@
 		Blue: <input ng-model="colorpicker.blue">
 		<div id="swatch"></div>
 	</div>
-	
-	<div class="sliderExample">
+	</li>
+	<li>
+	<div class="sliderExample"><a name="ex12"></a>
 		<strong>Step slider with event listeners(see console log)</strong>
 		<div ui-slider="slider.options" min="0" max="50" ng-model="demoVals.sliderExample1"></div>
 		<input type="text" ng-model="demoVals.sliderExample1" />
@@ -173,8 +187,8 @@ app.factory('uiSliderConfig', function ($log) {
 });
 </pre>	
 	</div>	
-
-	
+	</li>
+	</ol>
 	<script type="text/javascript" src="bower_components/jquery/jquery.min.js"></script>
   	<script type="text/javascript" src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
   	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>	
