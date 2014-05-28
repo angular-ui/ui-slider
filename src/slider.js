@@ -52,6 +52,7 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                         if (!!newVal) {
                             init();
                             elm.slider('option', property, parseNumber(newVal, useDecimals));
+                            ngModel.$render();
                         }
                     });
                 });
