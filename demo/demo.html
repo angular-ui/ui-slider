@@ -10,8 +10,13 @@
 		body {
 			padding: 2em;
 		}
+		pre {
+			border: 1px solid #999;
+			padding: 1em;
+			background-color: #FFE;
+		}
 		.sliderExample {
-			width: 500px;
+			width: 640px;
 			padding: 2em;
 			background-color: #f5f5f5;
 			border: 1px solid #f0f0f0;
@@ -41,9 +46,9 @@
 
 	<h1>AngularUI Slider demo</h1>
 	<div class="sliderExample">
-		<strong>Step slider</strong>
+		<strong>Step slider with event listeners (see console log)</strong>
 		<div ui-slider min="0" max="50" ng-model="demoVals.sliderExample1"></div>
-		<input type="text" ng-model="demoVals.sliderExample1" />
+		<input type="text" ng-model="demoVals.sliderExample1" />	
 	</div>
 	
 	<div class="sliderExample">
@@ -134,6 +139,40 @@
 		Blue: <input ng-model="colorpicker.blue">
 		<div id="swatch"></div>
 	</div>
+	
+	<div class="sliderExample">
+		<strong>Step slider with event listeners(see console log)</strong>
+		<div ui-slider="slider.options" min="0" max="50" ng-model="demoVals.sliderExample1"></div>
+		<input type="text" ng-model="demoVals.sliderExample1" />
+
+		<p>This slider has event listeners attached to it, assigned by defining the listeners in the option passed to the slider. For example in controller:</p>
+		
+<pre>
+$scope.slider = {
+	'options': {
+		start: function (event, ui) { $log.info('Slider start'); },
+    	stop: function (event, ui) { $log.info('Slider stop'); }
+</pre>
+
+		<p>And in markup</p>
+		
+<pre>
+&lt;div ui-slider="slider.options" 
+     min="0" 
+     max="50" 
+     ng-model="demoVals.sliderExample1"&gt;&lt;/div&gt;
+		</pre>
+		
+		<p>Options may also be set in in service uiSliderConfig, ie:</p>
+<pre>
+app.factory('uiSliderConfig', function ($log) {
+	return {
+		start: function (event, ui) { $log.info('Slider start'); },
+		stop: function (event, ui) { $log.info('Slider stop'); }
+	};
+});
+</pre>	
+	</div>	
 
 	
 	<script type="text/javascript" src="bower_components/jquery/jquery.min.js"></script>
@@ -157,14 +196,34 @@
 				}
 			};
 		});
-		app.controller('sliderDemoCtrl', function($scope, colorpicker) {
+		
+		/*
+		// To set an option for all sliders
+		app.factory('uiSliderConfig', function ($log) {
+			return {
+		    	start: function (event, ui) { $log.info('Event: Slider start - set with uiSliderConfig', event); },
+		    	stop: function (event, ui) { $log.info('Event: Slider stop - set with uiSliderCOnfig', event); },
+			};
+		});
+		*/
+		
+		app.controller('sliderDemoCtrl', function($scope, $log, colorpicker) {
+		
 			function refreshSwatch (ev, ui) {
 				var red = $scope.colorpicker.red,
 					green = $scope.colorpicker.green,
 					blue = $scope.colorpicker.blue;
 				colorpicker.refreshSwatch(red, green, blue);
 			}
-
+			
+			// Slider options with event handlers
+			$scope.slider = {
+				'options': {
+					start: function (event, ui) { $log.info('Event: Slider start - set with slider options', event); },
+    				stop: function (event, ui) { $log.info('Event: Slider stop - set with slider options', event); }
+				}
+			}
+    
 			$scope.demoVals = {
 				sliderExample3:     14,
 				sliderExample4:     14,
