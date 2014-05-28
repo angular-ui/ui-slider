@@ -82,13 +82,17 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                 ngModel.$render = function() {
                     init();
                     var method = options.range === true ? 'values' : 'value';
-
-                    if (!options.range && isNaN(ngModel.$viewValue) && !(ngModel.$viewValue instanceof Array))
+                    
+                    if (!options.range && isNaN(ngModel.$viewValue) && !(ngModel.$viewValue instanceof Array)) {
                         ngModel.$viewValue = 0;
+                    }
+                    else if (options.range && !angular.isDefined(ngModel.$viewValue)) {
+                            ngModel.$viewValue = [0,0];
+                    }
 
                     // Do some sanity check of range values
                     if (options.range === true) {
-
+                        
                         // Check outer bounds for min and max values
                         if (angular.isDefined(options.min) && options.min > ngModel.$viewValue[0]) {
                             ngModel.$viewValue[0] = options.min;
@@ -98,7 +102,7 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                         }
 
                         // Check min and max range values
-                        if (ngModel.$viewValue[0] >= ngModel.$viewValue[1]) {
+                        if (ngModel.$viewValue[0] > ngModel.$viewValue[1]) {
                             // Min value should be less to equal to max value
                             if (prevRangeValues.min >= ngModel.$viewValue[1])
                                 ngModel.$viewValue[0] = prevRangeValues.min;
