@@ -83,7 +83,7 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                     init();
                     var method = options.range === true ? 'values' : 'value';
 
-                    if (isNaN(ngModel.$viewValue) && !(ngModel.$viewValue instanceof Array))
+                    if (!options.range && isNaN(ngModel.$viewValue) && !(ngModel.$viewValue instanceof Array))
                         ngModel.$viewValue = 0;
 
                     // Do some sanity check of range values
