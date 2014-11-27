@@ -51,6 +51,7 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                     attrs.$observe(property, function(newVal) {
                         if (!!newVal) {
                             init();
+                            options[property] = parseNumber(newVal, useDecimals);
                             elm.slider('option', property, parseNumber(newVal, useDecimals));
                             ngModel.$render();
                         }
