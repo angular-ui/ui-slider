@@ -5,8 +5,8 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
     uiSliderConfig = uiSliderConfig || {};
     return {
         require: 'ngModel',
-        compile: function () {
-            return function (scope, elm, attrs, ngModel) {
+        compile: function() {
+            var preLink = function (scope, elm, attrs, ngModel) {
 
                 function parseNumber(n, decimals) {
                     return (decimals) ? parseFloat(n) : parseInt(n, 10);
@@ -135,6 +135,31 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                     destroy();
                 });
             };
+
+            return {
+                pre: preLink,
+                post: postLink
+            };
         }
     };
 }]);
+
+function postLink(scope, element, attrs, ngModel) {
+    // Add tick marks if 'tick' and 'step' attributes have been setted on element.
+    // Support horizontal slider bar so far. 'tick' and 'step' attributes are required.
+    var options = angular.extend({}, scope.$eval(attrs.uiSlider));
+    var properties = ['max', 'step', 'tick'];
+    angular.forEach(properties, function(property) {
+        if (angular.isDefined(attrs[property])) {
+            options[property] = attrs[property];
+        }
+    });
+    if (angular.isDefined(options['tick']) && angular.isDefined(options['step'])) {
+        var total = parseInt(parseInt(options['max'])/parseInt(options['step']));
+        for (var i = total; i >= 0; i--) {
+            console.log(i);
+            var left = ((i / total) * 100) + '%';
+            $("<div/>").addClass("ui-slider-tick").appendTo(element).css({left: left});
+        };
+    }
+}

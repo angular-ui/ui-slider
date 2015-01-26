@@ -5,7 +5,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title>AngularUI - Slider demo</title>
 	<base href=".."></base>
-  	<link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="demo/css/slider.css">
 	<style>
 		body {
 			padding: 2em;
@@ -188,10 +189,16 @@ app.factory('uiSliderConfig', function ($log) {
 </pre>	
 	</div>	
 	</li>
+		<li>
+			<div class="sliderExample"><a name="ex13"></a>
+				<strong>Slider with tick marks. Support horizontal slider bar so far. 'tick' and 'step' attributes are required.</strong>
+				<div ui-slider data-min="0" data-max="20" data-step="5" data-tick ng-model="demoVals.sliderExample13"></div>
+			</div>
+		</li>
 	</ol>
-	<script type="text/javascript" src="bower_components/jquery/jquery.min.js"></script>
-  	<script type="text/javascript" src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
-  	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>	
+	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
 	<script type="text/javascript" src="src/slider.js"></script>	
 	<script>
 		var app = angular.module('sliderDemoApp', ['ui.slider']);
