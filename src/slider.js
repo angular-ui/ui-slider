@@ -136,6 +136,25 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                 });
             };
 
+            var postLink = function (scope, element, attrs, ngModel) {
+                // Add tick marks if 'tick' and 'step' attributes have been setted on element.
+                // Support horizontal slider bar so far. 'tick' and 'step' attributes are required.
+                var options = angular.extend({}, scope.$eval(attrs.uiSlider));
+                var properties = ['max', 'step', 'tick'];
+                angular.forEach(properties, function(property) {
+                    if (angular.isDefined(attrs[property])) {
+                        options[property] = attrs[property];
+                    }
+                });
+                if (angular.isDefined(options['tick']) && angular.isDefined(options['step'])) {
+                    var total = parseInt(parseInt(options['max'])/parseInt(options['step']));
+                    for (var i = total; i >= 0; i--) {
+                        var left = ((i / total) * 100) + '%';
+                        $("<div/>").addClass("ui-slider-tick").appendTo(element).css({left: left});
+                    };
+                }
+            }
+
             return {
                 pre: preLink,
                 post: postLink
@@ -143,23 +162,3 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
         }
     };
 }]);
-
-function postLink(scope, element, attrs, ngModel) {
-    // Add tick marks if 'tick' and 'step' attributes have been setted on element.
-    // Support horizontal slider bar so far. 'tick' and 'step' attributes are required.
-    var options = angular.extend({}, scope.$eval(attrs.uiSlider));
-    var properties = ['max', 'step', 'tick'];
-    angular.forEach(properties, function(property) {
-        if (angular.isDefined(attrs[property])) {
-            options[property] = attrs[property];
-        }
-    });
-    if (angular.isDefined(options['tick']) && angular.isDefined(options['step'])) {
-        var total = parseInt(parseInt(options['max'])/parseInt(options['step']));
-        for (var i = total; i >= 0; i--) {
-            console.log(i);
-            var left = ((i / total) * 100) + '%';
-            $("<div/>").addClass("ui-slider-tick").appendTo(element).css({left: left});
-        };
-    }
-}
