@@ -1,0 +1,7 @@
+.ui-slider-tick {
+  position: absolute;
+  background-color: #aaa;
+  width: 2px;
+  height: 8px;
+  top: 16px;
+}
