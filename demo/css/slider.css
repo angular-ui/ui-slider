@@ -5,3 +5,13 @@
   height: 8px;
   top: 16px;
 }
+
+.ui-slider {
+  position: relative;
+}
+
+.ui-slider-out-of-bounds {
+  position: absolute;
+  background-color: #EEE;
+  height: 100%;
+}
