@@ -195,6 +195,30 @@ app.factory('uiSliderConfig', function ($log) {
 				<div ui-slider data-min="0" data-max="20" data-step="5" data-tick ng-model="demoVals.sliderExample13"></div>
 			</div>
 		</li>
+		<li>
+			<div class="sliderExample"><a name="ex14"></a>
+				<strong>Slider with lower and upper bounds.</strong>
+				<div ui-slider min="0" max="100" step="10" upper-bound="90" ng-model="demoVals.sliderExample14a">
+					<div class="ui-slider-out-of-bounds" style="right:0; width: 10%"></div>
+				</div>
+				<input type="text" ng-model="demoVals.sliderExample14a" />
+				<div ui-slider min="0" max="100" step="10" lower-bound="30" upper-bound="60" ng-model="demoVals.sliderExample14b">
+					<div class="ui-slider-out-of-bounds" style="left:0; width: 30%"></div>
+					<div class="ui-slider-out-of-bounds" style="right:0; width: 40%"></div>
+				</div>
+				<input type="text" ng-model="demoVals.sliderExample14b" />
+			</div>
+		</li>
+		<li>
+			<div class="sliderExample"><a name="ex15"></a>
+				<strong>Slider - range values with lower and uppwer bounds</strong>
+				<div ui-slider="{range: true}" min="0" max="100" step="0.01" lower-bound="20" upper-bound="90" use-decimals ng-model="demoVals.sliderExample15">
+					<div class="ui-slider-out-of-bounds" style="left:0; width: 20%"></div>
+					<div class="ui-slider-out-of-bounds" style="right:0; width: 10%"></div>
+				</div>
+				<input type="text" ng-model="demoVals.sliderExample15" />
+			</div>
+		</li>
 	</ol>
 	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript" src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
@@ -243,7 +267,7 @@ app.factory('uiSliderConfig', function ($log) {
 					start: function (event, ui) { $log.info('Event: Slider start - set with slider options', event); },
     				stop: function (event, ui) { $log.info('Event: Slider stop - set with slider options', event); }
 				}
-			}
+			};
     
 			$scope.demoVals = {
 				sliderExample3:     14,
@@ -251,7 +275,10 @@ app.factory('uiSliderConfig', function ($log) {
 				sliderExample5:     50,
 				sliderExample8:     0.34,
 				sliderExample9:     [-0.52, 0.54],
-				sliderExample10:     -0.37
+				sliderExample10:     -0.37,
+				sliderExample14a:	50,
+				sliderExample14b:	50,
+				sliderExample15:	[30, 60]
 			};
 
 			$scope.colorpicker = {
