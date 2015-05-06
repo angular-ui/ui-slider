@@ -129,11 +129,13 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                 }, true);
 
                 function destroy() {
-                    elm.slider('destroy');
+                    if (elm.hasClass('ui-slider')) {
+                        elm.slider('destroy');
+                    }
                 }
-                scope.$on("$destroy", function() {
-                    destroy();
-                });
+
+                scope.$on("$destroy", destroy);
+                elm.one('$destroy', destroy);
             };
 
             var postLink = function (scope, element, attrs, ngModel) {
