@@ -113,7 +113,7 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
 
                     if (valuesChanged) {
                         setTimeout(function() {
-                            elm.slider('value', ui.values || ui.values);
+                            elm.slider('value', ui.values || ui.value);
                         }, 0);
 
                         return false;
