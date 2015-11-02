@@ -12,7 +12,8 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                     return (decimals) ? parseFloat(n) : parseInt(n, 10);
                 }
 
-                var options = angular.extend(scope.$eval(attrs.uiSlider) || {}, uiSliderConfig);
+                var directiveOptions = $.extend(true, {}, scope.$eval(attrs.uiSlider));
+                var options = angular.extend(directiveOptions || {}, uiSliderConfig);
                 // Object holding range values
                 var prevRangeValues = {
                     min: null,
