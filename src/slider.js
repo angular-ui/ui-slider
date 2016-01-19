@@ -110,6 +110,7 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
 
 
                     ngModel.$setViewValue(ui.values || ui.value);
+                    $(ui.handle).find('.ui-slider-tip').text(ui.value);
                     scope.$apply();
 
                     if (valuesChanged) {
@@ -190,7 +191,7 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                 // Add tick marks if 'tick' and 'step' attributes have been setted on element.
                 // Support horizontal slider bar so far. 'tick' and 'step' attributes are required.
                 var options = angular.extend({}, scope.$eval(attrs.uiSlider));
-                var properties = ['min', 'max', 'step', 'tick'];
+                var properties = ['min', 'max', 'step', 'tick', 'tip'];
                 angular.forEach(properties, function(property) {
                     if (angular.isDefined(attrs[property])) {
                         options[property] = attrs[property];
@@ -202,6 +203,9 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                         var left = ((i / total) * 100) + '%';
                         $("<div/>").addClass("ui-slider-tick").appendTo(element).css({left: left});
                     };
+                }
+                if(angular.isDefined(options['tip'])) {
+                    $timeout(function(){element.find('.ui-slider-handle').append('<div class="ui-slider-tip">'+ngModel.$viewValue+'</div>')},10);
                 }
             }
 

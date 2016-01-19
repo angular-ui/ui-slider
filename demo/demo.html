@@ -54,7 +54,7 @@
 	<div class="sliderExample"><a name="ex1"></a>
 		<strong>Step slider with event listeners (see console log)</strong>
 		<div ui-slider min="0" max="200" ng-model="demoVals.sliderExample1"></div>
-		<input type="text" ng-model="demoVals.sliderExample1" />	
+		<input type="text" ng-model="demoVals.sliderExample1" />
 	</div>
 	</li>
 	<li>
@@ -161,7 +161,7 @@
 		<input type="text" ng-model="demoVals.sliderExample1" />
 
 		<p>This slider has event listeners attached to it, assigned by defining the listeners in the option passed to the slider. For example in controller:</p>
-		
+
 <pre>
 $scope.slider = {
 	'options': {
@@ -170,14 +170,14 @@ $scope.slider = {
 </pre>
 
 		<p>And in markup</p>
-		
+
 <pre>
-&lt;div ui-slider="slider.options" 
-     min="0" 
-     max="50" 
+&lt;div ui-slider="slider.options"
+     min="0"
+     max="50"
      ng-model="demoVals.sliderExample1"&gt;&lt;/div&gt;
 		</pre>
-		
+
 		<p>Options may also be set in in service uiSliderConfig, ie:</p>
 <pre>
 app.factory('uiSliderConfig', function ($log) {
@@ -186,8 +186,8 @@ app.factory('uiSliderConfig', function ($log) {
 		stop: function (event, ui) { $log.info('Slider stop'); }
 	};
 });
-</pre>	
-	</div>	
+</pre>
+	</div>
 	</li>
 		<li>
 			<div class="sliderExample"><a name="ex13"></a>
@@ -219,11 +219,17 @@ app.factory('uiSliderConfig', function ($log) {
 				<input type="text" ng-model="demoVals.sliderExample15" />
 			</div>
 		</li>
+		<li>
+			<div class="sliderExample"><a name="ex16"></a>
+				<strong>Slider with tip.</strong>
+				<div ui-slider data-min="0" data-max="80" data-tip ng-model="demoVals.sliderExample16"></div>
+			</div>
+		</li>
 	</ol>
 	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript" src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
-	<script type="text/javascript" src="src/slider.js"></script>	
+	<script type="text/javascript" src="src/slider.js"></script>
 	<script>
 		var app = angular.module('sliderDemoApp', ['ui.slider']);
 		app.factory('colorpicker', function () {
@@ -241,7 +247,7 @@ app.factory('uiSliderConfig', function ($log) {
 				}
 			};
 		});
-		
+
 		/*
 		// To set an option for all sliders
 		app.factory('uiSliderConfig', function ($log) {
@@ -251,16 +257,16 @@ app.factory('uiSliderConfig', function ($log) {
 			};
 		});
 		*/
-		
+
 		app.controller('sliderDemoCtrl', function($scope, $log, colorpicker) {
-		
+
 			function refreshSwatch (ev, ui) {
 				var red = $scope.colorpicker.red,
 					green = $scope.colorpicker.green,
 					blue = $scope.colorpicker.blue;
 				colorpicker.refreshSwatch(red, green, blue);
 			}
-			
+
 			// Slider options with event handlers
 			$scope.slider = {
 				'options': {
@@ -268,7 +274,7 @@ app.factory('uiSliderConfig', function ($log) {
     				stop: function (event, ui) { $log.info('Event: Slider stop - set with slider options', event); }
 				}
 			};
-    
+
 			$scope.demoVals = {
 				sliderExample3:     14,
 				sliderExample4:     14,
@@ -278,7 +284,8 @@ app.factory('uiSliderConfig', function ($log) {
 				sliderExample10:     -0.37,
 				sliderExample14a:	50,
 				sliderExample14b:	50,
-				sliderExample15:	[30, 60]
+				sliderExample15:	[30, 60],
+				sliderExample16:	21
 			};
 
 			$scope.colorpicker = {
