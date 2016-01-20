@@ -4,9 +4,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title>AngularUI - Slider demo</title>
-	<base href=".."></base>
-	<link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.css">
-	<link rel="stylesheet" href="demo/css/slider.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="css/slider.css">
 	<style>
 		body {
 			padding: 2em;
@@ -226,10 +225,10 @@ app.factory('uiSliderConfig', function ($log) {
 			</div>
 		</li>
 	</ol>
-	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-	<script type="text/javascript" src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
-	<script type="text/javascript" src="src/slider.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+	<script type="text/javascript" src="../src/slider.js"></script>
 	<script>
 		var app = angular.module('sliderDemoApp', ['ui.slider']);
 		app.factory('colorpicker', function () {
