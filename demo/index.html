@@ -4,25 +4,17 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>AngularUI - Slider demo</title>
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css">
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
         <link rel="stylesheet" href="css/slider.css">
         <style>
-            body {
-                padding: 2em;
-            }
-            pre {
-                border: 1px solid #999;
-                padding: 1em;
-                background-color: #FFE;
-            }
             li {
                 list-style-position: inside;
             }
             .sliderExample {
                 width: 640px;
                 padding: 2em;
-                background-color: #f5f5f5;
-                border: 1px solid #f0f0f0;
+                border: 1px solid #CCC;
                 margin: 2em;
             }
             .sliderExample > div {
@@ -45,9 +37,11 @@
             #blue .ui-slider-handle { border-color: #729fcf; }
         </style>
     </head>
-    <body ng-controller="sliderDemoCtrl">
+    <body ng-controller="sliderDemoCtrl" class="container">
 
-        <h1>AngularUI Slider demo</h1>
+        <div class="page-header">
+            <h1>Slider</h1>
+        </div>
         <ol>
             <li>
                 <div class="sliderExample"><a name="ex1"></a>
@@ -155,7 +149,7 @@
             </li>
             <li>
                 <div class="sliderExample"><a name="ex12"></a>
-                    <strong>Step slider with event listeners(see console log)</strong>
+                    <strong>Step slider with event listeners (see console log)</strong>
                     <div ui-slider="slider.options" min="0" max="50" ng-model="demoVals.sliderExample1"></div>
                     <input type="text" ng-model="demoVals.sliderExample1" />
 
@@ -167,8 +161,7 @@ $scope.slider = {
         start: function (event, ui) { $log.info('Slider start'); },
         stop: function (event, ui) { $log.info('Slider stop'); }
         }
-    }
-                    </pre>
+    }</pre>
 
                     <p>And in markup:</p>
 
@@ -176,8 +169,7 @@ $scope.slider = {
 &lt;div ui-slider="slider.options"
      min="0"
      max="50"
-     ng-model="demoVals.sliderExample1"&gt;&lt;/div&gt;
-                    </pre>
+     ng-model="demoVals.sliderExample1"&gt;&lt;/div&gt;</pre>
 
                     <p>Options may also be set in in service uiSliderConfig, ie:</p>
                     <pre>
@@ -186,19 +178,19 @@ app.factory('uiSliderConfig', function ($log) {
         start: function (event, ui) { $log.info('Slider start'); },
         stop: function (event, ui) { $log.info('Slider stop'); }
     };
-});
-                    </pre>
+});</pre>
                 </div>
             </li>
             <li>
                 <div class="sliderExample"><a name="ex13"></a>
-                    <strong>Slider with tick marks. Support horizontal slider bar so far. 'tick' and 'step' attributes are required.</strong>
+                    <strong>Slider with tick marks</strong>
+                    <p>Support horizontal slider bar so far. 'tick' and 'step' attributes are required.</p>
                     <div ui-slider data-min="0" data-max="20" data-step="5" data-tick ng-model="demoVals.sliderExample13"></div>
                 </div>
             </li>
             <li>
                 <div class="sliderExample"><a name="ex14"></a>
-                    <strong>Slider with lower and upper bounds.</strong>
+                    <strong>Slider with lower and upper bounds</strong>
                     <div ui-slider min="0" max="100" step="10" upper-bound="90" ng-model="demoVals.sliderExample14a">
                         <div class="ui-slider-out-of-bounds" style="right:0; width: 10%"></div>
                     </div>
@@ -222,7 +214,7 @@ app.factory('uiSliderConfig', function ($log) {
             </li>
             <li>
                 <div class="sliderExample"><a name="ex16"></a>
-                    <strong>Slider with tip.</strong>
+                    <strong>Slider with tip</strong>
                     <div ui-slider data-min="0" data-max="80" data-tip ng-model="demoVals.sliderExample16"></div>
                 </div>
             </li>
@@ -232,82 +224,82 @@ app.factory('uiSliderConfig', function ($log) {
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
         <script type="text/javascript" src="../src/slider.js"></script>
         <script>
-            var app = angular.module('sliderDemoApp', ['ui.slider']);
-            app.factory('colorpicker', function() {
-                function hexFromRGB(r, g, b) {
-                    var hex = [r.toString(16), g.toString(16), b.toString(16)];
-                    angular.forEach(hex, function(value, key) {
-                        if (value.length === 1)
-                            hex[key] = "0" + value;
-                    });
-                    return hex.join('').toUpperCase();
-                }
-                return {
-                    refreshSwatch: function(r, g, b) {
-                        var color = '#' + hexFromRGB(r, g, b);
-                        angular.element('#swatch').css('background-color', color);
-                    }
-                };
-            });
+                                var app = angular.module('sliderDemoApp', ['ui.slider']);
+                                app.factory('colorpicker', function() {
+                                    function hexFromRGB(r, g, b) {
+                                        var hex = [r.toString(16), g.toString(16), b.toString(16)];
+                                        angular.forEach(hex, function(value, key) {
+                                            if (value.length === 1)
+                                                hex[key] = "0" + value;
+                                        });
+                                        return hex.join('').toUpperCase();
+                                    }
+                                    return {
+                                        refreshSwatch: function(r, g, b) {
+                                            var color = '#' + hexFromRGB(r, g, b);
+                                            angular.element('#swatch').css('background-color', color);
+                                        }
+                                    };
+                                });
 
-            /*
-             // To set an option for all sliders
-             app.factory('uiSliderConfig', function ($log) {
-             return {
-             start: function (event, ui) { $log.info('Event: Slider start - set with uiSliderConfig', event); },
-             stop: function (event, ui) { $log.info('Event: Slider stop - set with uiSliderCOnfig', event); },
-             };
-             });
-             */
+                                /*
+                                 // To set an option for all sliders
+                                 app.factory('uiSliderConfig', function ($log) {
+                                 return {
+                                 start: function (event, ui) { $log.info('Event: Slider start - set with uiSliderConfig', event); },
+                                 stop: function (event, ui) { $log.info('Event: Slider stop - set with uiSliderCOnfig', event); },
+                                 };
+                                 });
+                                 */
 
-            app.controller('sliderDemoCtrl', function($scope, $log, colorpicker) {
+                                app.controller('sliderDemoCtrl', function($scope, $log, colorpicker) {
 
-                function refreshSwatch(ev, ui) {
-                    var red = $scope.colorpicker.red,
-                            green = $scope.colorpicker.green,
-                            blue = $scope.colorpicker.blue;
-                    colorpicker.refreshSwatch(red, green, blue);
-                }
+                                    function refreshSwatch(ev, ui) {
+                                        var red = $scope.colorpicker.red,
+                                                green = $scope.colorpicker.green,
+                                                blue = $scope.colorpicker.blue;
+                                        colorpicker.refreshSwatch(red, green, blue);
+                                    }
 
-                // Slider options with event handlers
-                $scope.slider = {
-                    'options': {
-                        start: function(event, ui) {
-                            $log.info('Event: Slider start - set with slider options', event);
-                        },
-                        stop: function(event, ui) {
-                            $log.info('Event: Slider stop - set with slider options', event);
-                        }
-                    }
-                };
+                                    // Slider options with event handlers
+                                    $scope.slider = {
+                                        'options': {
+                                            start: function(event, ui) {
+                                                $log.info('Event: Slider start - set with slider options', event);
+                                            },
+                                            stop: function(event, ui) {
+                                                $log.info('Event: Slider stop - set with slider options', event);
+                                            }
+                                        }
+                                    };
 
-                $scope.demoVals = {
-                    sliderExample3: 14,
-                    sliderExample4: 14,
-                    sliderExample5: 50,
-                    sliderExample8: 0.34,
-                    sliderExample9: [-0.52, 0.54],
-                    sliderExample10: -0.37,
-                    sliderExample14a: 50,
-                    sliderExample14b: 50,
-                    sliderExample15: [30, 60],
-                    sliderExample16: 21
-                };
+                                    $scope.demoVals = {
+                                        sliderExample3: 14,
+                                        sliderExample4: 14,
+                                        sliderExample5: 50,
+                                        sliderExample8: 0.34,
+                                        sliderExample9: [-0.52, 0.54],
+                                        sliderExample10: -0.37,
+                                        sliderExample14a: 50,
+                                        sliderExample14b: 50,
+                                        sliderExample15: [30, 60],
+                                        sliderExample16: 21
+                                    };
 
-                $scope.colorpicker = {
-                    red: 255,
-                    green: 140,
-                    blue: 60,
-                    options: {
-                        orientation: 'horizontal',
-                        min: 0,
-                        max: 255,
-                        range: 'min',
-                        change: refreshSwatch,
-                        slide: refreshSwatch
-                    }
-                };
-            });
+                                    $scope.colorpicker = {
+                                        red: 255,
+                                        green: 140,
+                                        blue: 60,
+                                        options: {
+                                            orientation: 'horizontal',
+                                            min: 0,
+                                            max: 255,
+                                            range: 'min',
+                                            change: refreshSwatch,
+                                            slide: refreshSwatch
+                                        }
+                                    };
+                                });
         </script>
     </body>
 </html>
