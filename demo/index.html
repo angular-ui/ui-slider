@@ -1,306 +1,313 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="sliderDemoApp" id="top">
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title>AngularUI - Slider demo</title>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-	<link rel="stylesheet" href="css/slider.css">
-	<style>
-		body {
-			padding: 2em;
-		}
-		pre {
-			border: 1px solid #999;
-			padding: 1em;
-			background-color: #FFE;
-		}
-		li {
-			list-style-position: inside;
-		}
-		.sliderExample {
-			width: 640px;
-			padding: 2em;
-			background-color: #f5f5f5;
-			border: 1px solid #f0f0f0;
-			margin: 2em;
-		}
-		.sliderExample > div {
-			margin: 1em 0;
-		}
-		.vertical-container {
-			width: 15%;
-			display: inline-block;
-		}
-		#swatch {
-			width: 100px;
-			height: 100px;
-			border: 1px solid black;
-		}
-		#red .ui-slider-range { background: #ef2929; }
-		#red .ui-slider-handle { border-color: #ef2929; }
-		#green .ui-slider-range { background: #8ae234; }
-		#green .ui-slider-handle { border-color: #8ae234; }
-		#blue .ui-slider-range { background: #729fcf; }
-		#blue .ui-slider-handle { border-color: #729fcf; }
-	</style>
-</head>
-<body ng-controller="sliderDemoCtrl">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>AngularUI - Slider demo</title>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="css/slider.css">
+        <style>
+            body {
+                padding: 2em;
+            }
+            pre {
+                border: 1px solid #999;
+                padding: 1em;
+                background-color: #FFE;
+            }
+            li {
+                list-style-position: inside;
+            }
+            .sliderExample {
+                width: 640px;
+                padding: 2em;
+                background-color: #f5f5f5;
+                border: 1px solid #f0f0f0;
+                margin: 2em;
+            }
+            .sliderExample > div {
+                margin: 1em 0;
+            }
+            .vertical-container {
+                width: 15%;
+                display: inline-block;
+            }
+            #swatch {
+                width: 100px;
+                height: 100px;
+                border: 1px solid black;
+            }
+            #red .ui-slider-range { background: #ef2929; }
+            #red .ui-slider-handle { border-color: #ef2929; }
+            #green .ui-slider-range { background: #8ae234; }
+            #green .ui-slider-handle { border-color: #8ae234; }
+            #blue .ui-slider-range { background: #729fcf; }
+            #blue .ui-slider-handle { border-color: #729fcf; }
+        </style>
+    </head>
+    <body ng-controller="sliderDemoCtrl">
 
-	<h1>AngularUI Slider demo</h1>
-	<ol>
-	<li>
-	<div class="sliderExample"><a name="ex1"></a>
-		<strong>Step slider with event listeners (see console log)</strong>
-		<div ui-slider min="0" max="200" ng-model="demoVals.sliderExample1"></div>
-		<input type="text" ng-model="demoVals.sliderExample1" />
-	</div>
-	</li>
-	<li>
-	<div class="sliderExample"><a name="ex2"></a>
-		<div>
-			<strong>Slider - vertical, step value 5</strong>
-		</div>
-		<div class="vertical-container">
-			<div ui-slider="{orientation: 'vertical', range: 'min'}"  min="0" max="25" step="5" ng-model="demoVals.sliderExample2"></div>
-		</div>
-		<div class="vertical-container">
-			<div ui-slider="{orientation: 'vertical', range: 'max'}"  min="0" max="25" step="5" ng-model="demoVals.sliderExample2"></div>
-		</div>
-		<div class="vertical-container">
-			<div ui-slider="{orientation: 'vertical', range: 'min'}"  min="0" max="25" step="5" ng-model="demoVals.sliderExample2"></div>
-		</div>
-		<div class="vertical-container">
-			<div ui-slider="{orientation: 'vertical', range: 'max'}"  min="0" max="25" step="5" ng-model="demoVals.sliderExample2"></div>
-		</div>
-		<div class="vertical-container">
-			<div ui-slider="{orientation: 'vertical', range: 'min'}"  min="0" max="25" step="5" ng-model="demoVals.sliderExample2"></div>
-		</div>
-		<div>
-			<input type="text" ng-model="demoVals.sliderExample2" />
-		</div>
-	</div>
-	</li>
-	<li>
-	<div class="sliderExample"><a name="ex3"></a>
-		<strong>Slider - start value 14</strong>
-		<div ui-slider min="0" max="20" ng-model="demoVals.sliderExample3"></div>
-		<input type="text" ng-model="demoVals.sliderExample3" />
-	</div>
-	</li>
-	<li>
-	<div class="sliderExample"><a name="ex4"></a>
-		<strong>Dual sliders - start value 14</strong>
-		<div ui-slider min="0" max="20" ng-model="demoVals.sliderExample4"></div>
-		<div ui-slider min="0" max="20" ng-model="demoVals.sliderExample4"></div>
-		<input type="text" ng-model="demoVals.sliderExample4" />
-	</div>
-	</li>
-	<li>
-	<div class="sliderExample"><a name="ex5"></a>
-		<strong>Slider - default min and max</strong>
-		<div ui-slider ng-model="demoVals.sliderExample5"></div>
-		<input type="text" ng-model="demoVals.sliderExample5" />
-	</div>
-	</li>
-	<li>
-	<div class="sliderExample"><a name="ex6"></a>
-		<strong>Slider - range max (instead of min)</strong>
-		<div ui-slider="{range: 'max'}" ng-model="demoVals.sliderExample6"></div>
-		<input type="text" ng-model="demoVals.sliderExample6" />
-	</div>
-	</li>
-	<li>
-	<div class="sliderExample"><a name="ex7"></a>
-		<strong>Slider - range values, step with decimals</strong>
-		<div ui-slider="{range: true}" min="0" max="100" step="0.01" use-decimals ng-model="demoVals.sliderExample7"></div>
-		<input type="text" ng-model="demoVals.sliderExample7" />
-	</div>
-	</li>
-	<li>
-	<div class="sliderExample"><a name="ex8"></a>
-		<strong>Slider - start value 0.34, step with decimals (try increase/decrease with arrow keys)</strong>
-		<div ui-slider min="0.00" max="2.00" step="0.01" use-decimals ng-model="demoVals.sliderExample8"></div>
-		<div ui-slider min="0.00" max="2.00" step="0.01" use-decimals ng-model="demoVals.sliderExample8"></div>
-		<input type="text" ng-model="demoVals.sliderExample8" />
-	</div>
-	</li>
-	<li>
-	<div class="sliderExample"><a name="ex9"></a>
-		<strong>Slider - start value [-0.52, 0.54], step with decimals from min -1.00 to max 1.00 (try increase/decrease with arrow keys)</strong>
-		<div ui-slider="{range: true}" min="-1.00" max="1.00" step="0.01" use-decimals ng-model="demoVals.sliderExample9"></div>
-		<div ui-slider="{range: true}" min="-1.00" max="1.00" step="0.01" use-decimals ng-model="demoVals.sliderExample9"></div>
-		<input type="text" ng-model="demoVals.sliderExample9" />
-	</div>
-	</li>
-	<li>
-	<div class="sliderExample"><a name="ex10"></a>
-		<strong>Slider - start value -0.37, step with decimals from min -1.00 to max 1.00</strong>
-		<div ui-slider min="-1.00" max="1.00" step="0.01" use-decimals ng-model="demoVals.sliderExample10"></div>
-		<div ui-slider min="-1.00" max="1.00" step="0.01" use-decimals ng-model="demoVals.sliderExample10"></div>
-		<input type="text" ng-model="demoVals.sliderExample10" />
-	</div>
-	</li>
-	<li>
-	<div class="sliderExample"><a name="ex11"></a>
-		<strong>Simple <a href="http://jqueryui.com/slider/#colorpicker">Colorpicker</a></strong>
-		<div id="red" ui-slider="colorpicker.options" ng-model="colorpicker.red"></div>
-		Red: <input ng-model="colorpicker.red">
-		<div id="green" ui-slider="colorpicker.options" ng-model="colorpicker.green"></div>
-		Green: <input ng-model="colorpicker.green">
-		<div id="blue" ui-slider="colorpicker.options" ng-model="colorpicker.blue"></div>
-		Blue: <input ng-model="colorpicker.blue">
-		<div id="swatch"></div>
-	</div>
-	</li>
-	<li>
-	<div class="sliderExample"><a name="ex12"></a>
-		<strong>Step slider with event listeners(see console log)</strong>
-		<div ui-slider="slider.options" min="0" max="50" ng-model="demoVals.sliderExample1"></div>
-		<input type="text" ng-model="demoVals.sliderExample1" />
+        <h1>AngularUI Slider demo</h1>
+        <ol>
+            <li>
+                <div class="sliderExample"><a name="ex1"></a>
+                    <strong>Step slider with event listeners (see console log)</strong>
+                    <div ui-slider min="0" max="200" ng-model="demoVals.sliderExample1"></div>
+                    <input type="text" ng-model="demoVals.sliderExample1" />
+                </div>
+            </li>
+            <li>
+                <div class="sliderExample"><a name="ex2"></a>
+                    <div>
+                        <strong>Slider - vertical, step value 5</strong>
+                    </div>
+                    <div class="vertical-container">
+                        <div ui-slider="{orientation: 'vertical', range: 'min'}"  min="0" max="25" step="5" ng-model="demoVals.sliderExample2"></div>
+                    </div>
+                    <div class="vertical-container">
+                        <div ui-slider="{orientation: 'vertical', range: 'max'}"  min="0" max="25" step="5" ng-model="demoVals.sliderExample2"></div>
+                    </div>
+                    <div class="vertical-container">
+                        <div ui-slider="{orientation: 'vertical', range: 'min'}"  min="0" max="25" step="5" ng-model="demoVals.sliderExample2"></div>
+                    </div>
+                    <div class="vertical-container">
+                        <div ui-slider="{orientation: 'vertical', range: 'max'}"  min="0" max="25" step="5" ng-model="demoVals.sliderExample2"></div>
+                    </div>
+                    <div class="vertical-container">
+                        <div ui-slider="{orientation: 'vertical', range: 'min'}"  min="0" max="25" step="5" ng-model="demoVals.sliderExample2"></div>
+                    </div>
+                    <div>
+                        <input type="text" ng-model="demoVals.sliderExample2" />
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="sliderExample"><a name="ex3"></a>
+                    <strong>Slider - start value 14</strong>
+                    <div ui-slider min="0" max="20" ng-model="demoVals.sliderExample3"></div>
+                    <input type="text" ng-model="demoVals.sliderExample3" />
+                </div>
+            </li>
+            <li>
+                <div class="sliderExample"><a name="ex4"></a>
+                    <strong>Dual sliders - start value 14</strong>
+                    <div ui-slider min="0" max="20" ng-model="demoVals.sliderExample4"></div>
+                    <div ui-slider min="0" max="20" ng-model="demoVals.sliderExample4"></div>
+                    <input type="text" ng-model="demoVals.sliderExample4" />
+                </div>
+            </li>
+            <li>
+                <div class="sliderExample"><a name="ex5"></a>
+                    <strong>Slider - default min and max</strong>
+                    <div ui-slider ng-model="demoVals.sliderExample5"></div>
+                    <input type="text" ng-model="demoVals.sliderExample5" />
+                </div>
+            </li>
+            <li>
+                <div class="sliderExample"><a name="ex6"></a>
+                    <strong>Slider - range max (instead of min)</strong>
+                    <div ui-slider="{range: 'max'}" ng-model="demoVals.sliderExample6"></div>
+                    <input type="text" ng-model="demoVals.sliderExample6" />
+                </div>
+            </li>
+            <li>
+                <div class="sliderExample"><a name="ex7"></a>
+                    <strong>Slider - range values, step with decimals</strong>
+                    <div ui-slider="{range: true}" min="0" max="100" step="0.01" use-decimals ng-model="demoVals.sliderExample7"></div>
+                    <input type="text" ng-model="demoVals.sliderExample7" />
+                </div>
+            </li>
+            <li>
+                <div class="sliderExample"><a name="ex8"></a>
+                    <strong>Slider - start value 0.34, step with decimals (try increase/decrease with arrow keys)</strong>
+                    <div ui-slider min="0.00" max="2.00" step="0.01" use-decimals ng-model="demoVals.sliderExample8"></div>
+                    <div ui-slider min="0.00" max="2.00" step="0.01" use-decimals ng-model="demoVals.sliderExample8"></div>
+                    <input type="text" ng-model="demoVals.sliderExample8" />
+                </div>
+            </li>
+            <li>
+                <div class="sliderExample"><a name="ex9"></a>
+                    <strong>Slider - start value [-0.52, 0.54], step with decimals from min -1.00 to max 1.00 (try increase/decrease with arrow keys)</strong>
+                    <div ui-slider="{range: true}" min="-1.00" max="1.00" step="0.01" use-decimals ng-model="demoVals.sliderExample9"></div>
+                    <div ui-slider="{range: true}" min="-1.00" max="1.00" step="0.01" use-decimals ng-model="demoVals.sliderExample9"></div>
+                    <input type="text" ng-model="demoVals.sliderExample9" />
+                </div>
+            </li>
+            <li>
+                <div class="sliderExample"><a name="ex10"></a>
+                    <strong>Slider - start value -0.37, step with decimals from min -1.00 to max 1.00</strong>
+                    <div ui-slider min="-1.00" max="1.00" step="0.01" use-decimals ng-model="demoVals.sliderExample10"></div>
+                    <div ui-slider min="-1.00" max="1.00" step="0.01" use-decimals ng-model="demoVals.sliderExample10"></div>
+                    <input type="text" ng-model="demoVals.sliderExample10" />
+                </div>
+            </li>
+            <li>
+                <div class="sliderExample"><a name="ex11"></a>
+                    <strong>Simple <a href="http://jqueryui.com/slider/#colorpicker">Colorpicker</a></strong>
+                    <div id="red" ui-slider="colorpicker.options" ng-model="colorpicker.red"></div>
+                    Red: <input ng-model="colorpicker.red">
+                    <div id="green" ui-slider="colorpicker.options" ng-model="colorpicker.green"></div>
+                    Green: <input ng-model="colorpicker.green">
+                    <div id="blue" ui-slider="colorpicker.options" ng-model="colorpicker.blue"></div>
+                    Blue: <input ng-model="colorpicker.blue">
+                    <div id="swatch"></div>
+                </div>
+            </li>
+            <li>
+                <div class="sliderExample"><a name="ex12"></a>
+                    <strong>Step slider with event listeners(see console log)</strong>
+                    <div ui-slider="slider.options" min="0" max="50" ng-model="demoVals.sliderExample1"></div>
+                    <input type="text" ng-model="demoVals.sliderExample1" />
 
-		<p>This slider has event listeners attached to it, assigned by defining the listeners in the option passed to the slider. For example in controller:</p>
+                    <p>This slider has event listeners attached to it, assigned by defining the listeners in the option passed to the slider. For example in controller:</p>
 
-<pre>
+                    <pre>
 $scope.slider = {
-	'options': {
-		start: function (event, ui) { $log.info('Slider start'); },
-    	stop: function (event, ui) { $log.info('Slider stop'); }
-</pre>
+    options: {
+        start: function (event, ui) { $log.info('Slider start'); },
+        stop: function (event, ui) { $log.info('Slider stop'); }
+        }
+    }
+                    </pre>
 
-		<p>And in markup</p>
+                    <p>And in markup:</p>
 
-<pre>
+                    <pre>
 &lt;div ui-slider="slider.options"
      min="0"
      max="50"
      ng-model="demoVals.sliderExample1"&gt;&lt;/div&gt;
-		</pre>
+                    </pre>
 
-		<p>Options may also be set in in service uiSliderConfig, ie:</p>
-<pre>
+                    <p>Options may also be set in in service uiSliderConfig, ie:</p>
+                    <pre>
 app.factory('uiSliderConfig', function ($log) {
-	return {
-		start: function (event, ui) { $log.info('Slider start'); },
-		stop: function (event, ui) { $log.info('Slider stop'); }
-	};
+    return {
+        start: function (event, ui) { $log.info('Slider start'); },
+        stop: function (event, ui) { $log.info('Slider stop'); }
+    };
 });
-</pre>
-	</div>
-	</li>
-		<li>
-			<div class="sliderExample"><a name="ex13"></a>
-				<strong>Slider with tick marks. Support horizontal slider bar so far. 'tick' and 'step' attributes are required.</strong>
-				<div ui-slider data-min="0" data-max="20" data-step="5" data-tick ng-model="demoVals.sliderExample13"></div>
-			</div>
-		</li>
-		<li>
-			<div class="sliderExample"><a name="ex14"></a>
-				<strong>Slider with lower and upper bounds.</strong>
-				<div ui-slider min="0" max="100" step="10" upper-bound="90" ng-model="demoVals.sliderExample14a">
-					<div class="ui-slider-out-of-bounds" style="right:0; width: 10%"></div>
-				</div>
-				<input type="text" ng-model="demoVals.sliderExample14a" />
-				<div ui-slider min="0" max="100" step="10" lower-bound="30" upper-bound="60" ng-model="demoVals.sliderExample14b">
-					<div class="ui-slider-out-of-bounds" style="left:0; width: 30%"></div>
-					<div class="ui-slider-out-of-bounds" style="right:0; width: 40%"></div>
-				</div>
-				<input type="text" ng-model="demoVals.sliderExample14b" />
-			</div>
-		</li>
-		<li>
-			<div class="sliderExample"><a name="ex15"></a>
-				<strong>Slider - range values with lower and uppwer bounds</strong>
-				<div ui-slider="{range: true}" min="0" max="100" step="0.01" lower-bound="20" upper-bound="90" use-decimals ng-model="demoVals.sliderExample15">
-					<div class="ui-slider-out-of-bounds" style="left:0; width: 20%"></div>
-					<div class="ui-slider-out-of-bounds" style="right:0; width: 10%"></div>
-				</div>
-				<input type="text" ng-model="demoVals.sliderExample15" />
-			</div>
-		</li>
-		<li>
-			<div class="sliderExample"><a name="ex16"></a>
-				<strong>Slider with tip.</strong>
-				<div ui-slider data-min="0" data-max="80" data-tip ng-model="demoVals.sliderExample16"></div>
-			</div>
-		</li>
-	</ol>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
-	<script type="text/javascript" src="../src/slider.js"></script>
-	<script>
-		var app = angular.module('sliderDemoApp', ['ui.slider']);
-		app.factory('colorpicker', function () {
-			function hexFromRGB(r, g, b) {
-				var hex = [r.toString(16), g.toString(16), b.toString(16)];
-				angular.forEach(hex, function(value, key) {
-					if (value.length === 1) hex[key] = "0" + value;
-				});
-				return hex.join('').toUpperCase();
-			}
-			return {
-				refreshSwatch: function (r, g, b) {
-					var color = '#' + hexFromRGB(r, g, b);
-					angular.element('#swatch').css('background-color', color);
-				}
-			};
-		});
+                    </pre>
+                </div>
+            </li>
+            <li>
+                <div class="sliderExample"><a name="ex13"></a>
+                    <strong>Slider with tick marks. Support horizontal slider bar so far. 'tick' and 'step' attributes are required.</strong>
+                    <div ui-slider data-min="0" data-max="20" data-step="5" data-tick ng-model="demoVals.sliderExample13"></div>
+                </div>
+            </li>
+            <li>
+                <div class="sliderExample"><a name="ex14"></a>
+                    <strong>Slider with lower and upper bounds.</strong>
+                    <div ui-slider min="0" max="100" step="10" upper-bound="90" ng-model="demoVals.sliderExample14a">
+                        <div class="ui-slider-out-of-bounds" style="right:0; width: 10%"></div>
+                    </div>
+                    <input type="text" ng-model="demoVals.sliderExample14a" />
+                    <div ui-slider min="0" max="100" step="10" lower-bound="30" upper-bound="60" ng-model="demoVals.sliderExample14b">
+                        <div class="ui-slider-out-of-bounds" style="left:0; width: 30%"></div>
+                        <div class="ui-slider-out-of-bounds" style="right:0; width: 40%"></div>
+                    </div>
+                    <input type="text" ng-model="demoVals.sliderExample14b" />
+                </div>
+            </li>
+            <li>
+                <div class="sliderExample"><a name="ex15"></a>
+                    <strong>Slider - range values with lower and uppwer bounds</strong>
+                    <div ui-slider="{range: true}" min="0" max="100" step="0.01" lower-bound="20" upper-bound="90" use-decimals ng-model="demoVals.sliderExample15">
+                        <div class="ui-slider-out-of-bounds" style="left:0; width: 20%"></div>
+                        <div class="ui-slider-out-of-bounds" style="right:0; width: 10%"></div>
+                    </div>
+                    <input type="text" ng-model="demoVals.sliderExample15" />
+                </div>
+            </li>
+            <li>
+                <div class="sliderExample"><a name="ex16"></a>
+                    <strong>Slider with tip.</strong>
+                    <div ui-slider data-min="0" data-max="80" data-tip ng-model="demoVals.sliderExample16"></div>
+                </div>
+            </li>
+        </ol>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+        <script type="text/javascript" src="../src/slider.js"></script>
+        <script>
+            var app = angular.module('sliderDemoApp', ['ui.slider']);
+            app.factory('colorpicker', function() {
+                function hexFromRGB(r, g, b) {
+                    var hex = [r.toString(16), g.toString(16), b.toString(16)];
+                    angular.forEach(hex, function(value, key) {
+                        if (value.length === 1)
+                            hex[key] = "0" + value;
+                    });
+                    return hex.join('').toUpperCase();
+                }
+                return {
+                    refreshSwatch: function(r, g, b) {
+                        var color = '#' + hexFromRGB(r, g, b);
+                        angular.element('#swatch').css('background-color', color);
+                    }
+                };
+            });
 
-		/*
-		// To set an option for all sliders
-		app.factory('uiSliderConfig', function ($log) {
-			return {
-		    	start: function (event, ui) { $log.info('Event: Slider start - set with uiSliderConfig', event); },
-		    	stop: function (event, ui) { $log.info('Event: Slider stop - set with uiSliderCOnfig', event); },
-			};
-		});
-		*/
+            /*
+             // To set an option for all sliders
+             app.factory('uiSliderConfig', function ($log) {
+             return {
+             start: function (event, ui) { $log.info('Event: Slider start - set with uiSliderConfig', event); },
+             stop: function (event, ui) { $log.info('Event: Slider stop - set with uiSliderCOnfig', event); },
+             };
+             });
+             */
 
-		app.controller('sliderDemoCtrl', function($scope, $log, colorpicker) {
+            app.controller('sliderDemoCtrl', function($scope, $log, colorpicker) {
 
-			function refreshSwatch (ev, ui) {
-				var red = $scope.colorpicker.red,
-					green = $scope.colorpicker.green,
-					blue = $scope.colorpicker.blue;
-				colorpicker.refreshSwatch(red, green, blue);
-			}
+                function refreshSwatch(ev, ui) {
+                    var red = $scope.colorpicker.red,
+                            green = $scope.colorpicker.green,
+                            blue = $scope.colorpicker.blue;
+                    colorpicker.refreshSwatch(red, green, blue);
+                }
 
-			// Slider options with event handlers
-			$scope.slider = {
-				'options': {
-					start: function (event, ui) { $log.info('Event: Slider start - set with slider options', event); },
-    				stop: function (event, ui) { $log.info('Event: Slider stop - set with slider options', event); }
-				}
-			};
+                // Slider options with event handlers
+                $scope.slider = {
+                    'options': {
+                        start: function(event, ui) {
+                            $log.info('Event: Slider start - set with slider options', event);
+                        },
+                        stop: function(event, ui) {
+                            $log.info('Event: Slider stop - set with slider options', event);
+                        }
+                    }
+                };
 
-			$scope.demoVals = {
-				sliderExample3:     14,
-				sliderExample4:     14,
-				sliderExample5:     50,
-				sliderExample8:     0.34,
-				sliderExample9:     [-0.52, 0.54],
-				sliderExample10:     -0.37,
-				sliderExample14a:	50,
-				sliderExample14b:	50,
-				sliderExample15:	[30, 60],
-				sliderExample16:	21
-			};
+                $scope.demoVals = {
+                    sliderExample3: 14,
+                    sliderExample4: 14,
+                    sliderExample5: 50,
+                    sliderExample8: 0.34,
+                    sliderExample9: [-0.52, 0.54],
+                    sliderExample10: -0.37,
+                    sliderExample14a: 50,
+                    sliderExample14b: 50,
+                    sliderExample15: [30, 60],
+                    sliderExample16: 21
+                };
 
-			$scope.colorpicker = {
-				red: 255,
-				green: 140,
-				blue: 60,
-				options: {
-					orientation: 'horizontal',
-					min: 0,
-					max: 255,
-					range: 'min',
-					change: refreshSwatch,
-					slide: refreshSwatch
-				}
-			};
-		});
-	</script>
-</body>
+                $scope.colorpicker = {
+                    red: 255,
+                    green: 140,
+                    blue: 60,
+                    options: {
+                        orientation: 'horizontal',
+                        min: 0,
+                        max: 255,
+                        range: 'min',
+                        change: refreshSwatch,
+                        slide: refreshSwatch
+                    }
+                };
+            });
+        </script>
+    </body>
 </html>
