@@ -23,6 +23,7 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                 // convenience properties
                 var properties = ['min', 'max', 'step', 'lowerBound', 'upperBound'];
                 var useDecimals = (!angular.isUndefined(attrs.useDecimals)) ? true : false;
+                var updateOn = (angular.isDefined(options['updateOn'])) ? options['updateOn'] : 'slide'
 
                 var init = function() {
                     // When ngModel is assigned an array of values then range is expected to be true.
@@ -75,7 +76,7 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                 $timeout(init, 0, true);
 
                 // Update model value from slider
-                elm.bind('slide', function(event, ui) {
+                elm.bind(updateOn, function(event, ui) {
                     var valuesChanged;
 
                     if (ui.values) {

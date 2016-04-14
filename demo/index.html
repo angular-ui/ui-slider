@@ -218,6 +218,14 @@ app.factory('uiSliderConfig', function ($log) {
                     <div ui-slider data-min="0" data-max="80" data-tip ng-model="demoVals.sliderExample16"></div>
                 </div>
             </li>
+            <li>
+                <div class="sliderExample"><a name="ex17"></a>
+                    <strong>Slider - trigger update on both slidestop & slide events</strong>
+                    <div ui-slider="{updateOn: 'slidestop slide'}" min="0" max="100" ng-model="demoVals.sliderExample17"></div>
+                    <input type="text" ng-model="demoVals.sliderExample17" />
+                </div>
+            </li>
+
         </ol>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
@@ -283,7 +291,8 @@ app.factory('uiSliderConfig', function ($log) {
                                         sliderExample14a: 50,
                                         sliderExample14b: 50,
                                         sliderExample15: [30, 60],
-                                        sliderExample16: 21
+                                        sliderExample16: 21,
+                                        sliderExample17: 70
                                     };
 
                                     $scope.colorpicker = {
