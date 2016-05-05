@@ -207,7 +207,15 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                     };
                 }
                 if(angular.isDefined(options['tip'])) {
-                    $timeout(function(){element.find('.ui-slider-handle').append('<div class="ui-slider-tip">'+ngModel.$viewValue+'</div>')},10);
+                    $timeout(function(){
+                        var handles = element.find('.ui-slider-handle');
+                        if(handles && handles.length>1 && ngModel.$viewValue && angular.isArray(ngModel.$viewValue)){
+                            $(handles[0]).append('<div class="ui-slider-tip">'+ngModel.$viewValue[0]+'</div>');
+                            $(handles[1]).append('<div class="ui-slider-tip">'+ngModel.$viewValue[1]+'</div>');
+                        }else{
+                            element.find('.ui-slider-handle').append('<div class="ui-slider-tip">'+ngModel.$viewValue+'</div>');
+                        }
+                    },10);
                 }
             }
 
