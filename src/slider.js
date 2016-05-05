@@ -176,6 +176,7 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                     if (options.range === true) {
                         ngModel.$render();
                     }
+                    $(elm).find('.ui-slider-tip').text(ngModel.$viewValue);
                 }, true);
 
                 function destroy() {
