@@ -175,8 +175,13 @@ angular.module('ui.slider', []).value('uiSliderConfig',{}).directive('uiSlider',
                 scope.$watch(attrs.ngModel, function() {
                     if (options.range === true) {
                         ngModel.$render();
+
+                        $(elm).find('.ui-slider-tip').each(function(i, tipElm) {
+                            $(tipElm).text(ngModel.$viewValue[i]);
+                        });
+                    } else {
+                        $(elm).find('.ui-slider-tip').text(ngModel.$viewValue);
                     }
-                    $(elm).find('.ui-slider-tip').text(ngModel.$viewValue);
                 }, true);
 
                 function destroy() {
