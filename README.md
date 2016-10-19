@@ -1,5 +1,7 @@
 # ui-slider directive
 
+[![CDNJS](https://img.shields.io/cdnjs/v/angular-ui-slider.svg)](https://cdnjs.com/libraries/angular-ui-slider)
+
 Due to popular demand. This is WIP so expect breaking changes!
 
 ## Requirements
